@@ -50,6 +50,6 @@ class DeIndexElement extends BaseJob
      */
     protected function defaultDescription(): string
     {
-        return Craft::t('scout', 'De-indexing Element');
+        return Craft::t('scout', 'Removing element from index');
     }
 }

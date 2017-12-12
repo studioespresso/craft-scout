@@ -50,6 +50,6 @@ class IndexElement extends BaseJob
      */
     protected function defaultDescription(): string
     {
-        return Craft::t('scout', 'Indexing Element');
+        return Craft::t('scout', 'Adding element to index');
     }
 }
