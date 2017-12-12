@@ -36,9 +36,9 @@ return [
         [
             'indexName' => 'blog',
             'elementType' => \craft\elements\Entry::class,
-            'criteria' => [
-                'section' => 'blog'
-            ],
+            'filter' => function (craft\base\Element $element) {
+                return $element->section->handle == 'blog';
+            },
             'transformer' => function (craft\base\Element $element) {
                 return $element->toArray();
             }
@@ -70,13 +70,13 @@ Craft's default element type classes are:
 'elementType' => craft\elements\Entry::class,
 ```
 
-#### `criteria`
-An array of parameters that should be set on the [Element Query](https://github.com/craftcms/docs/blob/master/en/element-queries.md) that limits which entries go inside the index. These criteria are also used when importing through the console command.
+#### `filter`
+The criteria on which to filter the `elementType`, in the example we only want entries from the section `blog`
 
 ```php
-'criteria' => [
-    'section' => 'blog',
-],
+'filter' => function (craft\base\Element $element) {
+    return $element->section->handle == 'blog';
+},
 ```
 
 #### `transformer`
@@ -116,28 +116,12 @@ class MyTransformerClassName extends TransformerAbstract
 }
 ```
 
-## Console commands
-Scout provides two easy console commands for managing your indices.
 
-### Importing
-To import one or all indices you can run the following console command
+## Scout Roadmap
 
-```
-./craft scout/index/import <indexName?>
-```
+Some things to do, and ideas for potential features:
 
-The `indexName` argument is not required, all your mappings will be imported when you omit it.
-
-### Flushing/Clearing
-Clearing an index is as easy as running a command in your console.
-
-```
-./craft scout/index/flush <indexName?>
-```
-
-As with the import command, `indexName` is not required, when flushing Scout will ask you to confirm that you really want to clear all the data in your index.
-
-## Credits
-- [Craft Algolia](https://github.com/aaronwaldon/craft-algolia) by aaronwaldon as a base to start from
+* Use the queue to process Algolia updates
+* Add console commands to flush/import indexes
 
 Brought to you by [Rias](https://rias.be)
