@@ -14,6 +14,8 @@ namespace rias\scout;
 use craft\base\Element;
 use craft\events\ModelEvent;
 use craft\records\Entry;
+use rias\scout\jobs\DeIndexElement;
+use rias\scout\jobs\IndexElement;
 use rias\scout\services\ScoutService as ScoutServiceService;
 use rias\scout\models\Settings;
 
@@ -64,8 +66,9 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_AFTER_SAVE,
             function (ModelEvent $event) {
-                /* @var Element $event->sender */
-                $this->scoutService->indexElement($event->sender);
+                Craft::$app->queue->push(new IndexElement([
+                    'element' => $event->sender,
+                ]));
             }
         );
 
@@ -76,8 +79,9 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_AFTER_MOVE_IN_STRUCTURE,
             function (ModelEvent $event) {
-                /* @var Element $event->sender */
-                $this->scoutService->indexElement($event->sender);
+                Craft::$app->queue->push(new IndexElement([
+                    'element' => $event->sender,
+                ]));
             }
         );
 
@@ -88,8 +92,9 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_BEFORE_DELETE,
             function (ModelEvent $event) {
-                /* @var Element $event->sender */
-                $this->scoutService->deindexElement($event->sender);
+                Craft::$app->queue->push(new DeIndexElement([
+                    'element' => $event->sender,
+                ]));
             }
         );
     }

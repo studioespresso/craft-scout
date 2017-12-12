@@ -143,37 +143,7 @@ class IndexModel extends Model
     }
 
     /**
-     * Adds or removes the supplied elements from the index.
-     *
-     * @param $elements array
-     *
-     * @return mixed
-     * @throws \AlgoliaSearch\AlgoliaException
-     */
-    public function indexElements($elements)
-    {
-        $toIndex = [];
-        $toDelete = [];
-        array_map(function ($element) use (&$toIndex, &$toDelete) {
-            if ($this->canIndexElement($element)) {
-                if ($element->enabled) {
-                    $toIndex[] = $this->transformElement($element);
-                } else {
-                    $toDelete[] = $this->transformElement($element);
-                }
-            }
-        }, $elements);
-        if (count($toIndex)) {
-            $this->getIndex()->addObjects($toIndex);
-        }
-        if (count($toDelete)) {
-            $this->getIndex()->deleteObjects($toDelete);
-        }
-        return true;
-    }
-
-    /**
-     * Returns the transformer based on the given endpoint
+     * Returns the transformer
      *
      * @return callable|TransformerAbstract|object
      * @throws \yii\base\InvalidConfigException

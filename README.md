@@ -1,4 +1,4 @@
-# Scout plugin for Craft CMS 3.x
+# Scout plugin for Craft CMS 3
 
 Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.
 
@@ -22,9 +22,9 @@ To install the plugin, follow these instructions.
 
 ## Setup
 
-To define your Indices, create a new `scout.php` file within your `config` folder. This file should return an array with 3 keys, an `application_id`, your `admin_api_key` (which are both found in your [Algolia](https://www.algolia.com/api-keys) account) and a `mappings` key, which defines your site's mappings.
+To define your indices, create a new `scout.php` file within your `config` folder. This file should return an array with 3 keys, an `application_id`, your `admin_api_key` (which are both found in your [Algolia](https://www.algolia.com/api-keys) account) and a `mappings` key, which defines your site's mappings.
 
-Within the mappings array, each index is represented by an array, and values are the configuration.
+Within the mappings array, each index is represented by a configuration array.
 
 ```php
 <?php
@@ -43,6 +43,7 @@ return [
                 return $element->toArray();
             }
         ],
+        ...
     ],
 ];
 ```
@@ -53,7 +54,7 @@ return [
 The index name in Algolia, if you don't already have an index created, Scout will create one for you.
 
 #### `elementType`
-The element type that this index contains, most of the time this will be `\craft\elements\Entry::class`
+The element type that this index contains, most of the time this will be `craft\elements\Entry::class`
 
 Craft's default element type classes are:
 

@@ -8,27 +8,27 @@
  * @copyright Copyright (c) 2017 Rias
  */
 
-namespace rias\scout\tasks;
+namespace rias\scout\jobs;
 
+use craft\base\Element;
+use craft\queue\BaseJob;
+use craft\queue\QueueInterface;
 use rias\scout\Scout;
 
 use Craft;
-use craft\base\Task;
 
 /**
  * @author    Rias
  * @package   Scout
- * @since     0.1.0
+ * @since     0.1.0e
  */
-class ScoutTask extends Task
+class DeIndexElement extends BaseJob
 {
-    // Public Properties
+    // Properties
     // =========================================================================
 
-    /**
-     * @var string
-     */
-    public $someAttribute = 'Some Default';
+    /* @var Element */
+    public $element;
 
     // Public Methods
     // =========================================================================
@@ -36,28 +36,10 @@ class ScoutTask extends Task
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function execute($queue)
     {
-        return [
-            ['someAttribute', 'string'],
-            ['someAttribute', 'default', 'value' => 'Some Default'],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getTotalSteps(): int
-    {
-        return 1;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function runStep(int $step)
-    {
-        return true;
+        /* @var Element $event->sender */
+        Scout::$plugin->scoutService->deindexElement($this->element);
     }
 
     // Protected Methods
@@ -68,6 +50,6 @@ class ScoutTask extends Task
      */
     protected function defaultDescription(): string
     {
-        return Craft::t('scout', 'ScoutTask');
+        return Craft::t('scout', 'De-indexing Element');
     }
 }
