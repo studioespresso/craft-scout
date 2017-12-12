@@ -11,6 +11,8 @@
 namespace rias\scout\models;
 
 use craft\base\Element;
+use craft\base\ElementInterface;
+use craft\elements\db\ElementQueryInterface;
 use craft\elements\Entry;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
@@ -41,7 +43,7 @@ class IndexModel extends Model
     public $elementType;
 
     /* @var mixed */
-    public $filter;
+    public $criteria;
 
     /**
      * @var callable|string|array|TransformerAbstract The transformer config, or an actual transformer object
@@ -78,7 +80,7 @@ class IndexModel extends Model
     public function canIndexElement(Element $element)
     {
         return $this->elementType == get_class($element) &&
-            call_user_func($this->filter, $element);
+            $this->getElementQuery($element)->count();
     }
 
     /**
@@ -173,5 +175,26 @@ class IndexModel extends Model
                 },
             ],
         ];
+    }
+
+    /**
+     * Returns the element query based on [[elementType]] and [[criteria]]
+     *
+     * @param Element $element
+     *
+     * @return ElementQueryInterface
+     */
+    public function getElementQuery(Element $element = null): ElementQueryInterface
+    {
+        /** @var string|ElementInterface $elementType */
+        $elementType = $this->elementType;
+        $query = $elementType::find();
+        Craft::configure($query, $this->criteria);
+
+        if (!is_null($element)) {
+            $query->id($element->id);
+        }
+
+        return $query;
     }
 }
