@@ -11,8 +11,8 @@
         "scout"
     ],
     "support": {
-        "docs": "https://github.com/Rias500/scout/blob/master/README.md",
-        "issues": "https://github.com/Rias500/scout/issues"
+        "docs": "https://github.com/Rias500/craft3-scout/blob/master/README.md",
+        "issues": "https://github.com/Rias500/craft3-scout/issues"
     },
     "license": "MIT",
     "authors": [
@@ -43,7 +43,7 @@
         "schemaVersion": "0.1.0",
         "hasCpSettings": true,
         "hasCpSection": false,
-        "changelogUrl": "https://raw.githubusercontent.com/Rias500/scout/master/CHANGELOG.md",
+        "changelogUrl": "https://raw.githubusercontent.com/Rias500/craft3-scout/master/CHANGELOG.md",
         "components": {
             "scoutService": "rias\\scout\\services\\ScoutService"
         },
