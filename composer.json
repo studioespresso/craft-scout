@@ -2,7 +2,7 @@
     "name": "rias/craft3-scout",
     "description": "Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.",
     "type": "craft-plugin",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "keywords": [
         "craft",
         "cms",
