@@ -37,9 +37,9 @@ class IndexController extends Controller
      * @param string $index
      *
      * @throws \AlgoliaSearch\AlgoliaException
+     * @throws Exception
      *
      * @return mixed
-     * @throws Exception
      */
     public function actionFlush($index = '')
     {
@@ -61,8 +61,9 @@ class IndexController extends Controller
      *
      * @param string $index
      *
-     * @return int
      * @throws Exception
+     *
+     * @return int
      */
     public function actionImport($index = '')
     {
@@ -101,8 +102,9 @@ class IndexController extends Controller
     /**
      * @param string $index
      *
-     * @return array
      * @throws Exception
+     *
+     * @return array
      */
     protected function getMappings($index = '')
     {
