@@ -15,6 +15,7 @@ use Craft;
 use rias\scout\jobs\IndexElement;
 use rias\scout\Scout;
 use yii\console\Controller;
+use yii\console\Exception;
 use yii\console\ExitCode;
 use yii\helpers\Console;
 
@@ -38,6 +39,7 @@ class IndexController extends Controller
      * @throws \AlgoliaSearch\AlgoliaException
      *
      * @return mixed
+     * @throws Exception
      */
     public function actionFlush($index = '')
     {
@@ -60,6 +62,7 @@ class IndexController extends Controller
      * @param string $index
      *
      * @return int
+     * @throws Exception
      */
     public function actionImport($index = '')
     {
@@ -98,7 +101,8 @@ class IndexController extends Controller
     /**
      * @param string $index
      *
-     * @return mixed
+     * @return array
+     * @throws Exception
      */
     protected function getMappings($index = '')
     {
@@ -112,9 +116,7 @@ class IndexController extends Controller
         }
 
         if (!count($mappings)) {
-            $this->stderr(Craft::t('scout', 'Index {index} not found.', ['index' => $index]));
-
-            exit(ExitCode::DATAERR);
+            throw new Exception(Craft::t('scout', 'Index {index} not found.', ['index' => $index]));
         }
 
         return $mappings;
