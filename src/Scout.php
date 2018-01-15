@@ -1,20 +1,23 @@
 <?php
 /**
- * Scout plugin for Craft CMS 3.x
+ * Scout plugin for Craft CMS 3.x.
  *
  * Craft Scout provides a simple solution for adding full-text search to your entries.
  * Scout will automatically keep your search indexes in sync with your entries.
  *
  * @link      https://rias.be
+ *
  * @copyright Copyright (c) 2017 Rias
  */
 
 namespace rias\scout;
 
+use Craft;
 use craft\base\Element;
+use craft\base\Plugin;
+use craft\console\Application as ConsoleApplication;
 use craft\elements\Asset;
 use craft\elements\Category;
-use craft\elements\db\ElementQuery;
 use craft\elements\Entry;
 use craft\elements\GlobalSet;
 use craft\elements\MatrixBlock;
@@ -23,19 +26,15 @@ use craft\elements\User;
 use craft\events\ModelEvent;
 use rias\scout\jobs\DeIndexElement;
 use rias\scout\jobs\IndexElement;
-use rias\scout\services\ScoutService as ScoutServiceService;
 use rias\scout\models\Settings;
-
-use Craft;
-use craft\base\Plugin;
-use craft\console\Application as ConsoleApplication;
+use rias\scout\services\ScoutService as ScoutServiceService;
 use yii\base\Event;
 
 /**
- * Class Scout
+ * Class Scout.
  *
  * @author    Rias
- * @package   Scout
+ *
  * @since     0.1.0
  *
  * @property  ScoutServiceService $scoutService
@@ -54,7 +53,7 @@ class Scout extends Plugin
     // =========================================================================
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function init()
     {
@@ -112,7 +111,7 @@ class Scout extends Plugin
             Category::EVENT_AFTER_SAVE,
             function (ModelEvent $event) {
                 // Only do this when the category isn't new
-                if (! $event->isNew) {
+                if (!$event->isNew) {
                     Craft::$app->queue->push(new IndexElement([
                         'elements' => $this->getElementsRelatedTo($event->sender),
                     ]));
@@ -138,7 +137,7 @@ class Scout extends Plugin
     // =========================================================================
 
     /**
-     * Get all possible elements related to another element
+     * Get all possible elements related to another element.
      *
      * @param mixed $element
      *
@@ -158,7 +157,7 @@ class Scout extends Plugin
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function createSettingsModel()
     {
@@ -166,14 +165,14 @@ class Scout extends Plugin
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function settingsHtml(): string
     {
         return Craft::$app->view->renderTemplate(
             'scout/settings',
             [
-                'settings' => $this->getSettings()
+                'settings' => $this->getSettings(),
             ]
         );
     }

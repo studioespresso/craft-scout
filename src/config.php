@@ -1,16 +1,15 @@
 <?php
 /**
- * Scout plugin for Craft CMS 3.x
+ * Scout plugin for Craft CMS 3.x.
  *
  * Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.
  *
  * @link      https://rias.be
+ *
  * @copyright Copyright (c) 2017 Rias
  */
 
-use craft\base\Element;
-
-/**
+/*
  * Scout config.php
  *
  * This file exists only as a template for the Scout settings.
@@ -27,9 +26,9 @@ use craft\base\Element;
 return [
 
     // These can both be found in your Algolia Account:  https://www.algolia.com/api-keys
-    "application_id" => "algolia",
-    "admin_api_key" => "algolia",
-    "mappings" => [
+    'application_id' => 'algolia',
+    'admin_api_key'  => 'algolia',
+    'mappings'       => [
 
     ],
 ];

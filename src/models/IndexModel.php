@@ -1,17 +1,20 @@
 <?php
 /**
- * Scout plugin for Craft CMS 3.x
+ * Scout plugin for Craft CMS 3.x.
  *
  * Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.
  *
  * @link      https://rias.be
+ *
  * @copyright Copyright (c) 2017 Rias
  */
 
 namespace rias\scout\models;
 
+use Craft;
 use craft\base\Element;
 use craft\base\ElementInterface;
+use craft\base\Model;
 use craft\elements\db\ElementQueryInterface;
 use craft\elements\Entry;
 use League\Fractal\Manager;
@@ -21,13 +24,9 @@ use League\Fractal\TransformerAbstract;
 use rias\scout\ElementTransformer;
 use rias\scout\Scout;
 
-use Craft;
-use craft\base\Model;
-use yii\behaviors\AttributeTypecastBehavior;
-
 /**
  * @author    Rias
- * @package   Scout
+ *
  * @since     0.1.0
  */
 class IndexModel extends Model
@@ -56,8 +55,9 @@ class IndexModel extends Model
     /**
      * Returns an Algolia Index instance based on the name.
      *
-     * @return \AlgoliaSearch\Index
      * @throws \AlgoliaSearch\AlgoliaException
+     *
+     * @return \AlgoliaSearch\Index
      */
     public function getIndex()
     {
@@ -67,6 +67,7 @@ class IndexModel extends Model
                 $this->index->setSettings($this->settings, true);
             }
         }
+
         return $this->index;
     }
 
@@ -88,8 +89,9 @@ class IndexModel extends Model
      *
      * @param $element Element
      *
-     * @return mixed
      * @throws \yii\base\InvalidConfigException
+     *
+     * @return mixed
      */
     public function transformElement(Element $element)
     {
@@ -111,9 +113,10 @@ class IndexModel extends Model
      *
      * @param $element Element
      *
-     * @return mixed
      * @throws \AlgoliaSearch\AlgoliaException
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function indexElement(Element $element)
     {
@@ -124,6 +127,7 @@ class IndexModel extends Model
                 return $this->getIndex()->deleteObject($element->id);
             }
         }
+
         return false;
     }
 
@@ -132,39 +136,43 @@ class IndexModel extends Model
      *
      * @param $element Element
      *
-     * @return mixed
      * @throws \AlgoliaSearch\AlgoliaException
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function deindexElement(Element $element)
     {
         if ($this->canIndexElement($element)) {
             return $this->getIndex()->deleteObject($element->id);
         }
+
         return true;
     }
 
     /**
-     * Returns the transformer
+     * Returns the transformer.
+     *
+     * @throws \yii\base\InvalidConfigException
      *
      * @return callable|TransformerAbstract|object
-     * @throws \yii\base\InvalidConfigException
      */
     protected function getTransformer()
     {
         if (is_callable($this->transformer) || $this->transformer instanceof TransformerAbstract) {
             return $this->transformer;
         }
+
         return Craft::createObject($this->transformer);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            'indexName' => 'string',
+            'indexName'   => 'string',
             'elementType' => [
                 'string',
                 'default' => Entry::class,
@@ -178,7 +186,7 @@ class IndexModel extends Model
     }
 
     /**
-     * Returns the element query based on [[elementType]] and [[criteria]]
+     * Returns the element query based on [[elementType]] and [[criteria]].
      *
      * @param Element $element
      *

@@ -1,25 +1,24 @@
 <?php
 /**
- * Scout plugin for Craft CMS 3.x
+ * Scout plugin for Craft CMS 3.x.
  *
  * Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.
  *
  * @link      https://rias.be
+ *
  * @copyright Copyright (c) 2017 Rias
  */
 
 namespace rias\scout\jobs;
 
+use Craft;
 use craft\base\Element;
 use craft\queue\BaseJob;
-use craft\queue\QueueInterface;
 use rias\scout\Scout;
-
-use Craft;
 
 /**
  * @author    Rias
- * @package   Scout
+ *
  * @since     0.1.0
  */
 class IndexElement extends BaseJob
@@ -34,11 +33,11 @@ class IndexElement extends BaseJob
     // =========================================================================
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function execute($queue)
     {
-        if (! is_array($this->elements)) {
+        if (!is_array($this->elements)) {
             $this->elements = [$this->elements];
         }
 
@@ -59,7 +58,7 @@ class IndexElement extends BaseJob
     // =========================================================================
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function defaultDescription(): string
     {

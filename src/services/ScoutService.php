@@ -1,28 +1,26 @@
 <?php
 /**
- * Scout plugin for Craft CMS 3.x
+ * Scout plugin for Craft CMS 3.x.
  *
  * Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.
  *
  * @link      https://rias.be
+ *
  * @copyright Copyright (c) 2017 Rias
  */
 
 namespace rias\scout\services;
 
 use AlgoliaSearch\Client;
+use Craft;
+use craft\base\Component;
 use craft\base\Element;
-use craft\elements\db\ElementQuery;
-use craft\elements\Entry;
 use rias\scout\models\IndexModel;
 use rias\scout\Scout;
 
-use Craft;
-use craft\base\Component;
-
 /**
  * @author    Rias
- * @package   Scout
+ *
  * @since     0.1.0
  */
 class ScoutService extends Component
@@ -48,6 +46,7 @@ class ScoutService extends Component
         if (is_null($this->client)) {
             $this->client = new Client($this->settings->application_id, $this->settings->admin_api_key);
         }
+
         return $this->client;
     }
 
@@ -58,12 +57,13 @@ class ScoutService extends Component
      */
     public function getMappings()
     {
-        if (! count($this->mappings)) {
+        if (!count($this->mappings)) {
             $mappingsConfig = $this->settings->mappings;
             foreach ($mappingsConfig as $mappingConfig) {
                 $this->mappings[] = new IndexModel($mappingConfig);
             }
         }
+
         return $this->mappings;
     }
 
