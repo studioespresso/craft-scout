@@ -27,8 +27,8 @@ class IndexElement extends BaseJob
     // Properties
     // =========================================================================
 
-    /* @var Element */
-    public $element;
+    /* @var array */
+    public $elements;
 
     // Public Methods
     // =========================================================================
@@ -38,8 +38,21 @@ class IndexElement extends BaseJob
      */
     public function execute($queue)
     {
-        /* @var Element $event->sender */
-        Scout::$plugin->scoutService->indexElement($this->element);
+        if (! is_array($this->elements)) {
+            $this->elements = [$this->elements];
+        }
+
+        $total = count($this->elements);
+        $step = 100 / $total;
+        $progress = 0;
+
+        foreach ($this->elements as $element) {
+            /* @var Element $element */
+            Scout::$plugin->scoutService->indexElement($element);
+
+            $progress += $step;
+            $queue->setProgress($progress);
+        }
     }
 
     // Protected Methods
@@ -50,6 +63,6 @@ class IndexElement extends BaseJob
      */
     protected function defaultDescription(): string
     {
-        return Craft::t('scout', 'Adding element to index');
+        return Craft::t('scout', 'Adding element(s) to index');
     }
 }
