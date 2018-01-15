@@ -178,7 +178,7 @@ class IndexModel extends Model
                 'default' => Entry::class,
             ],
             'filter' => [
-                'default' => function (Element $element) {
+                'default' => function () {
                     return true;
                 },
             ],

@@ -41,17 +41,9 @@ class IndexController extends Controller
      */
     public function actionFlush($index = '')
     {
-        $mappings = $this->getMappings($index);
-
-        if (!count($mappings)) {
-            $this->stderr(Craft::t('scout', 'Index {index} not found.', ['index' => $index]));
-
-            return ExitCode::DATAERR;
-        }
-
         if ($this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?'))) {
             /* @var \rias\scout\models\IndexModel $mapping */
-            foreach ($mappings as $mapping) {
+            foreach ($this->getMappings($index) as $mapping) {
                 $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
                 $index->clearIndex();
             }
@@ -71,16 +63,8 @@ class IndexController extends Controller
      */
     public function actionImport($index = '')
     {
-        $mappings = $this->getMappings($index);
-
-        if (!count($mappings)) {
-            $this->stderr(Craft::t('scout', 'Index {index} not found.', ['index' => $index]));
-
-            return ExitCode::DATAERR;
-        }
-
         /* @var \rias\scout\models\IndexModel $mapping */
-        foreach ($mappings as $mapping) {
+        foreach ($this->getMappings($index) as $mapping) {
             // Get all elements to index
             $elements = $mapping->getElementQuery()->all();
 
@@ -95,7 +79,7 @@ class IndexController extends Controller
             );
             foreach ($elements as $element) {
                 Craft::$app->queue->push(new IndexElement([
-                    'element' => $element,
+                    'elements' => $element,
                 ]));
                 $progress++;
                 Console::updateProgress($progress, $total);
@@ -114,7 +98,7 @@ class IndexController extends Controller
     /**
      * @param string $index
      *
-     * @return array
+     * @return mixed
      */
     protected function getMappings($index = '')
     {
@@ -125,6 +109,12 @@ class IndexController extends Controller
             $mappings = array_filter($mappings, function ($mapping) use ($index) {
                 return $mapping->indexName == $index;
             });
+        }
+
+        if (!count($mappings)) {
+            $this->stderr(Craft::t('scout', 'Index {index} not found.', ['index' => $index]));
+
+            exit(ExitCode::DATAERR);
         }
 
         return $mappings;
