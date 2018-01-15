@@ -39,7 +39,7 @@ class DeIndexElement extends BaseJob
     // =========================================================================
 
     /**
-     * {@inheritdoc}
+     * @param craft\queue\QueueInterface $queue The queue the job belongs to
      */
     public function execute($queue)
     {
