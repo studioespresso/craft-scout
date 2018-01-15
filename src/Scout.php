@@ -12,8 +12,15 @@
 namespace rias\scout;
 
 use craft\base\Element;
+use craft\elements\Asset;
+use craft\elements\Category;
+use craft\elements\db\ElementQuery;
+use craft\elements\Entry;
+use craft\elements\GlobalSet;
+use craft\elements\MatrixBlock;
+use craft\elements\Tag;
+use craft\elements\User;
 use craft\events\ModelEvent;
-use craft\records\Entry;
 use rias\scout\jobs\DeIndexElement;
 use rias\scout\jobs\IndexElement;
 use rias\scout\services\ScoutService as ScoutServiceService;
@@ -23,7 +30,6 @@ use Craft;
 use craft\base\Plugin;
 use craft\console\Application as ConsoleApplication;
 use yii\base\Event;
-use yii\db\AfterSaveEvent;
 
 /**
  * Class Scout
@@ -67,7 +73,7 @@ class Scout extends Plugin
             Element::EVENT_AFTER_SAVE,
             function (ModelEvent $event) {
                 Craft::$app->queue->push(new IndexElement([
-                    'element' => $event->sender,
+                    'elements' => $event->sender,
                 ]));
             }
         );
@@ -80,7 +86,7 @@ class Scout extends Plugin
             Element::EVENT_AFTER_MOVE_IN_STRUCTURE,
             function (ModelEvent $event) {
                 Craft::$app->queue->push(new IndexElement([
-                    'element' => $event->sender,
+                    'elements' => $event->sender,
                 ]));
             }
         );
@@ -93,7 +99,36 @@ class Scout extends Plugin
             Element::EVENT_BEFORE_DELETE,
             function (ModelEvent $event) {
                 Craft::$app->queue->push(new DeIndexElement([
-                    'element' => $event->sender,
+                    'elements' => $event->sender,
+                ]));
+            }
+        );
+
+        /*
+         * When a Category is saved, reindex the related Entries
+         */
+        Event::on(
+            Category::class,
+            Category::EVENT_AFTER_SAVE,
+            function (ModelEvent $event) {
+                // Only do this when the category isn't new
+                if (! $event->isNew) {
+                    Craft::$app->queue->push(new IndexElement([
+                        'elements' => $this->getElementsRelatedTo($event->sender),
+                    ]));
+                }
+            }
+        );
+
+        /*
+         * When a Category is deleted, reindex the related Entries
+         */
+        Event::on(
+            Category::class,
+            Category::EVENT_BEFORE_DELETE,
+            function (ModelEvent $event) {
+                Craft::$app->queue->push(new IndexElement([
+                    'elements' => $this->getElementsRelatedTo($event->sender),
                 ]));
             }
         );
@@ -101,6 +136,26 @@ class Scout extends Plugin
 
     // Protected Methods
     // =========================================================================
+
+    /**
+     * Get all possible elements related to another element
+     *
+     * @param mixed $element
+     *
+     * @return \craft\base\ElementInterface[]
+     */
+    protected function getElementsRelatedTo($element)
+    {
+        $assets = Asset::find()->relatedTo($element)->all();
+        $categories = Category::find()->relatedTo($element)->all();
+        $entries = Entry::find()->relatedTo($element)->all();
+        $tags = Tag::find()->relatedTo($element)->all();
+        $users = User::find()->relatedTo($element)->all();
+        $globalSets = GlobalSet::find()->relatedTo($element)->all();
+        $matrixBlocks = MatrixBlock::find()->relatedTo($element)->all();
+
+        return array_merge($assets, $categories, $entries, $tags, $users, $globalSets, $matrixBlocks);
+    }
 
     /**
      * @inheritdoc

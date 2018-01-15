@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.4 - 2017-12-12
+### Added
+- Craft Scout now listens to Category events to determine if it needs to reindex elements
+
 ## 0.2.1 - 2017-12-12
 ### Added
 - A new icon!
