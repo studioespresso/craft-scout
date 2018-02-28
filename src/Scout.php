@@ -137,12 +137,12 @@ class Scout extends Plugin
                 'elements' => $elements,
             ]));
         } catch (\Exception $e) {
-            if (! is_array($elements)) {
+            if (!is_array($elements)) {
                 $elements = [$elements];
             }
 
             foreach ($elements as $element) {
-                Scout::$plugin->scoutService->deindexElement($element);
+                self::$plugin->scoutService->deindexElement($element);
             }
         }
     }
@@ -157,12 +157,12 @@ class Scout extends Plugin
                 'elements' => $elements,
             ]));
         } catch (\Exception $e) {
-            if (! is_array($elements)) {
+            if (!is_array($elements)) {
                 $elements = [$elements];
             }
 
             foreach ($elements as $element) {
-                Scout::$plugin->scoutService->indexElement($element);
+                self::$plugin->scoutService->indexElement($element);
             }
         }
     }
