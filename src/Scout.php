@@ -29,6 +29,7 @@ use rias\scout\jobs\IndexElement;
 use rias\scout\models\Settings;
 use rias\scout\services\ScoutService as ScoutServiceService;
 use yii\base\Event;
+use yii\queue\serializers\PhpSerializer;
 
 /**
  * Class Scout.
@@ -71,9 +72,7 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_AFTER_SAVE,
             function (ModelEvent $event) {
-                Craft::$app->queue->push(new IndexElement([
-                    'elements' => $event->sender,
-                ]));
+                $this->indexElement($event->sender);
             }
         );
 
@@ -84,9 +83,7 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_AFTER_MOVE_IN_STRUCTURE,
             function (ModelEvent $event) {
-                Craft::$app->queue->push(new IndexElement([
-                    'elements' => $event->sender,
-                ]));
+                $this->indexElement($event->sender);
             }
         );
 
@@ -97,9 +94,7 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_BEFORE_DELETE,
             function (ModelEvent $event) {
-                Craft::$app->queue->push(new DeIndexElement([
-                    'elements' => $event->sender,
-                ]));
+                $this->deIndexElement($event->sender);
             }
         );
 
@@ -112,9 +107,7 @@ class Scout extends Plugin
             function (ModelEvent $event) {
                 // Only do this when the category isn't new
                 if (!$event->isNew) {
-                    Craft::$app->queue->push(new IndexElement([
-                        'elements' => $this->getElementsRelatedTo($event->sender),
-                    ]));
+                    $this->indexElement($this->getElementsRelatedTo($event->sender));
                 }
             }
         );
@@ -126,15 +119,53 @@ class Scout extends Plugin
             Category::class,
             Category::EVENT_BEFORE_DELETE,
             function (ModelEvent $event) {
-                Craft::$app->queue->push(new IndexElement([
-                    'elements' => $this->getElementsRelatedTo($event->sender),
-                ]));
+                $this->deIndexElement($this->getElementsRelatedTo($event->sender));
             }
         );
     }
 
     // Protected Methods
     // =========================================================================
+
+    protected function deIndexElement($elements)
+    {
+        try {
+            $serializer = new PhpSerializer();
+            $serializer->serialize($elements);
+
+            Craft::$app->queue->push(new DeIndexElement([
+                'elements' => $elements,
+            ]));
+        } catch (\Exception $e) {
+            if (! is_array($elements)) {
+                $elements = [$elements];
+            }
+
+            foreach ($elements as $element) {
+                Scout::$plugin->scoutService->deindexElement($element);
+            }
+        }
+    }
+
+    protected function indexElement($elements)
+    {
+        try {
+            $serializer = new PhpSerializer();
+            $serializer->serialize($elements);
+
+            Craft::$app->queue->push(new IndexElement([
+                'elements' => $elements,
+            ]));
+        } catch (\Exception $e) {
+            if (! is_array($elements)) {
+                $elements = [$elements];
+            }
+
+            foreach ($elements as $element) {
+                Scout::$plugin->scoutService->indexElement($element);
+            }
+        }
+    }
 
     /**
      * Get all possible elements related to another element.

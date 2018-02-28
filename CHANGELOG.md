@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.8 - 2018-02-28
+### Fixed
+- Fixed an error when trying to serialize an Entry that cannot be serialized
+
 ## 0.2.7 - 2017-02-27
 ### Changed
 - Updated the League/Fractal requirement to match that of Element API to avoid conflicts
