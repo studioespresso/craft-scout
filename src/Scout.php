@@ -129,14 +129,11 @@ class Scout extends Plugin
 
     protected function deIndexElement($elements)
     {
-        try {
-            $serializer = new PhpSerializer();
-            $serializer->serialize($elements);
-
+        if ($this->elementsCanBeSerialized($elements)) {
             Craft::$app->queue->push(new DeIndexElement([
                 'elements' => $elements,
             ]));
-        } catch (\Exception $e) {
+        } else {
             if (!is_array($elements)) {
                 $elements = [$elements];
             }
@@ -149,14 +146,11 @@ class Scout extends Plugin
 
     protected function indexElement($elements)
     {
-        try {
-            $serializer = new PhpSerializer();
-            $serializer->serialize($elements);
-
+        if ($this->elementsCanBeSerialized($elements)) {
             Craft::$app->queue->push(new IndexElement([
                 'elements' => $elements,
             ]));
-        } catch (\Exception $e) {
+        } else {
             if (!is_array($elements)) {
                 $elements = [$elements];
             }
@@ -164,6 +158,18 @@ class Scout extends Plugin
             foreach ($elements as $element) {
                 self::$plugin->scoutService->indexElement($element);
             }
+        }
+    }
+
+    protected function elementsCanBeSerialized($elements)
+    {
+        try {
+            $serializer = new PhpSerializer();
+            $serializer->serialize($elements);
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
         }
     }
 
