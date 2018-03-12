@@ -72,7 +72,7 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_AFTER_SAVE,
             function (ModelEvent $event) {
-                $this->indexElement($event->sender);
+                $this->indexElements($event->sender);
             }
         );
 
@@ -83,7 +83,7 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_AFTER_MOVE_IN_STRUCTURE,
             function (ModelEvent $event) {
-                $this->indexElement($event->sender);
+                $this->indexElements($event->sender);
             }
         );
 
@@ -94,7 +94,7 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_BEFORE_DELETE,
             function (ModelEvent $event) {
-                $this->deIndexElement($event->sender);
+                $this->deIndexElements($event->sender);
             }
         );
 
@@ -107,7 +107,7 @@ class Scout extends Plugin
             function (ModelEvent $event) {
                 // Only do this when the category isn't new
                 if (!$event->isNew) {
-                    $this->indexElement($this->getElementsRelatedTo($event->sender));
+                    $this->indexElements($this->getElementsRelatedTo($event->sender));
                 }
             }
         );
@@ -119,7 +119,7 @@ class Scout extends Plugin
             Category::class,
             Category::EVENT_BEFORE_DELETE,
             function (ModelEvent $event) {
-                $this->deIndexElement($this->getElementsRelatedTo($event->sender));
+                $this->deIndexElements($this->getElementsRelatedTo($event->sender));
             }
         );
     }
@@ -127,50 +127,34 @@ class Scout extends Plugin
     // Protected Methods
     // =========================================================================
 
-    protected function deIndexElement($elements)
+    /**
+     * @param $elements
+     *
+     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws \Exception
+     */
+    protected function deIndexElements($elements)
     {
-        if ($this->elementsCanBeSerialized($elements)) {
-            Craft::$app->queue->push(new DeIndexElement([
-                'elements' => $elements,
-            ]));
-        } else {
-            if (!is_array($elements)) {
-                $elements = [$elements];
-            }
-
-            foreach ($elements as $element) {
-                self::$plugin->scoutService->deindexElement($element);
-            }
+        if (!is_array($elements)) {
+            $elements = [$elements];
         }
+
+        self::$plugin->scoutService->deindexElements($elements);
     }
 
-    protected function indexElement($elements)
+    /**
+     * @param $elements
+     *
+     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws \Exception
+     */
+    protected function indexElements($elements)
     {
-        if ($this->elementsCanBeSerialized($elements)) {
-            Craft::$app->queue->push(new IndexElement([
-                'elements' => $elements,
-            ]));
-        } else {
-            if (!is_array($elements)) {
-                $elements = [$elements];
-            }
-
-            foreach ($elements as $element) {
-                self::$plugin->scoutService->indexElement($element);
-            }
+        if (!is_array($elements)) {
+            $elements = [$elements];
         }
-    }
 
-    protected function elementsCanBeSerialized($elements)
-    {
-        try {
-            $serializer = new PhpSerializer();
-            $serializer->serialize($elements);
-
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
+        self::$plugin->scoutService->indexElements($elements);
     }
 
     /**

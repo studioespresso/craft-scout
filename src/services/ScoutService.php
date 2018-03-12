@@ -15,7 +15,7 @@ use AlgoliaSearch\Client;
 use Craft;
 use craft\base\Component;
 use craft\base\Element;
-use rias\scout\models\IndexModel;
+use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
 
 /**
@@ -41,6 +41,10 @@ class ScoutService extends Component
         $this->settings = Scout::$plugin->getSettings();
     }
 
+    /**
+     * @return Client
+     * @throws \Exception
+     */
     public function getClient()
     {
         if (is_null($this->client)) {
@@ -53,14 +57,14 @@ class ScoutService extends Component
     /**
      * Returns an array of Algolia_IndexModel instances with the unprefixed index names as keys.
      *
-     * @return array
+     * @return AlgoliaIndex[]
      */
     public function getMappings()
     {
         if (!count($this->mappings)) {
             $mappingsConfig = $this->settings->mappings;
             foreach ($mappingsConfig as $mappingConfig) {
-                $this->mappings[] = new IndexModel($mappingConfig);
+                $this->mappings[] = new AlgoliaIndex($mappingConfig);
             }
         }
 
@@ -70,24 +74,16 @@ class ScoutService extends Component
     /**
      * Passes the supplied element to each configured index.
      *
-     * @param $element Element
-     */
-    public function indexElement(Element $element)
-    {
-        foreach ($this->getMappings() as $algoliaIndexModel) {
-            $algoliaIndexModel->indexElement($element);
-        }
-    }
-
-    /**
-     * Passes the supplied element to each configured index.
+     * @param $elements array
      *
-     * @param $element Element
+     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws \Exception
      */
-    public function deindexElement(Element $element)
+    public function deindexElements($elements)
     {
+        /** @var AlgoliaIndex $algoliaIndexModel */
         foreach ($this->getMappings() as $algoliaIndexModel) {
-            $algoliaIndexModel->deindexElement($element);
+            $algoliaIndexModel->deindexElements($elements);
         }
     }
 
@@ -95,11 +91,14 @@ class ScoutService extends Component
      * Passes the supplied elements to each configured index.
      *
      * @param $elements array
+     *
+     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws \Exception
      */
     public function indexElements($elements)
     {
-        foreach ($this->getMappings() as $algoliaIndexModel) {
-            $algoliaIndexModel->indexElements($elements);
+        foreach ($this->getMappings() as $algoliaIndex) {
+            $algoliaIndex->indexElements($elements);
         }
     }
 }

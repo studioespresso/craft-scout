@@ -22,6 +22,8 @@ use League\Fractal\Resource\Item;
 use League\Fractal\Serializer\ArraySerializer;
 use League\Fractal\TransformerAbstract;
 use rias\scout\ElementTransformer;
+use rias\scout\jobs\DeIndexElement;
+use rias\scout\jobs\IndexElement;
 use rias\scout\Scout;
 
 /**
@@ -29,12 +31,8 @@ use rias\scout\Scout;
  *
  * @since     0.1.0
  */
-class IndexModel extends Model
+class AlgoliaIndex extends Model
 {
-    // Public Properties
-    // =========================================================================
-    private $index;
-
     /* @var string */
     public $indexName;
 
@@ -49,28 +47,6 @@ class IndexModel extends Model
      */
     public $transformer = ElementTransformer::class;
 
-    /* @var mixed */
-    public $settings;
-
-    /**
-     * Returns an Algolia Index instance based on the name.
-     *
-     * @throws \AlgoliaSearch\AlgoliaException
-     *
-     * @return \AlgoliaSearch\Index
-     */
-    public function getIndex()
-    {
-        if (is_null($this->index)) {
-            $this->index = Scout::$plugin->scoutService->getClient()->initIndex($this->indexName);
-            if (!empty($this->settings)) {
-                $this->index->setSettings($this->settings, true);
-            }
-        }
-
-        return $this->index;
-    }
-
     /**
      * Determines if the supplied element can be indexed in this index.
      *
@@ -80,8 +56,7 @@ class IndexModel extends Model
      */
     public function canIndexElement(Element $element)
     {
-        return $this->elementType == get_class($element) &&
-            $this->getElementQuery($element)->count();
+        return $this->elementType === get_class($element) && $this->getElementQuery($element)->count();
     }
 
     /**
@@ -100,8 +75,8 @@ class IndexModel extends Model
 
         $fractal = new Manager();
         $fractal->setSerializer(new ArraySerializer());
-        $data = $fractal->createData($resource)->toArray();
 
+        $data = $fractal->createData($resource)->toArray();
         // Make sure the objectID is set for Algolia
         $data['objectID'] = $element->id;
 
@@ -111,43 +86,45 @@ class IndexModel extends Model
     /**
      * Adds or removes the supplied element from the index.
      *
-     * @param $element Element
+     * @param $elements array
      *
-     * @throws \AlgoliaSearch\AlgoliaException
-     * @throws \Exception
-     *
-     * @return mixed
+     * @throws \yii\base\InvalidConfigException
      */
-    public function indexElement(Element $element)
+    public function indexElements($elements)
     {
-        if ($this->canIndexElement($element)) {
-            if ($element->enabled) {
-                return $this->getIndex()->addObject($this->transformElement($element));
-            } else {
-                return $this->getIndex()->deleteObject($element->id);
+        foreach ($elements as $element) {
+            if ($this->canIndexElement($element)) {
+                if ($element->enabled) {
+                    Craft::$app->queue->push(new IndexElement([
+                        'indexName' => $this->indexName,
+                        'element' => $this->transformElement($element),
+                    ]));
+                } else {
+                    Craft::$app->queue->push(new DeIndexElement([
+                        'indexName' => $this->indexName,
+                        'id' => $element->id,
+                    ]));
+                }
             }
         }
-
-        return false;
     }
 
     /**
      * Removes the supplied element from the index.
      *
-     * @param $element Element
+     * @param $elements
      *
-     * @throws \AlgoliaSearch\AlgoliaException
-     * @throws \Exception
-     *
-     * @return mixed
      */
-    public function deindexElement(Element $element)
+    public function deindexElements($elements)
     {
-        if ($this->canIndexElement($element)) {
-            return $this->getIndex()->deleteObject($element->id);
+        foreach ($elements as $element) {
+            if ($this->canIndexElement($element)) {
+                Craft::$app->queue->push(new DeIndexElement([
+                    'indexName' => $this->indexName,
+                    'id' => $element->id,
+                ]));
+            }
         }
-
-        return true;
     }
 
     /**
@@ -176,11 +153,6 @@ class IndexModel extends Model
             'elementType' => [
                 'string',
                 'default' => Entry::class,
-            ],
-            'filter' => [
-                'default' => function () {
-                    return true;
-                },
             ],
         ];
     }

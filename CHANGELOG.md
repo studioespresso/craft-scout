@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.3.0 - 2018-03-12
+### Changed
+- Changed how the queueing of indexing works to prevent errors and inconsistencies
+
 ## 0.2.8 - 2018-02-28
 ### Fixed
 - Fixed an error when trying to serialize an Entry that cannot be serialized

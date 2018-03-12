@@ -11,6 +11,8 @@
 
 namespace rias\scout\jobs;
 
+use AlgoliaSearch\Client;
+use AlgoliaSearch\Index;
 use Craft;
 use craft\base\Element;
 use craft\queue\BaseJob;
@@ -27,31 +29,33 @@ class IndexElement extends BaseJob
     // =========================================================================
 
     /* @var array */
-    public $elements;
+    public $element;
+
+    /* @var string */
+    public $indexName;
+
+    /* @var Index */
+    private $index;
 
     // Public Methods
     // =========================================================================
+
+    /**
+     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws \Exception
+     */
+    public function init()
+    {
+        parent::init();
+        $this->index = Scout::$plugin->scoutService->getClient()->initIndex($this->indexName);
+    }
 
     /**
      * @param craft\queue\QueueInterface $queue The queue the job belongs to
      */
     public function execute($queue)
     {
-        if (!is_array($this->elements)) {
-            $this->elements = [$this->elements];
-        }
-
-        $total = count($this->elements);
-        $step = 100 / $total;
-        $progress = 0;
-
-        foreach ($this->elements as $element) {
-            /* @var Element $element */
-            Scout::$plugin->scoutService->indexElement($element);
-
-            $progress += $step;
-            $queue->setProgress($progress);
-        }
+        $this->index->addObject($this->element);
     }
 
     // Protected Methods
@@ -62,6 +66,6 @@ class IndexElement extends BaseJob
      */
     protected function defaultDescription(): string
     {
-        return Craft::t('scout', 'Adding element(s) to index');
+        return Craft::t('scout', sprintf("Adding element %s to index", $this->element['objectID']));
     }
 }

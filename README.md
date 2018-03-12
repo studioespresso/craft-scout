@@ -48,7 +48,7 @@ return [
             ],
             'transformer' => function (craft\base\Element $element) {
                 return $element->toArray();
-            }
+            },
         ],
         ...
     ],

@@ -12,6 +12,7 @@
 namespace rias\scout\console\controllers;
 
 use Craft;
+use craft\base\Element;
 use rias\scout\jobs\IndexElement;
 use rias\scout\Scout;
 use yii\console\Controller;
@@ -36,15 +37,15 @@ class IndexController extends Controller
      *
      * @param string $index
      *
-     * @throws \AlgoliaSearch\AlgoliaException
-     * @throws Exception
-     *
      * @return mixed
+     * @throws Exception
+     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws \Exception
      */
     public function actionFlush($index = '')
     {
         if ($this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?'))) {
-            /* @var \rias\scout\models\IndexModel $mapping */
+            /* @var \rias\scout\models\AlgoliaIndex $mapping */
             foreach ($this->getMappings($index) as $mapping) {
                 $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
                 $index->clearIndex();
@@ -64,10 +65,11 @@ class IndexController extends Controller
      * @throws Exception
      *
      * @return int
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionImport($index = '')
     {
-        /* @var \rias\scout\models\IndexModel $mapping */
+        /* @var \rias\scout\models\AlgoliaIndex $mapping */
         foreach ($this->getMappings($index) as $mapping) {
             // Get all elements to index
             $elements = $mapping->getElementQuery()->all();
@@ -81,9 +83,11 @@ class IndexController extends Controller
                 Craft::t('scout', 'Adding elements from index {index}.', ['index' => $index]),
                 0.5
             );
+            /** @var Element $element */
             foreach ($elements as $element) {
                 Craft::$app->queue->push(new IndexElement([
-                    'elements' => $element,
+                    'indexName' => $mapping->indexName,
+                    'element' => $mapping->transformElement($element),
                 ]));
                 $progress++;
                 Console::updateProgress($progress, $total);
