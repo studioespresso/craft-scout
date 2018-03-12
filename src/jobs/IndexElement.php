@@ -11,7 +11,6 @@
 
 namespace rias\scout\jobs;
 
-use AlgoliaSearch\Client;
 use AlgoliaSearch\Index;
 use Craft;
 use craft\base\Element;
@@ -66,6 +65,6 @@ class IndexElement extends BaseJob
      */
     protected function defaultDescription(): string
     {
-        return Craft::t('scout', sprintf("Adding element %s to index", $this->element['objectID']));
+        return Craft::t('scout', sprintf('Adding element %s to index', $this->element['objectID']));
     }
 }

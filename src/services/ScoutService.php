@@ -42,8 +42,9 @@ class ScoutService extends Component
     }
 
     /**
-     * @return Client
      * @throws \Exception
+     *
+     * @return Client
      */
     public function getClient()
     {

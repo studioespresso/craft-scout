@@ -97,12 +97,12 @@ class AlgoliaIndex extends Model
                 if ($element->enabled) {
                     Craft::$app->queue->push(new IndexElement([
                         'indexName' => $this->indexName,
-                        'element' => $this->transformElement($element),
+                        'element'   => $this->transformElement($element),
                     ]));
                 } else {
                     Craft::$app->queue->push(new DeIndexElement([
                         'indexName' => $this->indexName,
-                        'id' => $element->id,
+                        'id'        => $element->id,
                     ]));
                 }
             }
@@ -113,7 +113,6 @@ class AlgoliaIndex extends Model
      * Removes the supplied element from the index.
      *
      * @param $elements
-     *
      */
     public function deindexElements($elements)
     {
@@ -121,7 +120,7 @@ class AlgoliaIndex extends Model
             if ($this->canIndexElement($element)) {
                 Craft::$app->queue->push(new DeIndexElement([
                     'indexName' => $this->indexName,
-                    'id' => $element->id,
+                    'id'        => $element->id,
                 ]));
             }
         }

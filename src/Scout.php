@@ -24,12 +24,9 @@ use craft\elements\MatrixBlock;
 use craft\elements\Tag;
 use craft\elements\User;
 use craft\events\ModelEvent;
-use rias\scout\jobs\DeIndexElement;
-use rias\scout\jobs\IndexElement;
 use rias\scout\models\Settings;
 use rias\scout\services\ScoutService as ScoutServiceService;
 use yii\base\Event;
-use yii\queue\serializers\PhpSerializer;
 
 /**
  * Class Scout.
