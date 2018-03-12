@@ -68,6 +68,6 @@ class DeIndexElement extends BaseJob
      */
     protected function defaultDescription(): string
     {
-        return Craft::t('scout', sprintf("Removing element %s from index", $this->id));
+        return Craft::t('scout', sprintf('Removing element %s from index', $this->id));
     }
 }

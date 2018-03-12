@@ -37,10 +37,11 @@ class IndexController extends Controller
      *
      * @param string $index
      *
-     * @return mixed
      * @throws Exception
      * @throws \AlgoliaSearch\AlgoliaException
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function actionFlush($index = '')
     {
@@ -63,9 +64,9 @@ class IndexController extends Controller
      * @param string $index
      *
      * @throws Exception
+     * @throws \yii\base\InvalidConfigException
      *
      * @return int
-     * @throws \yii\base\InvalidConfigException
      */
     public function actionImport($index = '')
     {
@@ -87,7 +88,7 @@ class IndexController extends Controller
             foreach ($elements as $element) {
                 Craft::$app->queue->push(new IndexElement([
                     'indexName' => $mapping->indexName,
-                    'element' => $mapping->transformElement($element),
+                    'element'   => $mapping->transformElement($element),
                 ]));
                 $progress++;
                 Console::updateProgress($progress, $total);
