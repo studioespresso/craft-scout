@@ -81,7 +81,7 @@ class IndexController extends Controller
             Console::startProgress(
                 $progress,
                 $total,
-                Craft::t('scout', 'Adding elements from index {index}.', ['index' => $index]),
+                Craft::t('scout', 'Adding elements from index {index}.', ['index' => $mapping->indexName]),
                 0.5
             );
             /** @var Element $element */
