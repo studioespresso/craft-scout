@@ -78,7 +78,7 @@ Craft's default element type classes are:
 ```
 
 #### `criteria`
-An array of parameters that should be set on the [Element Query](https://github.com/craftcms/docs/blob/master/en/element-queries.md) that limits which entries go inside the index. These criteria are also used when importing through the console command.
+An array of parameters that should be set on the [Element Query](https://github.com/craftcms/docs/blob/v3/en/element-queries.md) that limits which entries go inside the index. These criteria are also used when importing through the console command.
 
 ```php
 'criteria' => [
