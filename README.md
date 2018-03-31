@@ -148,3 +148,8 @@ As with the import command, `indexName` is not required, when flushing Scout wil
 - [Craft Algolia](https://github.com/aaronwaldon/craft-algolia) by aaronwaldon as a base to start from
 
 Brought to you by [Rias](https://rias.be)
+
+## Support on Beerpay
+Hey dude! Help me out for a couple of :beers:!
+
+[![Beerpay](https://beerpay.io/Rias500/craft-scout/badge.svg?style=beer-square)](https://beerpay.io/Rias500/craft-scout)  [![Beerpay](https://beerpay.io/Rias500/craft-scout/make-wish.svg?style=flat-square)](https://beerpay.io/Rias500/craft-scout?focus=wish)
