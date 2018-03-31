@@ -9,6 +9,12 @@
 
 Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.
 
+## Support Open Source. Buy beer.
+
+This plugin is licensed under a MIT license, which means that it's completely free open source software, and you can use it for whatever and however you wish. If you're using it and want to support the development, buy me a beer over at Beerpay!
+
+[![Beerpay](https://beerpay.io/Rias500/craft-scout/badge.svg?style=beer-square)](https://beerpay.io/Rias500/craft-scout)
+
 ## Requirements
 
 This plugin requires Craft CMS 3.0.0-RC1 or later.
@@ -148,8 +154,3 @@ As with the import command, `indexName` is not required, when flushing Scout wil
 - [Craft Algolia](https://github.com/aaronwaldon/craft-algolia) by aaronwaldon as a base to start from
 
 Brought to you by [Rias](https://rias.be)
-
-## Support on Beerpay
-Hey dude! Help me out for a couple of :beers:!
-
-[![Beerpay](https://beerpay.io/Rias500/craft-scout/badge.svg?style=beer-square)](https://beerpay.io/Rias500/craft-scout)  [![Beerpay](https://beerpay.io/Rias500/craft-scout/make-wish.svg?style=flat-square)](https://beerpay.io/Rias500/craft-scout?focus=wish)
