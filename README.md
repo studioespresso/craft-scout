@@ -9,6 +9,12 @@
 
 Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.
 
+## Support Open Source. Buy beer.
+
+This plugin is licensed under a MIT license, which means that it's completely free open source software, and you can use it for whatever and however you wish. If you're using it and want to support the development, buy me a beer over at Beerpay!
+
+[![Beerpay](https://beerpay.io/Rias500/craft-scout/badge.svg?style=beer-square)](https://beerpay.io/Rias500/craft-scout)
+
 ## Requirements
 
 This plugin requires Craft CMS 3.0.0-RC1 or later.
@@ -78,7 +84,7 @@ Craft's default element type classes are:
 ```
 
 #### `criteria`
-An array of parameters that should be set on the [Element Query](https://github.com/craftcms/docs/blob/master/en/element-queries.md) that limits which entries go inside the index. These criteria are also used when importing through the console command.
+An array of parameters that should be set on the [Element Query](https://github.com/craftcms/docs/blob/v3/en/element-queries.md) that limits which entries go inside the index. These criteria are also used when importing through the console command.
 
 ```php
 'criteria' => [
