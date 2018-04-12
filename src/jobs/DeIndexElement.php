@@ -39,7 +39,6 @@ class DeIndexElement extends BaseJob
     /* @var Index */
     private $index;
 
-
     // Public Methods
     // =========================================================================
 

@@ -189,7 +189,7 @@ class AlgoliaIndex extends Model
                 } else {
                     $elementConfigs[] = [
                         'indexName' => $this->indexName,
-                        'element'   => array_filter($transformedElement, function($item) use ($indexElement) {
+                        'element'   => array_filter($transformedElement, function ($item) use ($indexElement) {
                             return !(in_array($item, $this->splitElementIndex, true) && $item !== $indexElement);
                         }, ARRAY_FILTER_USE_KEY),
                     ];
