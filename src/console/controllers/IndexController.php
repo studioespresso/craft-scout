@@ -12,8 +12,7 @@
 namespace rias\scout\console\controllers;
 
 use Craft;
-use craft\base\Element;
-use rias\scout\jobs\IndexElement;
+use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
 use yii\console\Controller;
 use yii\console\Exception;
@@ -84,15 +83,11 @@ class IndexController extends Controller
                 Craft::t('scout', 'Adding elements from index {index}.', ['index' => $mapping->indexName]),
                 0.5
             );
-            /** @var Element $element */
-            foreach ($elements as $element) {
-                Craft::$app->queue->push(new IndexElement([
-                    'indexName' => $mapping->indexName,
-                    'element'   => $mapping->transformElement($element),
-                ]));
-                $progress++;
-                Console::updateProgress($progress, $total);
-            }
+
+            $algoliaIndex = new AlgoliaIndex($mapping);
+            $algoliaIndex->indexElements($elements);
+
+            Console::updateProgress($total, $total);
             Console::endProgress();
         }
 

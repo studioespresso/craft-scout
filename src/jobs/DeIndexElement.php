@@ -33,8 +33,12 @@ class DeIndexElement extends BaseJob
     /* @var string */
     public $indexName;
 
+    /* @var string */
+    public $distinctId;
+
     /* @var Index */
     private $index;
+
 
     // Public Methods
     // =========================================================================
@@ -57,7 +61,13 @@ class DeIndexElement extends BaseJob
      */
     public function execute($queue)
     {
-        $this->index->deleteObject($this->id);
+        if ($this->distinctId !== null) {
+            $this->index->deleteBy([
+                'filters' => 'distinctId:'.$this->distinctId
+            ]);
+        } else {
+            $this->index->deleteObject($this->id);
+        }
     }
 
     // Protected Methods
