@@ -63,7 +63,7 @@ class DeIndexElement extends BaseJob
     {
         if ($this->distinctId !== null) {
             $this->index->deleteBy([
-                'filters' => 'distinctId:'.$this->distinctId
+                'filters' => 'distinctId:'.$this->distinctId,
             ]);
         } else {
             $this->index->deleteObject($this->id);

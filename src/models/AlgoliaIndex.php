@@ -127,7 +127,7 @@ class AlgoliaIndex extends Model
         } else {
             $elementConfigs[] = [
                 'indexName' => $this->indexName,
-                'element'   => $this->transformElement($element)
+                'element'   => $this->transformElement($element),
             ];
         }
 
@@ -142,7 +142,7 @@ class AlgoliaIndex extends Model
     protected function deindexElement($element)
     {
         $config = [
-            'indexName' => $this->indexName
+            'indexName' => $this->indexName,
         ];
 
         if ($this->splitElementIndex !== null) {
@@ -165,13 +165,13 @@ class AlgoliaIndex extends Model
         $elementConfigs = [];
         $i = 1;
         foreach ($this->splitElementIndex as $indexElement) {
-            $transformedElement['objectID'] = $element->id . '_' . $i;
+            $transformedElement['objectID'] = $element->id.'_'.$i;
 
             if ($transformedElement[$indexElement] !== null) {
                 if (is_array($transformedElement[$indexElement])) {
                     foreach ($transformedElement[$indexElement] as $key => $value) {
                         if ((is_array($value) && count($value) > 0) || (!is_array($value) && $value !== null)) {
-                            $transformedElement['objectID'] = $element->id . '_' . $i;
+                            $transformedElement['objectID'] = $element->id.'_'.$i;
 
                             $splitElement = array_filter($transformedElement, function ($item) {
                                 return !in_array($item, $this->splitElementIndex, true);
@@ -180,7 +180,7 @@ class AlgoliaIndex extends Model
 
                             $elementConfigs[] = [
                                 'indexName' => $this->indexName,
-                                'element' => $splitElement
+                                'element'   => $splitElement,
                             ];
 
                             $i++;
@@ -189,9 +189,9 @@ class AlgoliaIndex extends Model
                 } else {
                     $elementConfigs[] = [
                         'indexName' => $this->indexName,
-                        'element' => array_filter($transformedElement, function($item) use ($indexElement) {
+                        'element'   => array_filter($transformedElement, function($item) use ($indexElement) {
                             return !(in_array($item, $this->splitElementIndex, true) && $item !== $indexElement);
-                        }, ARRAY_FILTER_USE_KEY)
+                        }, ARRAY_FILTER_USE_KEY),
                     ];
                 }
             }
