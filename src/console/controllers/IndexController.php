@@ -13,6 +13,7 @@ namespace rias\scout\console\controllers;
 
 use Craft;
 use craft\base\Element;
+use craft\elements\Entry;
 use rias\scout\jobs\IndexElement;
 use rias\scout\Scout;
 use yii\console\Controller;
