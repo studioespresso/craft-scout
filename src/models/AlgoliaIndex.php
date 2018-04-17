@@ -176,7 +176,7 @@ class AlgoliaIndex extends Model
                             $splitElement = array_filter($transformedElement, function ($item) {
                                 return !in_array($item, $this->splitElementIndex, true);
                             }, ARRAY_FILTER_USE_KEY);
-                            $splitElement[$indexElement] = [$key => $value];
+                            $splitElement[$indexElement] = $value;
 
                             $elementConfigs[] = [
                                 'indexName' => $this->indexName,
