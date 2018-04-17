@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.4.0 - 2018-04-17
+### Added
+- Records can now be split (see: [https://www.algolia.com/doc/guides/indexing/structuring-your-data/?language=php#indexing-long-documents](https://www.algolia.com/doc/guides/indexing/structuring-your-data/?language=php#indexing-long-documents)) thanks to @larsboldt
+
 ## 0.3.0 - 2018-03-12
 ### Changed
 - Changed how the queueing of indexing works to prevent errors and inconsistencies

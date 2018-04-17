@@ -165,5 +165,6 @@ As with the import command, `indexName` is not required, when flushing Scout wil
 
 ## Credits
 - [Craft Algolia](https://github.com/aaronwaldon/craft-algolia) by aaronwaldon as a base to start from
+- @larsboldt for the Split Element Index option
 
 Brought to you by [Rias](https://rias.be)
