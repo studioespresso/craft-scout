@@ -129,6 +129,19 @@ class MyTransformerClassName extends TransformerAbstract
 }
 ```
 
+#### `splitElementIndex`
+For long documents it is advised to divide the element into multiple rows to keep each row within row data size. This can be done using `splitElementIndex`.
+Array items are array indexes returned from the transformer.
+
+```php
+'splitElementIndex' => [
+    'summary',
+    'matrixElement'
+]
+```
+
+*Important* - distinctId (available after indexing) must be set up as an attribute for faceting for deletion of objects to work when using splitElementIndex.
+
 ## Console commands
 Scout provides two easy console commands for managing your indices.
 

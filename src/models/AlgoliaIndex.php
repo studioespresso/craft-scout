@@ -24,7 +24,6 @@ use League\Fractal\TransformerAbstract;
 use rias\scout\ElementTransformer;
 use rias\scout\jobs\DeIndexElement;
 use rias\scout\jobs\IndexElement;
-use rias\scout\Scout;
 
 /**
  * @author    Rias
@@ -41,6 +40,9 @@ class AlgoliaIndex extends Model
 
     /* @var mixed */
     public $criteria;
+
+    /* @var array */
+    public $splitElementIndex;
 
     /**
      * @var callable|string|array|TransformerAbstract The transformer config, or an actual transformer object
@@ -95,15 +97,9 @@ class AlgoliaIndex extends Model
         foreach ($elements as $element) {
             if ($this->canIndexElement($element)) {
                 if ($element->enabled) {
-                    Craft::$app->queue->push(new IndexElement([
-                        'indexName' => $this->indexName,
-                        'element'   => $this->transformElement($element),
-                    ]));
+                    $this->indexElement($element);
                 } else {
-                    Craft::$app->queue->push(new DeIndexElement([
-                        'indexName' => $this->indexName,
-                        'id'        => $element->id,
-                    ]));
+                    $this->deindexElement($element);
                 }
             }
         }
@@ -118,12 +114,92 @@ class AlgoliaIndex extends Model
     {
         foreach ($elements as $element) {
             if ($this->canIndexElement($element)) {
-                Craft::$app->queue->push(new DeIndexElement([
-                    'indexName' => $this->indexName,
-                    'id'        => $element->id,
-                ]));
+                $this->deindexElement($element);
             }
         }
+    }
+
+    protected function indexElement($element)
+    {
+        $elementConfigs = [];
+        if ($this->splitElementIndex !== null) {
+            $elementConfigs = $this->splitElementConfig($element);
+        } else {
+            $elementConfigs[] = [
+                'indexName' => $this->indexName,
+                'element'   => $this->transformElement($element),
+            ];
+        }
+
+        foreach ($elementConfigs as $elementConfig) {
+            Craft::$app->queue->push(new IndexElement($elementConfig));
+        }
+    }
+
+    /**
+     * @param $element
+     */
+    protected function deindexElement($element)
+    {
+        $config = [
+            'indexName' => $this->indexName,
+        ];
+
+        if ($this->splitElementIndex !== null) {
+            $config['distinctId'] = $element->id;
+        } else {
+            $config['id'] = $element->id;
+        }
+
+        Craft::$app->queue->push(new DeIndexElement($config));
+    }
+
+    /**
+     * @param $element
+     */
+    protected function splitElementConfig($element)
+    {
+        $transformedElement = $this->transformElement($element);
+        $transformedElement['distinctId'] = $element->id;
+
+        $elementConfigs = [];
+        $i = 1;
+        foreach ($this->splitElementIndex as $indexElement) {
+            $transformedElement['objectID'] = $element->id.'_'.$i;
+
+            if ($transformedElement[$indexElement] !== null) {
+                if (is_array($transformedElement[$indexElement])) {
+                    foreach ($transformedElement[$indexElement] as $key => $value) {
+                        if ((is_array($value) && count($value) > 0) || (!is_array($value) && $value !== null)) {
+                            $transformedElement['objectID'] = $element->id.'_'.$i;
+
+                            $splitElement = array_filter($transformedElement, function ($item) {
+                                return !in_array($item, $this->splitElementIndex, true);
+                            }, ARRAY_FILTER_USE_KEY);
+                            $splitElement[$indexElement] = $value;
+
+                            $elementConfigs[] = [
+                                'indexName' => $this->indexName,
+                                'element'   => $splitElement,
+                            ];
+
+                            $i++;
+                        }
+                    }
+                } else {
+                    $elementConfigs[] = [
+                        'indexName' => $this->indexName,
+                        'element'   => array_filter($transformedElement, function ($item) use ($indexElement) {
+                            return !(in_array($item, $this->splitElementIndex, true) && $item !== $indexElement);
+                        }, ARRAY_FILTER_USE_KEY),
+                    ];
+                }
+            }
+
+            $i++;
+        }
+
+        return $elementConfigs;
     }
 
     /**
