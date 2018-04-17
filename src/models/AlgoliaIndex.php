@@ -42,7 +42,7 @@ class AlgoliaIndex extends Model
     public $criteria;
 
     /* @var array */
-    public $splitElementIndex;
+    public $splitElementIndex = [];
 
     /**
      * @var callable|string|array|TransformerAbstract The transformer config, or an actual transformer object
@@ -122,7 +122,7 @@ class AlgoliaIndex extends Model
     protected function indexElement($element)
     {
         $elementConfigs = [];
-        if ($this->splitElementIndex !== null) {
+        if (count($this->splitElementIndex) > 0) {
             $elementConfigs = $this->splitElementConfig($element);
         } else {
             $elementConfigs[] = [
@@ -145,7 +145,7 @@ class AlgoliaIndex extends Model
             'indexName' => $this->indexName,
         ];
 
-        if ($this->splitElementIndex !== null) {
+        if (count($this->splitElementIndex) > 0) {
             $config['distinctId'] = $element->id;
         } else {
             $config['id'] = $element->id;
