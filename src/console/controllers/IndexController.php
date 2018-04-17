@@ -12,10 +12,8 @@
 namespace rias\scout\console\controllers;
 
 use Craft;
-use rias\scout\models\AlgoliaIndex;
 use craft\base\Element;
-use craft\elements\Entry;
-use rias\scout\jobs\IndexElement;
+use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
 use yii\console\Controller;
 use yii\console\Exception;
