@@ -26,7 +26,7 @@ class Settings extends Model
     // =========================================================================
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $sync = true;
 
