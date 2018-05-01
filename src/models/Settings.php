@@ -26,6 +26,11 @@ class Settings extends Model
     // =========================================================================
 
     /**
+     * @var boolean
+     */
+    public $sync = true;
+
+    /**
      * @var string
      */
     public $mappings = [];
@@ -45,8 +50,9 @@ class Settings extends Model
     public function rules()
     {
         return [
+            [['sync'], 'boolean'],
             [['application_id', 'admin_api_key'], 'string'],
-            [['application_id', 'admin_api_key'], 'required'],
+            [['sync', 'application_id', 'admin_api_key'], 'required'],
         ];
     }
 }

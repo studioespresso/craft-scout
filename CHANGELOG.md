@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.4.1 - 2018-05-01
+### Added
+- Added a `sync` setting to enable/disable automatic indexing of elements.
+
 ## 0.4.0 - 2018-04-17
 ### Added
 - Records can now be split (see: [https://www.algolia.com/doc/guides/indexing/structuring-your-data/?language=php#indexing-long-documents](https://www.algolia.com/doc/guides/indexing/structuring-your-data/?language=php#indexing-long-documents)) thanks to @larsboldt

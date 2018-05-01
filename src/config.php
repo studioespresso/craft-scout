@@ -24,7 +24,8 @@
  */
 
 return [
-
+    // Whether Scout should automatically index and de-index your entries
+    'sync' => true,
     // These can both be found in your Algolia Account:  https://www.algolia.com/api-keys
     'application_id' => 'algolia',
     'admin_api_key'  => 'algolia',

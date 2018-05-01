@@ -69,7 +69,9 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_AFTER_SAVE,
             function (ModelEvent $event) {
-                $this->indexElements($event->sender);
+                if ($this->settings->sync) {
+                    $this->indexElements($event->sender);
+                }
             }
         );
 
@@ -80,7 +82,9 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_AFTER_MOVE_IN_STRUCTURE,
             function (ModelEvent $event) {
-                $this->indexElements($event->sender);
+                if ($this->settings->sync) {
+                    $this->indexElements($event->sender);
+                }
             }
         );
 
@@ -91,7 +95,9 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_BEFORE_DELETE,
             function (ModelEvent $event) {
-                $this->deIndexElements($event->sender);
+                if ($this->settings->sync) {
+                    $this->deIndexElements($event->sender);
+                }
             }
         );
 
@@ -103,7 +109,7 @@ class Scout extends Plugin
             Category::EVENT_AFTER_SAVE,
             function (ModelEvent $event) {
                 // Only do this when the category isn't new
-                if (!$event->isNew) {
+                if (!$event->isNew && $this->settings->sync) {
                     $this->indexElements($this->getElementsRelatedTo($event->sender));
                 }
             }
@@ -116,7 +122,9 @@ class Scout extends Plugin
             Category::class,
             Category::EVENT_BEFORE_DELETE,
             function (ModelEvent $event) {
-                $this->deIndexElements($this->getElementsRelatedTo($event->sender));
+                if ($this->settings->sync) {
+                    $this->deIndexElements($this->getElementsRelatedTo($event->sender));
+                }
             }
         );
     }
