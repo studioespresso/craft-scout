@@ -115,14 +115,28 @@ class IndexController extends Controller
     public function actionSetSettings($index = '')
     {
         /* @var \rias\scout\models\AlgoliaIndex $mapping */
-        foreach ($this->getMappings($index) as $mapping) {
+        $mappings = $this->getMappings($index);
+        $total = count($mappings);
+
+        foreach ($mappings as $mapping) {
             $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
             $settings = $mapping->indexSettings->settings ?? null;
             $forwardToReplicas = $mapping->indexSettings ?? null;
+            $progress = 0;
+
+            Console::startProgress(
+                $progress,
+                $total,
+                Craft::t('scout', 'Adding elements from index {index}.', ['index' => $mapping->indexName]),
+                0.5
+            );
 
             if ($settings) {
                 $index->setSettings($settings, $forwardToReplicas);
             }
+
+            Console::updateProgress($total, $total);
+            Console::endProgress();
         }
 
         // Everything went OK
