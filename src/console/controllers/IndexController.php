@@ -102,7 +102,7 @@ class IndexController extends Controller
     }
 
     /**
-     * Sets settings for one or all indices.
+     * Updates settings for one or all indices.
      *
      * @param string $index
      *
@@ -112,7 +112,7 @@ class IndexController extends Controller
      *
      * @return mixed
      */
-    public function actionSetSettings($index = '')
+    public function actionUpdateSettings($index = '')
     {
         /* @var \rias\scout\models\AlgoliaIndex $mapping */
         $mappings = $this->getMappings($index);
@@ -122,14 +122,14 @@ class IndexController extends Controller
         Console::startProgress(
             $progress,
             $total,
-            Craft::t('scout', 'Setting index settings for {index}.', ['index' => $index ?: 'all mapped indices']),
+            Craft::t('scout', 'Updating index settings for {index}.', ['index' => $index ?: 'all mapped indices']),
             0.5
         );
 
         foreach ($mappings as $mapping) {
             $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
-            $settings = $mapping->indexSettings->settings ?? null;
-            $forwardToReplicas = $mapping->indexSettings ?? null;
+            $settings = $mapping->indexSettings['settings'] ?? null;
+            $forwardToReplicas = $mapping->indexSettings['forwardToReplicas'] ?? null;
 
             if ($settings) {
                 $index->setSettings($settings, $forwardToReplicas);
