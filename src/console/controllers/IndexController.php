@@ -142,14 +142,15 @@ class IndexController extends Controller
      */
     public function actionDumpSettings($index='')
     {
+        $dump = [];
+
         /* @var \rias\scout\models\AlgoliaIndex $mapping */
         foreach ($this->getMappings($index) as $mapping) {
             $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
-            VarDumper::dump($index->getSettings());
+            $dump[$mapping->indexName] = $index->getSettings();
         }
 
-        // Everything went OK
-        return ExitCode::OK;
+        return VarDumper::dump($dump);
     }
 
     /**

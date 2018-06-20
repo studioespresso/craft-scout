@@ -35,6 +35,9 @@ class AlgoliaIndex extends Model
     /* @var string */
     public $indexName;
 
+    /* @var array */
+    public $indexSettings = [];
+
     /* @var string */
     public $elementType;
 
