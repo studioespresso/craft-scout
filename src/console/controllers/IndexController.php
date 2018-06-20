@@ -104,7 +104,7 @@ class IndexController extends Controller
     /**
      * Sets settings for one or all indices.
      *
-     * @param  string $index
+     * @param string $index
      *
      * @throws Exception
      * @throws \AlgoliaSearch\AlgoliaException
@@ -132,7 +132,7 @@ class IndexController extends Controller
     /**
      * Dumps settings for one or all indices.
      *
-     * @param  string $index
+     * @param string $index
      *
      * @throws Exception
      * @throws \AlgoliaSearch\AlgoliaException
