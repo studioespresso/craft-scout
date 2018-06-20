@@ -44,7 +44,7 @@ class IndexController extends Controller
      *
      * @return mixed
      */
-    public function actionFlush($index='')
+    public function actionFlush($index = '')
     {
         if ($this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?'))) {
             /* @var \rias\scout\models\AlgoliaIndex $mapping */
@@ -69,7 +69,7 @@ class IndexController extends Controller
      *
      * @return int
      */
-    public function actionImport($index='')
+    public function actionImport($index = '')
     {
         /* @var \rias\scout\models\AlgoliaIndex $mapping */
         foreach ($this->getMappings($index) as $mapping) {
@@ -112,7 +112,7 @@ class IndexController extends Controller
      *
      * @return mixed
      */
-    public function actionSetSettings($index='')
+    public function actionSetSettings($index = '')
     {
         /* @var \rias\scout\models\AlgoliaIndex $mapping */
         foreach ($this->getMappings($index) as $mapping) {
@@ -140,7 +140,7 @@ class IndexController extends Controller
      *
      * @return mixed
      */
-    public function actionDumpSettings($index='')
+    public function actionDumpSettings($index = '')
     {
         $dump = [];
 
@@ -160,7 +160,7 @@ class IndexController extends Controller
      *
      * @return array
      */
-    protected function getMappings($index='')
+    protected function getMappings($index = '')
     {
         $mappings = Scout::$plugin->scoutService->getMappings();
 
