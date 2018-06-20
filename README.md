@@ -49,6 +49,12 @@ return [
     "mappings" => [
         [
             'indexName' => 'blog',
+            'indexSettings' => [
+                'settings' => [
+                    'attributesForFaceting' => ['blogCategory'],
+                ],
+                'forwardToReplicas' => 'true',
+            ],
             'elementType' => \craft\elements\Entry::class,
             'criteria' => [
                 'section' => 'blog'
