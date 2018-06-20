@@ -19,6 +19,7 @@ use yii\console\Controller;
 use yii\console\Exception;
 use yii\console\ExitCode;
 use yii\helpers\Console;
+use yii\helpers\VarDumper;
 
 /**
  * Default Command.
@@ -122,6 +123,29 @@ class IndexController extends Controller
             if ($settings) {
                 $index->setSettings($settings, $forwardToReplicas);
             }
+        }
+
+        // Everything went OK
+        return ExitCode::OK;
+    }
+
+    /**
+     * Gets settings for one or all indices.
+     *
+     * @param  string $index
+     *
+     * @throws Exception
+     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function actionGetSettings($index='')
+    {
+        /* @var \rias\scout\models\AlgoliaIndex $mapping */
+        foreach ($this->getMappings($index) as $mapping) {
+            $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
+            VarDumper::dump($index->getSettings())
         }
 
         // Everything went OK
