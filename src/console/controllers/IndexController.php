@@ -130,7 +130,7 @@ class IndexController extends Controller
     }
 
     /**
-     * Gets settings for one or all indices.
+     * Dumps settings for one or all indices.
      *
      * @param  string $index
      *
@@ -140,12 +140,12 @@ class IndexController extends Controller
      *
      * @return mixed
      */
-    public function actionGetSettings($index='')
+    public function actionDumpSettings($index='')
     {
         /* @var \rias\scout\models\AlgoliaIndex $mapping */
         foreach ($this->getMappings($index) as $mapping) {
             $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
-            VarDumper::dump($index->getSettings())
+            VarDumper::dump($index->getSettings());
         }
 
         // Everything went OK
