@@ -101,6 +101,34 @@ class IndexController extends Controller
     }
 
     /**
+     * Sets settings for one or all indices.
+     *
+     * @param  string $index
+     *
+     * @throws Exception
+     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function actionSetSettings($index='')
+    {
+        /* @var \rias\scout\models\AlgoliaIndex $mapping */
+        foreach ($this->getMappings($index) as $mapping) {
+            $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
+            $settings = $mapping->indexSettings->settings ?? null;
+            $forwardToReplicas = $mapping->indexSettings ?? null;
+
+            if ($settings) {
+                $index->setSettings($settings, $forwardToReplicas);
+            }
+        }
+
+        // Everything went OK
+        return ExitCode::OK;
+    }
+
+    /**
      * @param string $index
      *
      * @throws Exception
