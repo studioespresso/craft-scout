@@ -122,7 +122,7 @@ class IndexController extends Controller
         Console::startProgress(
             $progress,
             $total,
-            Craft::t('scout', 'Setting index settings for {index}.', ['index' => $index ?: 'all mappings']),
+            Craft::t('scout', 'Setting index settings for {index}.', ['index' => $index ?: 'all mapped indices']),
             0.5
         );
 
