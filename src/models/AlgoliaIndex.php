@@ -80,7 +80,7 @@ class AlgoliaIndex extends Model
 
         $data = $fractal->createData($resource)->toArray();
         // Make sure the objectID is set for Algolia
-		$data['objectID'] = $element->siteId . '_' . $element->id;
+		$data['objectID'] = $this->getSiteElementId($element);
 		// Include the site language in the record.
 		$data['siteLanguage'] = $element->site->language;
 
@@ -254,4 +254,9 @@ class AlgoliaIndex extends Model
 
         return $query;
     }
+
+    public function getSiteElementId(Element $element)
+	{
+		return $element->siteId . '_' . $element->id;
+	}
 }
