@@ -257,6 +257,6 @@ class AlgoliaIndex extends Model
 
     public function getSiteElementId(Element $element)
 	{
-		return $element->siteId . '_' . $element->id;
+		return $element->siteId.'_'.$element->id;
 	}
 }
