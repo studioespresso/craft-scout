@@ -79,10 +79,8 @@ class AlgoliaIndex extends Model
         $fractal->setSerializer(new ArraySerializer());
 
         $data = $fractal->createData($resource)->toArray();
-        // Make sure the objectID is set for Algolia
+        // Make sure the objectID is set (and unique) for Algolia
 		$data['objectID'] = $this->getSiteElementId($element);
-		// Include the site language in the record.
-		$data['siteLanguage'] = $element->site->language;
 
         return $data;
     }
@@ -255,7 +253,7 @@ class AlgoliaIndex extends Model
         return $query;
     }
 
-    public function getSiteElementId(Element $element)
+    protected function getSiteElementId(Element $element)
 	{
 		return $element->siteId.'_'.$element->id;
 	}
