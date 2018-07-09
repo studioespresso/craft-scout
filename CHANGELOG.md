@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.4.2 - 2018-07-09
+### Fixed
+- Object IDs are now unique for multisites
+
 ## 0.4.1 - 2018-05-01
 ### Added
 - Added a `sync` setting to enable/disable automatic indexing of elements.
