@@ -33,7 +33,7 @@ class IndexController extends Controller
     // =========================================================================
 
     /**
-     * Flush one or all indexes.
+     * Flush one or all Algolia indexes.
      *
      * @param string $index
      *
@@ -59,7 +59,7 @@ class IndexController extends Controller
     }
 
     /**
-     * Import one or all indexes.
+     * Import your entries into one or all Algolia indexes.
      *
      * @param string $index
      *
