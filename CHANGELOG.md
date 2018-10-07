@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.0 - 2018-10-07
+### Fixed
+- Fixed an issue where objects weren't being deleted from the index
+- Fixed an issue where splitting indices on site or siteId wouldn't work
+
 ## 0.4.2 - 2018-07-09
 ### Fixed
 - Object IDs are now unique for multisites
