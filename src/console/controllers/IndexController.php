@@ -99,23 +99,23 @@ class IndexController extends Controller
         // Everything went OK
         return ExitCode::OK;
     }
-	
-	/**
-	 * Refresh one or all indexes.
-	 *
-	 * @param string $index
-	 *
-	 * @throws Exception
-	 * @throws \yii\base\InvalidConfigException
-	 *
-	 * @return int
-	 * @throws \Exception
-	 */
-	public function actionRefresh($index = '')
-	{
-		$this->actionFlush($index);
-		$this->actionImport($index);
-	}
+
+    /**
+     * Refresh one or all indexes.
+     *
+     * @param string $index
+     *
+     * @throws Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \Exception
+     *
+     * @return int
+     */
+    public function actionRefresh($index = '')
+    {
+        $this->actionFlush($index);
+        $this->actionImport($index);
+    }
 
     /**
      * @param string $index

@@ -14,7 +14,6 @@ namespace rias\scout\services;
 use AlgoliaSearch\Client;
 use Craft;
 use craft\base\Component;
-use craft\base\Element;
 use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
 
