@@ -58,7 +58,15 @@ class AlgoliaIndex extends Model
      */
     public function canIndexElement(Element $element)
     {
-        return $this->elementType === get_class($element) && $this->getElementQuery($element)->count();
+        if (isset($this->criteria['site']) && $element->site->handle !== $this->criteria['site']) {
+            return false;
+        }
+
+        if (isset($this->criteria['siteId']) && $element->site->id !== $this->criteria['siteId']) {
+            return false;
+        }
+
+        return $this->getElementQuery($element)->count();
     }
 
     /**
@@ -95,8 +103,8 @@ class AlgoliaIndex extends Model
     public function indexElements($elements)
     {
         foreach ($elements as $element) {
-            if ($this->canIndexElement($element)) {
-                if ($element->enabled) {
+            if ($this->elementType === get_class($element)) {
+                if ($this->canIndexElement($element)) {
                     $this->indexElement($element);
                 } else {
                     $this->deindexElement($element);
@@ -131,10 +139,9 @@ class AlgoliaIndex extends Model
             'indexName' => $this->indexName,
         ];
 
+        $config['objectID'] = $this->getSiteElementId($element);
         if (count($this->splitElementIndex) > 0) {
             $config['distinctId'] = $element->id;
-        } else {
-            $config['id'] = $element->id;
         }
 
         Craft::$app->queue->push(new DeIndexElement($config));
@@ -230,11 +237,10 @@ class AlgoliaIndex extends Model
         /** @var string|ElementInterface $elementType */
         $elementType = $this->elementType;
         $query = $elementType::find();
-        Craft::configure($query, $this->criteria);
-
         if (!is_null($element)) {
             $query->id($element->id);
         }
+        Craft::configure($query, $this->criteria);
 
         return $query;
     }

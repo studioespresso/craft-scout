@@ -28,7 +28,7 @@ class DeIndexElement extends BaseJob
     // =========================================================================
 
     /* @var string */
-    public $id;
+    public $objectID;
 
     /* @var string */
     public $indexName;
@@ -65,7 +65,7 @@ class DeIndexElement extends BaseJob
                 'filters' => 'distinctId:'.$this->distinctId,
             ]);
         } else {
-            $this->index->deleteObject($this->id);
+            $this->index->deleteObject($this->objectID);
         }
     }
 
@@ -77,6 +77,6 @@ class DeIndexElement extends BaseJob
      */
     protected function defaultDescription(): string
     {
-        return Craft::t('scout', sprintf('Removing element %s from index', $this->id));
+        return Craft::t('scout', sprintf('Removing element %s from index', $this->objectID));
     }
 }
