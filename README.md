@@ -167,6 +167,13 @@ Clearing an index is as easy as running a command in your console.
 
 As with the import command, `indexName` is not required, when flushing Scout will ask you to confirm that you really want to clear all the data in your index.
 
+### Refreshing
+Does a flush/clear first and then imports the index again.
+
+```
+./craft scout/index/refresh <indexName?>
+```
+
 ## Credits
 - [Craft Algolia](https://github.com/aaronwaldon/craft-algolia) by aaronwaldon as a base to start from
 - @larsboldt for the Split Element Index option

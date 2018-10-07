@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 - Fixed an issue where objects weren't being deleted from the index
 - Fixed an issue where splitting indices on site or siteId wouldn't work
 
+### Added
+- Added a "refresh" command, thanks to @JorgeAnzola
+
 ## 0.4.2 - 2018-07-09
 ### Fixed
 - Object IDs are now unique for multisites
