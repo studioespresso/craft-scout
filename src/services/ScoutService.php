@@ -73,22 +73,6 @@ class ScoutService extends Component
     }
 
     /**
-     * Passes the supplied element to each configured index.
-     *
-     * @param $elements array
-     *
-     * @throws \AlgoliaSearch\AlgoliaException
-     * @throws \Exception
-     */
-    public function deindexElements($elements)
-    {
-        /** @var AlgoliaIndex $algoliaIndexModel */
-        foreach ($this->getMappings() as $algoliaIndexModel) {
-            $algoliaIndexModel->deindexElements($elements);
-        }
-    }
-
-    /**
      * Passes the supplied elements to each configured index.
      *
      * @param $elements array

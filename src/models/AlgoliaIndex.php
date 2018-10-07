@@ -105,20 +105,6 @@ class AlgoliaIndex extends Model
         }
     }
 
-    /**
-     * Removes the supplied element from the index.
-     *
-     * @param $elements
-     */
-    public function deindexElements($elements)
-    {
-        foreach ($elements as $element) {
-            if ($this->canIndexElement($element)) {
-                $this->deindexElement($element);
-            }
-        }
-    }
-
     protected function indexElement($element)
     {
         $elementConfigs = [];
