@@ -123,7 +123,7 @@ class Scout extends Plugin
             Category::EVENT_BEFORE_DELETE,
             function (ModelEvent $event) {
                 if ($this->settings->sync) {
-                    $this->deIndexElements($this->getElementsRelatedTo($event->sender));
+                    $this->indexElements($this->getElementsRelatedTo($event->sender));
                 }
             }
         );
