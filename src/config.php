@@ -26,6 +26,8 @@
 return [
     // Whether Scout should automatically index and de-index your entries
     'sync' => true,
+    // Algolia connection timeout in seconds
+    'connect_timeout' => 1,
     // These can both be found in your Algolia Account:  https://www.algolia.com/api-keys
     'application_id' => 'algolia',
     'admin_api_key'  => 'algolia',

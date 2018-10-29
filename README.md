@@ -44,6 +44,7 @@ Within the mappings array, each index is represented by a configuration array.
 
 return [
     "sync" => true,
+    "connect_timeout" => 1,
     "application_id" => "algolia",
     "admin_api_key" => "algolia",
     "mappings" => [
@@ -64,6 +65,9 @@ return [
 
 ### The Sync option
 This config variable determines if Scout should keep your entries in sync automatically. Setting this to `false` disables all of Scout's event listeners.
+
+### Connect timeout
+This config variable determines the connect timeout in seconds to Algolia servers. You should only change this if you have a slow server. Standard is 1 second.
 
 ### Mapping configuration settings
 
