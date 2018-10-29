@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.1 - 2018-10-29
+### Fixed
+- cast site ids to int as craft/yii returns int as string (#39) @larsboldt
+- add connect timeout option (#38) @larsboldt
+- Replace call to `deIndexElements` with `indexElements` (#37)
+
 ## 1.0.0 - 2018-10-07
 ### Fixed
 - Fixed an issue where objects weren't being deleted from the index
