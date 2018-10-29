@@ -62,7 +62,7 @@ class AlgoliaIndex extends Model
             return false;
         }
 
-        if (isset($this->criteria['siteId']) && $element->site->id !== $this->criteria['siteId']) {
+        if (isset($this->criteria['siteId']) && (int) $element->site->id !== (int) $this->criteria['siteId']) {
             return false;
         }
 
