@@ -49,6 +49,7 @@ class ScoutService extends Component
     {
         if (is_null($this->client)) {
             $this->client = new Client($this->settings->application_id, $this->settings->admin_api_key);
+            $this->client->setConnectTimeout($this->settings->connect_timeout);
         }
 
         return $this->client;
