@@ -24,7 +24,6 @@ use League\Fractal\TransformerAbstract;
 use rias\scout\ElementTransformer;
 use rias\scout\jobs\DeIndexElement;
 use rias\scout\jobs\IndexElement;
-use function trigger_error;
 
 /**
  * @author    Rias
@@ -123,7 +122,7 @@ class AlgoliaIndex extends Model
             if ($this->elementType === get_class($element)) {
                 if ($this->canIndexElement($element)) {
                     $this->indexElement($element);
-                } else if ($this->canDeindexElement($element)) {
+                } elseif ($this->canDeindexElement($element)) {
                     $this->deindexElement($element);
                 }
             }
@@ -191,13 +190,13 @@ class AlgoliaIndex extends Model
         $elementConfigs = [];
         $i = 1;
         foreach ($this->splitElementIndex as $indexElement) {
-            $transformedElement['objectID'] = $this->getSiteElementId($element) . '_' . $i;
+            $transformedElement['objectID'] = $this->getSiteElementId($element).'_'.$i;
 
             if ($transformedElement[$indexElement] !== null) {
                 if (is_array($transformedElement[$indexElement])) {
                     foreach ($transformedElement[$indexElement] as $key => $value) {
                         if ((is_array($value) && count($value) > 0) || (!is_array($value) && $value !== null)) {
-                            $transformedElement['objectID'] = $this->getSiteElementId($element) . '_' . $i;
+                            $transformedElement['objectID'] = $this->getSiteElementId($element).'_'.$i;
 
                             $splitElement = array_filter($transformedElement, function ($item) {
                                 return !in_array($item, $this->splitElementIndex, true);
