@@ -24,6 +24,7 @@ use League\Fractal\TransformerAbstract;
 use rias\scout\ElementTransformer;
 use rias\scout\jobs\DeIndexElement;
 use rias\scout\jobs\IndexElement;
+use function trigger_error;
 
 /**
  * @author    Rias
@@ -70,6 +71,22 @@ class AlgoliaIndex extends Model
     }
 
     /**
+     * Determines if the supplied element can be deindexed in this index.
+     *
+     * @param $element Element
+     *
+     * @return bool
+     */
+    public function canDeindexElement(Element $element)
+    {
+        if (isset($this->criteria['siteId']) && (int) $element->site->id !== (int) $this->criteria['siteId']) {
+            return false;
+        }
+
+        return $this->getElementQuery($element)->count();
+    }
+
+    /**
      * Transforms the supplied element using the transformer method in config.
      *
      * @param $element Element
@@ -106,9 +123,25 @@ class AlgoliaIndex extends Model
             if ($this->elementType === get_class($element)) {
                 if ($this->canIndexElement($element)) {
                     $this->indexElement($element);
-                } else {
+                } else if ($this->canDeindexElement($element)) {
                     $this->deindexElement($element);
                 }
+            }
+        }
+    }
+
+    /**
+     * Adds or removes the supplied element from the index.
+     *
+     * @param $elements array
+     *
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function deindexElements($elements)
+    {
+        foreach ($elements as $element) {
+            if ($this->elementType === get_class($element) && $this->canDeindexElement($element)) {
+                $this->deindexElement($element);
             }
         }
     }
@@ -133,7 +166,7 @@ class AlgoliaIndex extends Model
     /**
      * @param $element
      */
-    protected function deindexElement($element)
+    public function deindexElement($element)
     {
         $config = [
             'indexName' => $this->indexName,
@@ -141,7 +174,7 @@ class AlgoliaIndex extends Model
 
         $config['objectID'] = $this->getSiteElementId($element);
         if (count($this->splitElementIndex) > 0) {
-            $config['distinctId'] = $element->id;
+            $config['distinctId'] = $this->getSiteElementId($element);
         }
 
         Craft::$app->queue->push(new DeIndexElement($config));
@@ -153,18 +186,18 @@ class AlgoliaIndex extends Model
     protected function splitElementConfig($element)
     {
         $transformedElement = $this->transformElement($element);
-        $transformedElement['distinctId'] = $element->id;
+        $transformedElement['distinctId'] = $this->getSiteElementId($element);
 
         $elementConfigs = [];
         $i = 1;
         foreach ($this->splitElementIndex as $indexElement) {
-            $transformedElement['objectID'] = $element->id.'_'.$i;
+            $transformedElement['objectID'] = $this->getSiteElementId($element) . '_' . $i;
 
             if ($transformedElement[$indexElement] !== null) {
                 if (is_array($transformedElement[$indexElement])) {
                     foreach ($transformedElement[$indexElement] as $key => $value) {
                         if ((is_array($value) && count($value) > 0) || (!is_array($value) && $value !== null)) {
-                            $transformedElement['objectID'] = $element->id.'_'.$i;
+                            $transformedElement['objectID'] = $this->getSiteElementId($element) . '_' . $i;
 
                             $splitElement = array_filter($transformedElement, function ($item) {
                                 return !in_array($item, $this->splitElementIndex, true);
