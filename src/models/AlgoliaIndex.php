@@ -66,6 +66,10 @@ class AlgoliaIndex extends Model
             return false;
         }
 
+        if ($element->getStatus() !== Element::STATUS_ENABLED) {
+            return false;
+        }
+
         return $this->getElementQuery($element)->count();
     }
 
