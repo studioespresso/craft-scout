@@ -66,7 +66,7 @@ class AlgoliaIndex extends Model
             return false;
         }
 
-        if ($element->getStatus() !== Element::STATUS_ENABLED) {
+        if ($element->getStatus() !== Entry::STATUS_LIVE || !$element->enabled || !$element->enabledForSite) {
             return false;
         }
 
