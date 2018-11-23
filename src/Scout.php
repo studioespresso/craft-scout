@@ -96,7 +96,7 @@ class Scout extends Plugin
             Element::EVENT_BEFORE_DELETE,
             function (ModelEvent $event) {
                 if ($this->settings->sync) {
-                    $this->indexElements($event->sender);
+                    $this->deindexElements($event->sender);
                 }
             }
         );
@@ -145,6 +145,21 @@ class Scout extends Plugin
         }
 
         self::$plugin->scoutService->indexElements($elements);
+    }
+
+    /**
+     * @param $elements
+     *
+     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws \Exception
+     */
+    protected function deindexElements($elements)
+    {
+        if (!is_array($elements)) {
+            $elements = [$elements];
+        }
+
+        self::$plugin->scoutService->deindexElements($elements);
     }
 
     /**
