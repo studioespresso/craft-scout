@@ -53,7 +53,7 @@ class Settings extends Model
     public function rules()
     {
         return [
-            [['connect_timeout'], 'int'],
+            [['connect_timeout'], 'integer'],
             [['sync'], 'boolean'],
             [['application_id', 'admin_api_key'], 'string'],
             [['sync', 'application_id', 'admin_api_key', 'connect_timeout'], 'required'],
