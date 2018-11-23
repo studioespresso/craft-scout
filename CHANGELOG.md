@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.2 - 2018-11-23
+- Fixed validator int --> integer
+- Added siteId to splitElementIndex
+
 ## 1.0.1 - 2018-10-29
 ### Fixed
 - cast site ids to int as craft/yii returns int as string (#39) @larsboldt
