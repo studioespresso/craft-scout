@@ -14,7 +14,6 @@ namespace rias\scout\console\controllers\scout;
 use Craft;
 use rias\scout\console\controllers\BaseController;
 use rias\scout\Scout;
-use yii\console\Controller;
 use yii\console\Exception;
 use yii\console\ExitCode;
 use yii\helpers\Console;
@@ -85,7 +84,6 @@ class SettingsController extends BaseController
      * @throws Exception
      * @throws \AlgoliaSearch\AlgoliaException
      * @throws \Exception
-     *
      */
     public function actionDump($index = '')
     {
