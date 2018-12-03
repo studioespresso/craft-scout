@@ -19,6 +19,7 @@ use yii\console\Controller;
 use yii\console\Exception;
 use yii\console\ExitCode;
 use yii\helpers\Console;
+use yii\helpers\VarDumper;
 
 /**
  * Default Command.
@@ -115,6 +116,73 @@ class IndexController extends Controller
     {
         $this->actionFlush($index);
         $this->actionImport($index);
+    }
+
+    /**
+     * Updates settings for one or all indices.
+     *
+     * @param string $index
+     *
+     * @throws Exception
+     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function actionUpdateSettings($index = '')
+    {
+        /* @var \rias\scout\models\AlgoliaIndex $mapping */
+        $mappings = $this->getMappings($index);
+        $total = count($mappings);
+        $progress = 0;
+
+        Console::startProgress(
+            $progress,
+            $total,
+            Craft::t('scout', 'Updating index settings for {index}.', ['index' => $index ?: 'all mapped indices']),
+            0.5
+        );
+
+        foreach ($mappings as $mapping) {
+            $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
+            $settings = $mapping->indexSettings['settings'] ?? null;
+            $forwardToReplicas = $mapping->indexSettings['forwardToReplicas'] ?? null;
+
+            if ($settings) {
+                $index->setSettings($settings, $forwardToReplicas);
+            }
+
+            $progress++;
+            Console::updateProgress($progress, $total);
+            Console::endProgress();
+        }
+
+        // Everything went OK
+        return ExitCode::OK;
+    }
+
+    /**
+     * Dumps settings for one or all indices.
+     *
+     * @param string $index
+     *
+     * @throws Exception
+     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function actionDumpSettings($index = '')
+    {
+        $dump = [];
+
+        /* @var \rias\scout\models\AlgoliaIndex $mapping */
+        foreach ($this->getMappings($index) as $mapping) {
+            $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
+            $dump[$mapping->indexName] = $index->getSettings();
+        }
+
+        return VarDumper::dump($dump);
     }
 
     /**
