@@ -80,6 +80,55 @@ This config variable determines the connect timeout in seconds to Algolia server
 #### `indexName`
 The index name in Algolia, if you don't already have an index created, Scout will create one for you.
 
+#### `indexSettings`
+Allows you to have your index settings in config. They need to be manually updated when changed with `./craft scout/settings.update`.
+
+Below are the default settings Algolia provides
+```php
+'indexSettings' => [
+    'forwardToReplicas' => 'true',
+    'settings' => [
+        'minWordSizefor1Typo' => 4
+        'minWordSizefor2Typos' => 8
+        'hitsPerPage' => 20
+        'maxValuesPerFacet' => 100
+        'version' => 2
+        'attributesToIndex' => null
+        'numericAttributesToIndex' => null
+        'attributesToRetrieve' => null
+        'unretrievableAttributes' => null
+        'optionalWords' => null
+        'attributesForFaceting' => []
+        'attributesToSnippet' => null
+        'attributesToHighlight' => null
+        'paginationLimitedTo' => 1000
+        'attributeForDistinct' => null
+        'exactOnSingleWordQuery' => 'attribute'
+        'ranking' => [
+            0 => 'typo'
+            1 => 'geo'
+            2 => 'words'
+            3 => 'filters'
+            4 => 'proximity'
+            5 => 'attribute'
+            6 => 'exact'
+            7 => 'custom'
+        ]
+        'customRanking' => null
+        'separatorsToIndex' => ''
+        'removeWordsIfNoResults' => 'none'
+        'queryType' => 'prefixLast'
+        'highlightPreTag' => '<em>'
+        'highlightPostTag' => '</em>'
+        'snippetEllipsisText' => ''
+        'alternativesAsExact' => [
+            0 => 'ignorePlurals'
+            1 => 'singleWordSynonym'
+        ]
+    ],
+],
+```
+
 #### `elementType`
 The element type that this index contains, most of the time this will be `craft\elements\Entry::class`
 
