@@ -59,7 +59,7 @@ class Scout extends Plugin
         self::$plugin = $this;
 
         if (Craft::$app instanceof ConsoleApplication) {
-            $this->controllerNamespace = 'rias\scout\console\controllers';
+            $this->controllerNamespace = 'rias\scout\console\controllers\scout';
         }
 
         /*
