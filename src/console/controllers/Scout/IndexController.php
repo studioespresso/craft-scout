@@ -16,11 +16,9 @@ use craft\base\Element;
 use rias\scout\console\controllers\BaseController;
 use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
-use yii\console\Controller;
 use yii\console\Exception;
 use yii\console\ExitCode;
 use yii\helpers\Console;
-use yii\helpers\VarDumper;
 
 /**
  * Default Command.
