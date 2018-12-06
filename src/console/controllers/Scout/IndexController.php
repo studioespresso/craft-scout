@@ -95,7 +95,7 @@ class IndexController extends BaseController
         }
 
         // Run the queue after adding all elements
-        $this->stdout(Craft::t('scout', 'Running queue jobs...' . PHP_EOL), Console::FG_GREEN);
+        $this->stdout(Craft::t('scout', 'Running queue jobs...'.PHP_EOL), Console::FG_GREEN);
         Craft::$app->queue->run();
 
         // Everything went OK
