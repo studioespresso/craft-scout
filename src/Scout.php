@@ -15,7 +15,6 @@ namespace rias\scout;
 use Craft;
 use craft\base\Element;
 use craft\base\Plugin;
-use craft\console\Application as ConsoleApplication;
 use craft\elements\Asset;
 use craft\elements\Category;
 use craft\elements\Entry;
@@ -60,7 +59,7 @@ class Scout extends Plugin
 
         $request = Craft::$app->getRequest();
         if ($request->getIsConsoleRequest()) {
-            $this->controllerNamespace = 'rias\scout\console\controllers\Scout';
+            $this->controllerNamespace = 'rias\scout\console\controllers\scout';
         }
 
         /*
