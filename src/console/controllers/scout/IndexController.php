@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2017 Rias
  */
 
-namespace rias\scout\console\controllers\Scout;
+namespace rias\scout\console\controllers\scout;
 
 use Craft;
 use craft\base\Element;
