@@ -58,7 +58,7 @@ class Scout extends Plugin
         parent::init();
         self::$plugin = $this;
 
-        if (Craft::$app instanceof ConsoleApplication) {
+        if (Craft::$app instanceof Craft\console\Application) {
             $this->controllerNamespace = 'rias\scout\console\controllers\scout';
         }
 
