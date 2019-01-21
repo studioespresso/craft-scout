@@ -35,6 +35,9 @@ class AlgoliaIndex extends Model
     /* @var string */
     public $indexName;
 
+    /* @var array */
+    public $indexSettings = [];
+
     /* @var string */
     public $elementType;
 
@@ -67,6 +70,22 @@ class AlgoliaIndex extends Model
         }
 
         if ($element->getStatus() !== Entry::STATUS_LIVE || !$element->enabled || !$element->enabledForSite) {
+            return false;
+        }
+
+        return $this->getElementQuery($element)->count();
+    }
+
+    /**
+     * Determines if the supplied element can be deindexed in this index.
+     *
+     * @param $element Element
+     *
+     * @return bool
+     */
+    public function canDeindexElement(Element $element)
+    {
+        if (isset($this->criteria['siteId']) && (int) $element->site->id !== (int) $this->criteria['siteId']) {
             return false;
         }
 

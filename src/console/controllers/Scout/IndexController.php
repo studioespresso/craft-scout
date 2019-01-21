@@ -9,13 +9,13 @@
  * @copyright Copyright (c) 2017 Rias
  */
 
-namespace rias\scout\console\controllers;
+namespace rias\scout\console\controllers\scout;
 
 use Craft;
 use craft\base\Element;
+use rias\scout\console\controllers\BaseController;
 use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
-use yii\console\Controller;
 use yii\console\Exception;
 use yii\console\ExitCode;
 use yii\helpers\Console;
@@ -27,8 +27,10 @@ use yii\helpers\Console;
  *
  * @since     0.1.0
  */
-class IndexController extends Controller
+class IndexController extends BaseController
 {
+    public $defaultAction = 'refresh';
+
     // Public Methods
     // =========================================================================
 
@@ -93,7 +95,7 @@ class IndexController extends Controller
         }
 
         // Run the queue after adding all elements
-        $this->stdout(Craft::t('scout', 'Running queue jobs...'), Console::FG_GREEN);
+        $this->stdout(Craft::t('scout', 'Running queue jobs...'.PHP_EOL), Console::FG_GREEN);
         Craft::$app->queue->run();
 
         // Everything went OK
@@ -115,30 +117,7 @@ class IndexController extends Controller
     {
         $this->actionFlush($index);
         $this->actionImport($index);
-    }
 
-    /**
-     * @param string $index
-     *
-     * @throws Exception
-     *
-     * @return array
-     */
-    protected function getMappings($index = '')
-    {
-        $mappings = Scout::$plugin->scoutService->getMappings();
-
-        // If we have an argument, only get indexes that match it
-        if (!empty($index)) {
-            $mappings = array_filter($mappings, function ($mapping) use ($index) {
-                return $mapping->indexName == $index;
-            });
-        }
-
-        if (!count($mappings)) {
-            throw new Exception(Craft::t('scout', 'Index {index} not found.', ['index' => $index]));
-        }
-
-        return $mappings;
+        return ExitCode::OK;
     }
 }

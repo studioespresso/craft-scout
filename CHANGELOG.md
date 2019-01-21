@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.0 - 2018-12-03
+- Added an `indexSettings` option to mappings that allows for code-based index settings. Thanks to @timkelty
+- Added `./craft scout/settings/update` and `./craft scout/settings/dump` commands.
+
+## 1.0.2 - 2018-11-23
+- Fixed validator int --> integer
+- Added siteId to splitElementIndex
+
 ## 1.0.1 - 2018-10-29
 ### Fixed
 - cast site ids to int as craft/yii returns int as string (#39) @larsboldt
