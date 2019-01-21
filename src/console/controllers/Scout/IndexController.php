@@ -12,7 +12,6 @@
 namespace rias\scout\console\controllers\scout;
 
 use Craft;
-use craft\base\Element;
 use rias\scout\console\controllers\BaseController;
 use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
@@ -119,5 +118,19 @@ class IndexController extends BaseController
         $this->actionImport($index);
 
         return ExitCode::OK;
+    }
+
+    /**
+     * Force refresh on all indexes
+     * @throws Exception
+     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionForceRefresh()
+    {
+        foreach ($this->getMappings() as $mapping) {
+            Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName)->clearIndex();
+        }
+        $this->actionImport();
     }
 }

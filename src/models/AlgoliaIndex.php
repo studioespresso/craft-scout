@@ -93,22 +93,6 @@ class AlgoliaIndex extends Model
     }
 
     /**
-     * Determines if the supplied element can be deindexed in this index.
-     *
-     * @param $element Element
-     *
-     * @return bool
-     */
-    public function canDeindexElement(Element $element)
-    {
-        if (isset($this->criteria['siteId']) && (int) $element->site->id !== (int) $this->criteria['siteId']) {
-            return false;
-        }
-
-        return $this->getElementQuery($element)->count();
-    }
-
-    /**
      * Transforms the supplied element using the transformer method in config.
      *
      * @param $element Element
