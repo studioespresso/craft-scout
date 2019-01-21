@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.1 - 2019-01-21
+- Fixes issue with console commands on Folder capitalization, thanks @philipzaengle
+
 ## 1.1.0 - 2018-12-03
 - Added an `indexSettings` option to mappings that allows for code-based index settings. Thanks to @timkelty
 - Added `./craft scout/settings/update` and `./craft scout/settings/dump` commands.
