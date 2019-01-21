@@ -121,7 +121,8 @@ class IndexController extends BaseController
     }
 
     /**
-     * Force refresh on all indexes
+     * Force refresh on all indexes.
+     *
      * @throws Exception
      * @throws \AlgoliaSearch\AlgoliaException
      * @throws \yii\base\InvalidConfigException
