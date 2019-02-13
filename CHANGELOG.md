@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.2 - 2019-02-13
+- Fixed an issue with deindexing elements, thanks @chrislam
+
 ## 1.1.1 - 2019-01-21
 - Fixes issue with console commands on Folder capitalization, thanks @philipzaengle
 
