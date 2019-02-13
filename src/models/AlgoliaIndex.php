@@ -85,7 +85,7 @@ class AlgoliaIndex extends Model
             return false;
         }
 
-        return $this->getElementQuery($element)->count();
+        return $this->getElementQuery($element)->count() == 0;
     }
 
     /**
