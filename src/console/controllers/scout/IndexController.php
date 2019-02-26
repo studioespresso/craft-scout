@@ -38,7 +38,6 @@ class IndexController extends BaseController
         return ['force'];
     }
 
-
     // Public Methods
     // =========================================================================
 
