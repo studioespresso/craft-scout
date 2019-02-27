@@ -31,6 +31,13 @@ class IndexController extends BaseController
 {
     public $defaultAction = 'refresh';
 
+    public $force = false;
+
+    public function options($actionID)
+    {
+        return ['force'];
+    }
+
     // Public Methods
     // =========================================================================
 
@@ -47,7 +54,7 @@ class IndexController extends BaseController
      */
     public function actionFlush($index = '')
     {
-        if ($this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?'))) {
+        if ($this->force || $this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?'))) {
             /* @var \rias\scout\models\AlgoliaIndex $mapping */
             foreach ($this->getMappings($index) as $mapping) {
                 $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
