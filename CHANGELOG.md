@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.3 - 2019-02-27
+- Fixed a regression by the previous release when deleting elements would not deIndex them.
+
 ## 1.1.2 - 2019-02-13
 - Fixed an issue with deindexing elements, thanks @chrislam
 
