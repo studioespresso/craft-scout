@@ -20,36 +20,36 @@ use rias\scout\Scout;
  */
 class ScoutVariable
 {
-	// Public Methods
-	// =========================================================================
+    // Public Methods
+    // =========================================================================
 
-	/**
-	 * Returns the configured Algolia Application ID if set.
-	 *
-	 * @return string
-	 */
-	public function algoliaApplicationId() : string
-	{
-	    return Scout::$plugin->scoutService->getAlgoliaApplicationId();
-	}
+    /**
+     * Returns the configured Algolia Application ID if set.
+     *
+     * @return string
+     */
+    public function algoliaApplicationId() : string
+    {
+        return Scout::$plugin->scoutService->getAlgoliaApplicationId();
+    }
 
-	/**
-	 * Returns the configured Algolia Admin API key if set.
-	 *
-	 * @return string
-	 */
-	public function algoliaAdminApiKey() : string
-	{
-	    return Scout::$plugin->scoutService->getAlgoliaAdminApiKey();
-	}
+    /**
+     * Returns the configured Algolia Admin API key if set.
+     *
+     * @return string
+     */
+    public function algoliaAdminApiKey() : string
+    {
+        return Scout::$plugin->scoutService->getAlgoliaAdminApiKey();
+    }
 
-	/**
-	 * Returns the configured Algolia search API key if set.
-	 *
-	 * @return string
-	 */
-	public function algoliaSearchApiKey() : string
-	{
-	    return Scout::$plugin->scoutService->getAlgoliaSearchApiKey();
-	}
+    /**
+     * Returns the configured Algolia search API key if set.
+     *
+     * @return string
+     */
+    public function algoliaSearchApiKey() : string
+    {
+        return Scout::$plugin->scoutService->getAlgoliaSearchApiKey();
+    }
 }
