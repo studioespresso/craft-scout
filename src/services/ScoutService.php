@@ -41,6 +41,36 @@ class ScoutService extends Component
     }
 
     /**
+     * Return the Algolia application ID defined in config/scout.php.
+     *
+     * @return string
+     */
+    public function getAlgoliaApplicationId() : string
+    {
+        return $this->settings->application_id;
+    }
+
+    /**
+     * Return the Algolia admin API key defined in config/scout.php.
+     *
+     * @return string
+     */
+    public function getAlgoliaAdminApiKey() : string
+    {
+        return $this->settings->admin_api_key;
+    }
+
+    /**
+     * Return the Algolia admin API key defined in config/scout.php.
+     *
+     * @return string
+     */
+    public function getAlgoliaSearchApiKey() : string
+    {
+        return $this->settings->search_api_key;
+    }
+
+    /**
      * @throws \Exception
      *
      * @return Client

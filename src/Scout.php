@@ -23,8 +23,10 @@ use craft\elements\MatrixBlock;
 use craft\elements\Tag;
 use craft\elements\User;
 use craft\events\ModelEvent;
+use craft\web\twig\variables\CraftVariable;
 use rias\scout\models\Settings;
 use rias\scout\services\ScoutService as ScoutServiceService;
+use rias\scout\variables\ScoutVariable;
 use yii\base\Event;
 
 /**
@@ -61,6 +63,17 @@ class Scout extends Plugin
         if ($request->getIsConsoleRequest()) {
             $this->controllerNamespace = 'rias\scout\console\controllers\scout';
         }
+
+        // Register our variables
+        Event::on(
+	        CraftVariable::class,
+	        CraftVariable::EVENT_INIT,
+	        function (Event $event) {
+		        /** @var CraftVariable $variable */
+		        $variable = $event->sender;
+		        $variable->set('scout', ScoutVariable::class);
+	        }
+        );
 
         /*
          * Add or update an element to the index

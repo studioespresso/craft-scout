@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.4 - 2019-04-10
+### Added
+- `search_api_key` setting to model
+- Twig variables for accessing Algolia settings in front end templates
+
+### Changed
+- Normalised the mixture of quotes in the config example documentation
+
 ## 1.1.3 - 2019-02-27
 - Fixed a regression by the previous release when deleting elements would not deIndex them.
 
