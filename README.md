@@ -43,11 +43,12 @@ Within the mappings array, each index is represented by a configuration array.
 <?php
 
 return [
-    "sync" => true,
-    "connect_timeout" => 1,
-    "application_id" => "algolia",
-    "admin_api_key" => "algolia",
-    "mappings" => [
+    'sync' => true,
+    'connect_timeout' => 1,
+    'application_id' => 'algolia',
+    'admin_api_key' => 'algolia',
+    'search_api_key' => 'algolia', // optional
+    'mappings' => [
         [
             'indexName' => 'blog',
             'indexSettings' => [
@@ -204,6 +205,15 @@ Array items are array indexes returned from the transformer.
 ```
 
 *Important* - distinctId (available after indexing) must be set up as an attribute for faceting for deletion of objects to work when using splitElementIndex.
+
+## Twig variables
+You can access the Algolia settings set in your config file through the following Twig variables.
+
+```twig
+{{ craft.scout.algoliaApplicationId }}
+{{ craft.scout.algoliaAdminApiKey }}
+{{ craft.scout.algoliaSearchApiKey }}
+```
 
 ## Console commands
 Scout provides two easy console commands for managing your indices.

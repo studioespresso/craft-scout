@@ -41,6 +41,9 @@ class Settings extends Model
     /* @var string */
     public $admin_api_key = '';
 
+    /* @var string */
+    public $search_api_key = '';
+
     /* @var int */
     public $connect_timeout = 1;
 
@@ -55,7 +58,7 @@ class Settings extends Model
         return [
             [['connect_timeout'], 'integer'],
             [['sync'], 'boolean'],
-            [['application_id', 'admin_api_key'], 'string'],
+            [['application_id', 'admin_api_key', 'search_api_key'], 'string'],
             [['sync', 'application_id', 'admin_api_key', 'connect_timeout'], 'required'],
         ];
     }
