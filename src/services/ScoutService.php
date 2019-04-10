@@ -61,7 +61,7 @@ class ScoutService extends Component
     }
 
     /**
-     * Return the Algolia admin API key defined in config/scout.php.
+     * Return the Algolia search API key defined in config/scout.php.
      *
      * @return string
      */
@@ -77,7 +77,7 @@ class ScoutService extends Component
      */
     public function getClient()
     {
-        if (is_null($this->client)) {
+        if ($this->client !== null) {
             $this->client = new Client($this->settings->application_id, $this->settings->admin_api_key);
             $this->client->setConnectTimeout($this->settings->connect_timeout);
         }
