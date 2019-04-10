@@ -66,13 +66,13 @@ class Scout extends Plugin
 
         // Register our variables
         Event::on(
-	        CraftVariable::class,
-	        CraftVariable::EVENT_INIT,
-	        function (Event $event) {
-		        /** @var CraftVariable $variable */
-		        $variable = $event->sender;
-		        $variable->set('scout', ScoutVariable::class);
-	        }
+            CraftVariable::class,
+            CraftVariable::EVENT_INIT,
+            function (Event $event) {
+                /** @var CraftVariable $variable */
+                $variable = $event->sender;
+                $variable->set('scout', ScoutVariable::class);
+            }
         );
 
         /*
