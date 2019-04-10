@@ -89,43 +89,43 @@ Below are the default settings Algolia provides
 'indexSettings' => [
     'forwardToReplicas' => 'true',
     'settings' => [
-        'minWordSizefor1Typo' => 4
-        'minWordSizefor2Typos' => 8
-        'hitsPerPage' => 20
-        'maxValuesPerFacet' => 100
-        'version' => 2
-        'attributesToIndex' => null
-        'numericAttributesToIndex' => null
-        'attributesToRetrieve' => null
-        'unretrievableAttributes' => null
-        'optionalWords' => null
-        'attributesForFaceting' => []
-        'attributesToSnippet' => null
-        'attributesToHighlight' => null
-        'paginationLimitedTo' => 1000
-        'attributeForDistinct' => null
-        'exactOnSingleWordQuery' => 'attribute'
+        'minWordSizefor1Typo' => 4,
+        'minWordSizefor2Typos' => 8,
+        'hitsPerPage' => 20,
+        'maxValuesPerFacet' => 100,
+        'version' => 2,
+        'attributesToIndex' => null,
+        'numericAttributesToIndex' => null,
+        'attributesToRetrieve' => null,
+        'unretrievableAttributes' => null,
+        'optionalWords' => null,
+        'attributesForFaceting' => [],
+        'attributesToSnippet' => null,
+        'attributesToHighlight' => null,
+        'paginationLimitedTo' => 1000,
+        'attributeForDistinct' => null,
+        'exactOnSingleWordQuery' => 'attribute',
         'ranking' => [
-            0 => 'typo'
-            1 => 'geo'
-            2 => 'words'
-            3 => 'filters'
-            4 => 'proximity'
-            5 => 'attribute'
-            6 => 'exact'
-            7 => 'custom'
-        ]
-        'customRanking' => null
-        'separatorsToIndex' => ''
-        'removeWordsIfNoResults' => 'none'
-        'queryType' => 'prefixLast'
-        'highlightPreTag' => '<em>'
-        'highlightPostTag' => '</em>'
-        'snippetEllipsisText' => ''
+            0 => 'typo',
+            1 => 'geo',
+            2 => 'words',
+            3 => 'filters',
+            4 => 'proximity',
+            5 => 'attribute',
+            6 => 'exact',
+            7 => 'custom',
+        ],
+        'customRanking' => null,
+        'separatorsToIndex' => '',
+        'removeWordsIfNoResults' => 'none',
+        'queryType' => 'prefixLast',
+        'highlightPreTag' => '<em>',
+        'highlightPostTag' => '</em>',
+        'snippetEllipsisText' => '',
         'alternativesAsExact' => [
-            0 => 'ignorePlurals'
-            1 => 'singleWordSynonym'
-        ]
+            0 => 'ignorePlurals',
+            1 => 'singleWordSynonym',
+        ],
     ],
 ],
 ```
