@@ -16,6 +16,7 @@ use craft\base\Element;
 use rias\scout\console\controllers\BaseController;
 use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
+use yii\base\InvalidConfigException;
 use yii\console\Exception;
 use yii\console\ExitCode;
 use yii\helpers\Console;
@@ -47,7 +48,6 @@ class IndexController extends BaseController
      * @param string $index
      *
      * @throws Exception
-     * @throws \AlgoliaSearch\AlgoliaException
      * @throws \Exception
      *
      * @return mixed
@@ -55,10 +55,10 @@ class IndexController extends BaseController
     public function actionFlush($index = '')
     {
         if ($this->force || $this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?'))) {
-            /* @var \rias\scout\models\AlgoliaIndex $mapping */
+            /* @var AlgoliaIndex $mapping */
             foreach ($this->getMappings($index) as $mapping) {
                 $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
-                $index->clearIndex();
+                $index->clearObjects();
             }
 
             return ExitCode::OK;
@@ -73,13 +73,13 @@ class IndexController extends BaseController
      * @param string $index
      *
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      *
      * @return int
      */
     public function actionImport($index = '')
     {
-        /* @var \rias\scout\models\AlgoliaIndex $mapping */
+        /* @var AlgoliaIndex $mapping */
         foreach ($this->getMappings($index) as $mapping) {
             // Get all elements to index
             $elements = $mapping->getElementQuery()->all();
@@ -115,7 +115,7 @@ class IndexController extends BaseController
      * @param string $index
      *
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @throws \Exception
      *
      * @return int

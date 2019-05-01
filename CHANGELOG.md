@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.0 - 2019-05-01
+### Changed
+- Scout now uses v2 of the Algolia API in the background. Nothing has changed in Scout usage.
+
 ## 1.1.4 - 2019-04-10
 ### Added
 - `search_api_key` setting to model

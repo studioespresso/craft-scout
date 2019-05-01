@@ -11,11 +11,15 @@
 
 namespace rias\scout\services;
 
-use AlgoliaSearch\Client;
+use Algolia\AlgoliaSearch\Config\SearchConfig;
+use Algolia\AlgoliaSearch\SearchClient;
+use AlgoliaSearch\AlgoliaException;
 use Craft;
 use craft\base\Component;
+use Exception;
 use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
+use yii\base\InvalidConfigException;
 
 /**
  * @author    Rias
@@ -29,7 +33,7 @@ class ScoutService extends Component
 
     public $settings;
 
-    /* @var Client */
+    /* @var SearchClient */
     public $client;
 
     /* @var array */
@@ -71,15 +75,19 @@ class ScoutService extends Component
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      *
-     * @return Client
+     * @return SearchClient
      */
     public function getClient()
     {
         if (is_null($this->client)) {
-            $this->client = new Client($this->settings->application_id, $this->settings->admin_api_key);
-            $this->client->setConnectTimeout($this->settings->connect_timeout);
+            $config = new SearchConfig();
+            $config->setConnectTimeout($this->settings->connect_timeout);
+            $config->setApiKey($this->settings->admin_api_key);
+            $config->setAppId($this->settings->application_id);
+
+            $this->client = SearchClient::createWithConfig($config);
         }
 
         return $this->client;
@@ -107,8 +115,7 @@ class ScoutService extends Component
      *
      * @param $elements array
      *
-     * @throws \AlgoliaSearch\AlgoliaException
-     * @throws \Exception
+     * @throws InvalidConfigException
      */
     public function indexElements($elements)
     {
@@ -122,8 +129,7 @@ class ScoutService extends Component
      *
      * @param $elements array
      *
-     * @throws \AlgoliaSearch\AlgoliaException
-     * @throws \Exception
+     * @throws Exception
      */
     public function deindexElements($elements)
     {

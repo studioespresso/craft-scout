@@ -11,10 +11,9 @@
 
 namespace rias\scout\jobs;
 
-use AlgoliaSearch\Index;
 use Craft;
-use craft\base\Element;
 use craft\queue\BaseJob;
+use Exception;
 use rias\scout\Scout;
 
 /**
@@ -33,28 +32,14 @@ class IndexElement extends BaseJob
     /* @var string */
     public $indexName;
 
-    /* @var Index */
-    private $index;
-
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * @throws \AlgoliaSearch\AlgoliaException
-     * @throws \Exception
-     */
-    public function init()
-    {
-        parent::init();
-        $this->index = Scout::$plugin->scoutService->getClient()->initIndex($this->indexName);
-    }
-
     /**
      * @param craft\queue\QueueInterface $queue The queue the job belongs to
+     * @throws Exception
      */
     public function execute($queue)
     {
-        $this->index->addObject($this->element);
+        $index = Scout::$plugin->scoutService->getClient()->initIndex($this->indexName);
+        $index->saveObject($this->element);
     }
 
     // Protected Methods

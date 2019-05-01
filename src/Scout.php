@@ -12,8 +12,10 @@
 
 namespace rias\scout;
 
+use AlgoliaSearch\AlgoliaException;
 use Craft;
 use craft\base\Element;
+use craft\base\ElementInterface;
 use craft\base\Plugin;
 use craft\elements\Asset;
 use craft\elements\Category;
@@ -24,6 +26,7 @@ use craft\elements\Tag;
 use craft\elements\User;
 use craft\events\ModelEvent;
 use craft\web\twig\variables\CraftVariable;
+use Exception;
 use rias\scout\models\Settings;
 use rias\scout\services\ScoutService as ScoutServiceService;
 use rias\scout\variables\ScoutVariable;
@@ -82,7 +85,7 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_AFTER_SAVE,
             function (ModelEvent $event) {
-                if ($this->settings->sync) {
+                if ($this->getSettings()->sync) {
                     $this->indexElements($event->sender);
                 }
             }
@@ -95,7 +98,7 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_AFTER_MOVE_IN_STRUCTURE,
             function (ModelEvent $event) {
-                if ($this->settings->sync) {
+                if ($this->getSettings()->sync) {
                     $this->indexElements($event->sender);
                 }
             }
@@ -108,7 +111,7 @@ class Scout extends Plugin
             Element::class,
             Element::EVENT_BEFORE_DELETE,
             function (ModelEvent $event) {
-                if ($this->settings->sync) {
+                if ($this->getSettings()->sync) {
                     $this->deindexElements($event->sender);
                 }
             }
@@ -122,7 +125,7 @@ class Scout extends Plugin
             Category::EVENT_AFTER_SAVE,
             function (ModelEvent $event) {
                 // Only do this when the category isn't new
-                if (!$event->isNew && $this->settings->sync) {
+                if (!$event->isNew && $this->getSettings()->sync) {
                     $this->indexElements($this->getElementsRelatedTo($event->sender));
                 }
             }
@@ -135,7 +138,7 @@ class Scout extends Plugin
             Category::class,
             Category::EVENT_BEFORE_DELETE,
             function (ModelEvent $event) {
-                if ($this->settings->sync) {
+                if ($this->getSettings()->sync) {
                     $this->indexElements($this->getElementsRelatedTo($event->sender));
                 }
             }
@@ -148,8 +151,7 @@ class Scout extends Plugin
     /**
      * @param $elements
      *
-     * @throws \AlgoliaSearch\AlgoliaException
-     * @throws \Exception
+     * @throws Exception
      */
     protected function indexElements($elements)
     {
@@ -163,8 +165,7 @@ class Scout extends Plugin
     /**
      * @param $elements
      *
-     * @throws \AlgoliaSearch\AlgoliaException
-     * @throws \Exception
+     * @throws Exception
      */
     protected function deindexElements($elements)
     {
@@ -180,7 +181,7 @@ class Scout extends Plugin
      *
      * @param mixed $element
      *
-     * @return \craft\base\ElementInterface[]
+     * @return ElementInterface[]
      */
     protected function getElementsRelatedTo($element)
     {

@@ -11,8 +11,10 @@
 
 namespace rias\scout\console\controllers\scout;
 
+use AlgoliaSearch\AlgoliaException;
 use Craft;
 use rias\scout\console\controllers\BaseController;
+use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
 use yii\console\Exception;
 use yii\console\ExitCode;
@@ -39,14 +41,13 @@ class SettingsController extends BaseController
      * @param string $index
      *
      * @throws Exception
-     * @throws \AlgoliaSearch\AlgoliaException
      * @throws \Exception
      *
      * @return mixed
      */
     public function actionUpdate($index = '')
     {
-        /* @var \rias\scout\models\AlgoliaIndex $mapping */
+        /* @var AlgoliaIndex $mapping */
         $mappings = $this->getMappings($index);
         $total = count($mappings);
         $progress = 0;
@@ -64,7 +65,7 @@ class SettingsController extends BaseController
             $forwardToReplicas = $mapping->indexSettings['forwardToReplicas'] ?? null;
 
             if ($settings) {
-                $index->setSettings($settings, $forwardToReplicas);
+                $index->setSettings($settings, $forwardToReplicas ? ['forwardToReplicas' => $forwardToReplicas] : null);
             }
 
             $progress++;
@@ -82,14 +83,14 @@ class SettingsController extends BaseController
      * @param string $index
      *
      * @throws Exception
-     * @throws \AlgoliaSearch\AlgoliaException
+     * @throws AlgoliaException
      * @throws \Exception
      */
     public function actionDump($index = '')
     {
         $dump = [];
 
-        /* @var \rias\scout\models\AlgoliaIndex $mapping */
+        /* @var AlgoliaIndex $mapping */
         foreach ($this->getMappings($index) as $mapping) {
             $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
             $dump[$mapping->indexName] = $index->getSettings();

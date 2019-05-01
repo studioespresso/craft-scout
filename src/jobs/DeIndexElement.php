@@ -11,10 +11,9 @@
 
 namespace rias\scout\jobs;
 
-use AlgoliaSearch\Index;
 use Craft;
-use craft\base\Element;
 use craft\queue\BaseJob;
+use Exception;
 use rias\scout\Scout;
 
 /**
@@ -36,36 +35,20 @@ class DeIndexElement extends BaseJob
     /* @var string */
     public $distinctId;
 
-    /* @var Index */
-    private $index;
-
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * @throws \AlgoliaSearch\AlgoliaException
-     * @throws \Exception
-     */
-    public function init()
-    {
-        parent::init();
-        $this->index = Scout::$plugin->scoutService->getClient()->initIndex($this->indexName);
-    }
-
     /**
      * @param craft\queue\QueueInterface $queue The queue the job belongs to
      *
-     * @throws \AlgoliaSearch\AlgoliaException
-     * @throws \Exception
+     * @throws Exception
      */
     public function execute($queue)
     {
+        $index = Scout::$plugin->scoutService->getClient()->initIndex($this->indexName);
         if ($this->distinctId !== null) {
-            $this->index->deleteBy([
+            $index->deleteBy([
                 'filters' => 'distinctId:'.$this->distinctId,
             ]);
         } else {
-            $this->index->deleteObject($this->objectID);
+            $index->deleteObject($this->objectID);
         }
     }
 

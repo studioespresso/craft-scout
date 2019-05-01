@@ -148,6 +148,10 @@ class AlgoliaIndex extends Model
         }
     }
 
+    /**
+     * @param $element
+     * @throws \yii\base\InvalidConfigException
+     */
     protected function indexElement($element)
     {
         $elementConfigs = [];
