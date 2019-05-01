@@ -12,7 +12,6 @@
 
 namespace rias\scout;
 
-use AlgoliaSearch\AlgoliaException;
 use Craft;
 use craft\base\Element;
 use craft\base\ElementInterface;
