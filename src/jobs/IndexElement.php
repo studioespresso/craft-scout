@@ -34,6 +34,7 @@ class IndexElement extends BaseJob
 
     /**
      * @param craft\queue\QueueInterface $queue The queue the job belongs to
+     *
      * @throws Exception
      */
     public function execute($queue)
