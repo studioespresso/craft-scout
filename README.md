@@ -234,7 +234,9 @@ Clearing an index is as easy as running a command in your console.
 ./craft scout/index/flush <indexName?>
 ```
 
-As with the import command, `indexName` is not required, when flushing Scout will ask you to confirm that you really want to clear all the data in your index.
+As with the import command, `indexName` is not required.
+
+When flushing, Scout will ask you to confirm that you really want to clear all the data in your index. You can bypass the confirmation by appending a `--force` flag.
 
 ### Refreshing
 Does a flush/clear first and then imports the index again.
