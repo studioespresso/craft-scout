@@ -245,6 +245,31 @@ Does a flush/clear first and then imports the index again.
 ./craft scout/index/refresh <indexName?>
 ```
 
+## Skipping an Element
+
+You can omit an element from being indexed by returning an **empty array** from the `transform` method:
+
+```php
+public function transform(Entry $entry): array
+{
+    // Check if entry is valid for indexing
+    $isValid = yourCustomValidation($entry);
+    
+    // If entry fails validation, return empty array
+    if (!$isValid) {
+        return [];
+    }
+
+    // Return normal data attributes
+    return [
+        'name' => $entry->title,
+        ...
+        'lorem' => $entry->lorem,
+        'ipsum' => $entry->ipsum,
+    ];
+}
+```
+
 ## Credits
 - [Craft Algolia](https://github.com/aaronwaldon/craft-algolia) by aaronwaldon as a base to start from
 - @larsboldt for the Split Element Index option
