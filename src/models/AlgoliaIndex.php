@@ -106,6 +106,12 @@ class AlgoliaIndex extends Model
         $fractal->setSerializer(new ArraySerializer());
 
         $data = $fractal->createData($resource)->toArray();
+
+        // If an empty array is returned, skip element
+        if (empty($data)) {
+            return;
+        }
+
         // Make sure the objectID is set (and unique) for Algolia
         $data['objectID'] = $this->getSiteElementId($element);
 
@@ -166,7 +172,9 @@ class AlgoliaIndex extends Model
         }
 
         foreach ($elementConfigs as $elementConfig) {
-            Craft::$app->queue->push(new IndexElement($elementConfig));
+            if ($elementConfig['element'] !== null) {
+                Craft::$app->queue->push(new IndexElement($elementConfig));
+            }
         }
     }
 
