@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.1 - 2019-05-17
+### Added
+- Scout can now skip elements if you return an empty array from the transformer
+- Documented the `--force` option
+
 ## 1.2.0 - 2019-05-01
 ### Changed
 - Scout now uses v2 of the Algolia API in the background. Nothing has changed in Scout usage.
