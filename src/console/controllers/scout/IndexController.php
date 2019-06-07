@@ -12,7 +12,6 @@
 namespace rias\scout\console\controllers\scout;
 
 use Craft;
-use craft\base\Element;
 use rias\scout\console\controllers\BaseController;
 use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
@@ -103,7 +102,6 @@ class IndexController extends BaseController
 
                 $algoliaIndex = new AlgoliaIndex($mapping);
                 $algoliaIndex->indexElements($results);
-
 
                 $lastId = end($results)->id;
                 $this->stdout(Craft::t('scout', "Imported up to {$lastId}...".PHP_EOL), Console::FG_GREEN);
