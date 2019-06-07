@@ -13,7 +13,7 @@ Craft Scout provides a simple solution for adding full-text search to your entri
 
 This plugin is licensed under a MIT license, which means that it's completely free open source software, and you can use it for whatever and however you wish. If you're using it and want to support the development, buy me a beer over at Beerpay!
 
-[![Beerpay](https://beerpay.io/Rias500/craft-scout/badge.svg?style=beer-square)](https://beerpay.io/Rias500/craft-scout)
+[![Beerpay](https://beerpay.io/riasvdv/craft-scout/badge.svg?style=beer-square)](https://beerpay.io/riasvdv/craft-scout)
 
 ## Requirements
 
