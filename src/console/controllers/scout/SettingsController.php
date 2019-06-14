@@ -65,7 +65,7 @@ class SettingsController extends BaseController
             $forwardToReplicas = $mapping->indexSettings['forwardToReplicas'] ?? null;
 
             if ($settings) {
-                $index->setSettings($settings, $forwardToReplicas ? ['forwardToReplicas' => $forwardToReplicas] : null);
+                $index->setSettings($settings, $forwardToReplicas ? ['forwardToReplicas' => $forwardToReplicas] : []);
             }
 
             $progress++;
