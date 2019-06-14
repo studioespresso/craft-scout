@@ -13,7 +13,6 @@ namespace rias\scout\services;
 
 use Algolia\AlgoliaSearch\Config\SearchConfig;
 use Algolia\AlgoliaSearch\SearchClient;
-use Craft;
 use craft\base\Component;
 use Exception;
 use rias\scout\models\AlgoliaIndex;
