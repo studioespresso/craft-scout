@@ -80,33 +80,24 @@ class IndexController extends BaseController
     {
         /* @var AlgoliaIndex $mapping */
         foreach ($this->getMappings($index) as $mapping) {
-            $this->stdout(Craft::t('scout', "Starting import for {$mapping->indexName}...".PHP_EOL), Console::FG_GREEN);
-
             // Get all elements to index
-            $elementsQuery = $mapping->getElementQuery();
+            $elements = $mapping->getElementQuery()->all();
 
-            $lastId = null;
-            $chunkSize = 500;
+            // Create a job to index each element
+            $progress = 0;
+            $total = count($elements);
+            Console::startProgress(
+                $progress,
+                $total,
+                Craft::t('scout', 'Adding elements from index {index}.', ['index' => $mapping->indexName]),
+                0.5
+            );
 
-            do {
-                $clone = clone $elementsQuery;
-                // We'll execute the query for the given page and get the results. If there are
-                // no results we can just break and return from here. When there are results
-                // we will call the callback with the current chunk of these results here.
-                $results = $clone->where(['>=', 'id', $lastId])->limit($chunkSize)->all();
-                $countResults = count($results);
+            $algoliaIndex = new AlgoliaIndex($mapping);
+            $algoliaIndex->indexElements($elements);
 
-                if ($countResults == 0) {
-                    break;
-                }
-
-                $algoliaIndex = new AlgoliaIndex($mapping);
-                $algoliaIndex->indexElements($results);
-
-                $lastId = end($results)->id;
-                $this->stdout(Craft::t('scout', "Imported up to {$lastId}...".PHP_EOL), Console::FG_GREEN);
-                unset($results);
-            } while ($countResults == $chunkSize);
+            Console::updateProgress($total, $total);
+            Console::endProgress();
         }
 
         // Run the queue after adding all elements
