@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.2 - 2019-06-14
+- Fixed an issue with settings call 
+
 ## 1.2.1 - 2019-05-17
 ### Added
 - Scout can now skip elements if you return an empty array from the transformer
