@@ -11,9 +11,7 @@
 
 namespace rias\scout\models;
 
-use Craft;
 use craft\base\Model;
-use rias\scout\Scout;
 
 /**
  * @author    Rias
