@@ -21,7 +21,7 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.0.0-RC1",
+        "craftcms/cms": "^3.2.0",
         "algolia/algoliasearch-client-php": "^2.2.3",
         "league/fractal": "^0.18.0"
     },

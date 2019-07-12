@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.3.0 - 2019-07-12
+- Now requires Craft 3.2
+- Added a fix for Element drafts & revisions in Craft 3.2
+
 ## 1.2.3 - 2019-06-14
 - Revert untested change
 

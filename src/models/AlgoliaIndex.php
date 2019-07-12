@@ -128,6 +128,10 @@ class AlgoliaIndex extends Model
     public function indexElements($elements)
     {
         foreach ($elements as $element) {
+            if ($element->getIsDraft() || $element->getIsRevision()) {
+                continue;
+            }
+
             if ($this->elementType === get_class($element)) {
                 if ($this->canIndexElement($element)) {
                     $this->indexElement($element);
@@ -148,6 +152,10 @@ class AlgoliaIndex extends Model
     public function deindexElements($elements)
     {
         foreach ($elements as $element) {
+            if ($element->getIsDraft() || $element->getIsRevision()) {
+                continue;
+            }
+
             if ($this->elementType === get_class($element) && $this->canDeindexElement($element)) {
                 $this->deindexElement($element);
             }
