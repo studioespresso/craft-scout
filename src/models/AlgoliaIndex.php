@@ -216,7 +216,7 @@ class AlgoliaIndex extends Model
         foreach ($this->splitElementIndex as $indexElement) {
             $transformedElement['objectID'] = $this->getSiteElementId($element).'_'.$i;
 
-            if ($transformedElement[$indexElement] !== null) {
+            if (isset($transformedElement[$indexElement]) && $transformedElement[$indexElement] !== null) {
                 if (is_array($transformedElement[$indexElement])) {
                     foreach ($transformedElement[$indexElement] as $key => $value) {
                         if ((is_array($value) && count($value) > 0) || (!is_array($value) && $value !== null)) {
