@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.3.1 - 2019-08-09
+- Fixed a bug when skipping elements when splitElementIndex is also set (#81)
+
 ## 1.3.0 - 2019-07-12
 - Now requires Craft 3.2
 - Added a fix for Element drafts & revisions in Craft 3.2
