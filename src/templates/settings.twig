@@ -1,4 +1,3 @@
-{# @var craft \craft\web\twig\variables\CraftVariable #}
 {#
 /**
  * Scout plugin for Craft CMS 3.x
@@ -13,6 +12,30 @@
  */
 #}
 
-{% import "_includes/forms" as forms %}
+{% extends '_layouts/cp' %}
 
-<p>Scout's settings can only be set using a `scout.php` config file.</p>
+{% set title = craft.scout.getPluginName() | t('scout') %}
+{% set crumbs = [
+    { label: 'Settings' | t('scout'), url: url('settings') },
+    { label: craft.scout.getPluginName() | t('scout'), url: url('scout/settings') },
+] %}
+
+{% block content %}
+    <p>{{ "Scout’s settings can only be set using a 'scout.php' config file." | t('scout') }}</p>
+
+    {% include 'scout/_partials/action' with {
+        action: {
+            description: 'Import data for one or all indices.' | t('scout'),
+            name: 'Import index' | t('scout'),
+            slug: 'import',
+        }
+    } %}
+
+    {% include 'scout/_partials/action' with {
+        action: {
+            description: 'Clear all data for one or all indices.' | t('scout'),
+            name: 'Flush index' | t('scout'),
+            slug: 'flush',
+        }
+    } %}
+{% endblock %}

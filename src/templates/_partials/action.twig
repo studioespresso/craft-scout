@@ -1,0 +1,28 @@
+{% import "_includes/forms" as forms %}
+
+<hr>
+
+<div class="field">
+    <div class="heading">
+        <label>{{ action.name }}</label>
+
+        <div class="instructions">
+            <p>{{ action.description }}</p>
+
+            <form method="post" accept-charset="UTF-8">
+                {{ csrfInput() }}
+                <input type="hidden" name="action" value="scout/index/{{ action.slug }}">
+
+                {{ forms.selectField({
+                    id: action.slug ~ 'Index',
+                    name: action.slug ~ 'Index',
+                    options: indexOptions,
+                }) }}
+
+                <div class="buttons">
+                    <input type="submit" class="btn submit" value="{{ action.slug|capitalize }}">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

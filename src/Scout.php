@@ -24,7 +24,10 @@ use craft\elements\MatrixBlock;
 use craft\elements\Tag;
 use craft\elements\User;
 use craft\events\ModelEvent;
+use craft\events\RegisterUrlRulesEvent;
+use craft\helpers\UrlHelper;
 use craft\web\twig\variables\CraftVariable;
+use craft\web\UrlManager;
 use Exception;
 use rias\scout\models\Settings;
 use rias\scout\services\ScoutService as ScoutServiceService;
@@ -65,6 +68,17 @@ class Scout extends Plugin
         if ($request->getIsConsoleRequest()) {
             $this->controllerNamespace = 'rias\scout\console\controllers\scout';
         }
+
+        // Register control panel routes
+        Event::on(
+            UrlManager::class,
+            UrlManager::EVENT_REGISTER_CP_URL_RULES,
+            function(RegisterUrlRulesEvent $event) {
+                $event->rules = array_merge($event->rules, [
+                    'scout/settings' => 'scout/plugin/settings',
+                ]);
+            }
+        );
 
         // Register our variables
         Event::on(
@@ -149,6 +163,11 @@ class Scout extends Plugin
         return Craft::t('scout', $this->getSettings()->pluginName);
     }
 
+    public function getSettingsResponse()
+    {
+        Craft::$app->getResponse()->redirect(UrlHelper::cpUrl('scout/settings'));
+    }
+
     // Protected Methods
     // =========================================================================
 
@@ -206,18 +225,5 @@ class Scout extends Plugin
     protected function createSettingsModel()
     {
         return new Settings();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function settingsHtml(): string
-    {
-        return Craft::$app->view->renderTemplate(
-            'scout/settings',
-            [
-                'settings' => $this->getSettings(),
-            ]
-        );
     }
 }
