@@ -144,6 +144,11 @@ class Scout extends Plugin
         );
     }
 
+    public function getPluginName()
+    {
+        return Craft::t('scout', $this->getSettings()->pluginName);
+    }
+
     // Protected Methods
     // =========================================================================
 

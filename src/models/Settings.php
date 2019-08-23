@@ -24,6 +24,11 @@ class Settings extends Model
     // =========================================================================
 
     /**
+     * @var string
+     */
+    public $pluginName = 'Scout';
+
+    /**
      * @var bool
      */
     public $sync = true;

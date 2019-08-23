@@ -52,4 +52,14 @@ class ScoutVariable
     {
         return Scout::$plugin->scoutService->getAlgoliaSearchApiKey();
     }
+
+    /**
+     * Returns the name of the plugin.
+     *
+     * @return string
+     */
+    public function getPluginName()
+    {
+        return Scout::$plugin->getPluginName();
+    }
 }
