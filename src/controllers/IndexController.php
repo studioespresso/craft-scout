@@ -15,14 +15,16 @@ namespace rias\scout\controllers;
 use Craft;
 use craft\helpers\Json;
 use craft\web\Controller;
-use rias\scout\controllers\BaseController;
 use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
 use yii\base\InvalidConfigException;
 use yii\web\Response;
 
-class IndexController extends BaseController
+class IndexController extends Controller
 {
+    // Public Methods
+    // =========================================================================
+
     /**
      * Flush one or all Algolia indexes.
      *
@@ -37,7 +39,7 @@ class IndexController extends BaseController
         $index = $request->getBodyParam('flushIndex');
 
         try {
-            $mappings = $this->getMappings($index);
+            $mappings = Scout::$plugin->scoutService->getMappings($index);
             $indexCount = count($mappings);
 
             /* @var AlgoliaIndex $mapping */
@@ -71,7 +73,7 @@ class IndexController extends BaseController
         $index = $request->getBodyParam('importIndex');
 
         try {
-            $mappings = $this->getMappings($index);
+            $mappings = Scout::$plugin->scoutService->getMappings($index);
             $indexCount = count($mappings);
 
             /* @var AlgoliaIndex $mapping */

@@ -34,14 +34,7 @@ class BaseController extends Controller
      */
     protected function getMappings($index = '')
     {
-        $mappings = Scout::$plugin->scoutService->getMappings();
-
-        // If we have an argument, only get indexes that match it
-        if (!empty($index)) {
-            $mappings = array_filter($mappings, function ($mapping) use ($index) {
-                return $mapping->indexName == $index;
-            });
-        }
+        $mappings = Scout::$plugin->scoutService->getMappings($index);
 
         if (!count($mappings)) {
             throw new Exception(Craft::t('scout', 'Index {index} not found.', ['index' => $index]));

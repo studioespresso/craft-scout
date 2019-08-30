@@ -96,13 +96,20 @@ class ScoutService extends Component
      *
      * @return AlgoliaIndex[]
      */
-    public function getMappings()
+    public function getMappings($index = null)
     {
         if (!count($this->mappings)) {
             $mappingsConfig = $this->settings->mappings;
             foreach ($mappingsConfig as $mappingConfig) {
                 $this->mappings[] = new AlgoliaIndex($mappingConfig);
             }
+        }
+
+        // If we have an $index argument, only get indexes that match it
+        if (!empty($index)) {
+            return array_filter($this->mappings, function ($mapping) use ($index) {
+                return $mapping->indexName == $index;
+            });
         }
 
         return $this->mappings;
