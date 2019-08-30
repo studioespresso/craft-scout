@@ -49,9 +49,9 @@ class IndexController extends Controller
             }
 
             Craft::$app->getSession()->setNotice(
-                Craft::t('scout', 'Flushed {indexCount} index{plural}.', [
+                Craft::t('scout', 'Flushed {indexCount} {indexNoun}.', [
                     'indexCount' => $indexCount,
-                    'plural' => $indexCount === 1 ? '' : 'es',
+                    'indexNoun' => $indexCount === 1 ? 'index' : 'indices',
                 ])
             );
         } catch (\Throwable $e) {
@@ -89,9 +89,9 @@ class IndexController extends Controller
             Craft::$app->queue->run();
 
             Craft::$app->getSession()->setNotice(
-                Craft::t('scout', 'Imported {indexCount} index{plural}.', [
+                Craft::t('scout', 'Imported {indexCount} {indexNoun}.', [
                     'indexCount' => $indexCount,
-                    'plural' => $indexCount === 1 ? '' : 'es',
+                    'indexNoun' => $indexCount === 1 ? 'index' : 'indices',
                 ])
             );
         } catch (\Throwable $e) {
