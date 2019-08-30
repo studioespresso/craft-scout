@@ -9,15 +9,12 @@
  * @copyright Copyright (c) 2017 Rias
  */
 
-
 namespace rias\scout\controllers;
 
 use Craft;
-use craft\helpers\Json;
 use craft\web\Controller;
 use rias\scout\models\AlgoliaIndex;
 use rias\scout\Scout;
-use yii\base\InvalidConfigException;
 use yii\web\Response;
 
 class IndexController extends Controller
@@ -51,7 +48,7 @@ class IndexController extends Controller
             Craft::$app->getSession()->setNotice(
                 Craft::t('scout', 'Flushed {indexCount} {indexNoun}.', [
                     'indexCount' => $indexCount,
-                    'indexNoun' => $indexCount === 1 ? 'index' : 'indices',
+                    'indexNoun'  => $indexCount === 1 ? 'index' : 'indices',
                 ])
             );
         } catch (\Throwable $e) {
@@ -91,7 +88,7 @@ class IndexController extends Controller
             Craft::$app->getSession()->setNotice(
                 Craft::t('scout', 'Imported {indexCount} {indexNoun}.', [
                     'indexCount' => $indexCount,
-                    'indexNoun' => $indexCount === 1 ? 'index' : 'indices',
+                    'indexNoun'  => $indexCount === 1 ? 'index' : 'indices',
                 ])
             );
         } catch (\Throwable $e) {

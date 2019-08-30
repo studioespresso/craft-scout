@@ -26,7 +26,7 @@ class PluginController extends Controller
 
         // Build options list of known indexes for select fields in settings
         /* @var AlgoliaIndex $mapping */
-        $indexOptions = array_map(function($mapping) {
+        $indexOptions = array_map(function ($mapping) {
             return [
                 'label' => $mapping['indexName'],
                 'value' => $mapping['indexName'],
@@ -40,7 +40,7 @@ class PluginController extends Controller
 
         return $this->renderTemplate('scout/settings', [
             'indexOptions' => $indexOptions,
-            'settings' => $settings,
+            'settings'     => $settings,
         ]);
     }
 }
