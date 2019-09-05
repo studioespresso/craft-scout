@@ -23,7 +23,7 @@
     "require": {
         "craftcms/cms": "^3.2.0",
         "algolia/algoliasearch-client-php": "^2.2.3",
-        "league/fractal": "^0.18.0"
+        "league/fractal": "^0.16.0|^0.17.0|^0.18.0"
     },
     "repositories": [
         {
