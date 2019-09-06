@@ -1,32 +1,14 @@
 <?php
-/**
- * Scout plugin for Craft CMS 3.x.
- *
- * Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.
- *
- * @link      https://rias.be
- *
- * @copyright Copyright (c) 2017 Rias
- */
 
 namespace rias\scout\console\controllers\scout;
 
 use Craft;
+use craft\helpers\Console;
 use rias\scout\console\controllers\BaseController;
-use rias\scout\models\AlgoliaIndex;
+use rias\scout\engines\Engine;
 use rias\scout\Scout;
-use yii\base\InvalidConfigException;
-use yii\console\Exception;
 use yii\console\ExitCode;
-use yii\helpers\Console;
 
-/**
- * Default Command.
- *
- * @author    Rias
- *
- * @since     0.1.0
- */
 class IndexController extends BaseController
 {
     public $defaultAction = 'refresh';
@@ -38,87 +20,46 @@ class IndexController extends BaseController
         return ['force'];
     }
 
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * Flush one or all Algolia indexes.
-     *
-     * @param string $index
-     *
-     * @throws Exception
-     * @throws \Exception
-     *
-     * @return mixed
-     */
     public function actionFlush($index = '')
     {
-        if ($this->force || $this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?'))) {
-            /* @var AlgoliaIndex $mapping */
-            foreach ($this->getMappings($index) as $mapping) {
-                $index = Scout::$plugin->scoutService->getClient()->initIndex($mapping->indexName);
-                $index->clearObjects();
-            }
-
+        if (! $this->force && ! $this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?'))) {
             return ExitCode::OK;
         }
 
+        $engines = Scout::$plugin->getSettings()->getEngines();
+        $engines->filter(function (Engine $engine) use ($index) {
+            return $index === '' || $engine->scoutIndex->indexName === $index;
+        })->each(function (Engine $engine) {
+            $engine->flush();
+            $this->stdout("Flushed index {$engine->scoutIndex->indexName}\n", Console::FG_GREEN);
+        });
+
         return ExitCode::OK;
     }
 
-    /**
-     * Import your entries into one or all Algolia indexes.
-     *
-     * @param string $index
-     *
-     * @throws Exception
-     * @throws InvalidConfigException
-     *
-     * @return int
-     */
     public function actionImport($index = '')
     {
-        /* @var AlgoliaIndex $mapping */
-        foreach ($this->getMappings($index) as $mapping) {
-            // Get all elements to index
-            $elements = $mapping->getElementQuery()->all();
+        $engines = Scout::$plugin->getSettings()->getEngines();
 
-            // Create a job to index each element
-            $progress = 0;
-            $total = count($elements);
-            Console::startProgress(
-                $progress,
-                $total,
-                Craft::t('scout', 'Adding elements from index {index}.', ['index' => $mapping->indexName]),
-                0.5
+        $engines->filter(function (Engine $engine) use ($index) {
+            return $index === '' || $engine->scoutIndex->indexName === $index;
+        })->each(function (Engine $engine) {
+            $totalElements = $engine->scoutIndex->criteria->count();
+            $elementsUpdated = 0;
+            $batch = $engine->scoutIndex->criteria->batch(
+                Scout::$plugin->getSettings()->batch_size
             );
 
-            $algoliaIndex = new AlgoliaIndex($mapping);
-            $algoliaIndex->indexElements($elements);
+            foreach ($batch as $elements) {
+                $engine->update($elements);
+                $elementsUpdated+= count($elements);
+                $this->stdout("Updated {$elementsUpdated}/{$totalElements} element(s) in {$engine->scoutIndex->indexName}\n", Console::FG_GREEN);
+            }
+        });
 
-            Console::updateProgress($total, $total);
-            Console::endProgress();
-        }
-
-        // Run the queue after adding all elements
-        $this->stdout(Craft::t('scout', 'Running queue jobs...'.PHP_EOL), Console::FG_GREEN);
-        Craft::$app->queue->run();
-
-        // Everything went OK
         return ExitCode::OK;
     }
 
-    /**
-     * Refresh one or all indexes.
-     *
-     * @param string $index
-     *
-     * @throws Exception
-     * @throws InvalidConfigException
-     * @throws \Exception
-     *
-     * @return int
-     */
     public function actionRefresh($index = '')
     {
         $this->actionFlush($index);

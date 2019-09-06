@@ -1,0 +1,18 @@
+# Codeception Test Suite Configuration
+#
+# Suite for unit or integration tests.
+
+actor: UnitTester
+coverage:
+    enabled: true
+    include:
+        - src/*
+    exclude:
+        - src/icon.svg
+        - src/templates/*
+modules:
+    enabled:
+        - Asserts
+        - \Helper\Unit
+        - \craft\test\Craft
+    step_decorators: ~
