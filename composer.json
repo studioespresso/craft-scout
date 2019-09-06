@@ -1,5 +1,6 @@
 {
     "name": "rias/craft-scout",
+    "version": "2.0",
     "description": "Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.",
     "type": "craft-plugin",
     "keywords": [
@@ -21,9 +22,10 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.2.0",
-        "algolia/algoliasearch-client-php": "^2.2.3",
-        "league/fractal": "^0.18.0"
+        "craftcms/cms": "^3.3.0",
+        "algolia/algoliasearch-client-php": "^2.3",
+        "league/fractal": "^0.18",
+        "tightenco/collect": "^5.5"
     },
     "repositories": [
         {
@@ -31,9 +33,18 @@
             "url": "https://asset-packagist.org"
         }
     ],
+    "require-dev": {
+        "vlucas/phpdotenv": "^3.0",
+        "codeception/codeception": "^3.1"
+    },
     "autoload": {
         "psr-4": {
           "rias\\scout\\": "src/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "7.0"
         }
     },
     "extra": {

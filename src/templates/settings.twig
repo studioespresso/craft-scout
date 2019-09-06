@@ -1,18 +1,89 @@
 {# @var craft \craft\web\twig\variables\CraftVariable #}
-{#
-/**
- * Scout plugin for Craft CMS 3.x
- *
- * Scout Settings.twig
- *
- * @author    Rias
- * @copyright Copyright (c) 2017 Rias
- * @link      https://rias.be
- * @package   Scout
- * @since     0.1.0
- */
-#}
-
 {% import "_includes/forms" as forms %}
 
-<p>Scout's settings can only be set using a `scout.php` config file.</p>
+{% macro configWarning(setting) -%}
+    {% set setting = '<code>'~setting~'</code>' %}
+    {{ "This is being overridden by the {setting} config setting in your {file} config file."|t('scout', {
+        setting: setting,
+        file: 'scout.php'
+    })|raw }}
+{%- endmacro %}
+{% from _self import configWarning %}
+
+{{ forms.lightswitchfield({
+    label: 'Sync',
+    name: 'sync',
+    instructions: 'Should Scout sync its indices automatically',
+    on: settings.sync,
+    disabled: 'sync' in overrides,
+    warning: 'sync' in overrides ? configWarning('sync'),
+}) }}
+
+{{ forms.lightswitchfield({
+    label: 'Queue',
+    name: 'queue',
+    instructions: 'Should Scout use a queue for syncing',
+    on: settings.queue,
+    disabled: 'queue' in overrides,
+    warning: 'queue' in overrides ? configWarning('queue'),
+}) }}
+
+{{ forms.textfield({
+    label: 'Connection timeout',
+    name: 'connect_timeout',
+    type: 'number',
+    instructions: 'The connection timeout to Algolia in seconds',
+    value: settings.connect_timeout,
+    disabled: 'connect_timeout' in overrides,
+    warning: 'connect_timeout' in overrides ? configWarning('connect_timeout'),
+}) }}
+
+{{ forms.textfield({
+    label: 'Batch size',
+    name: 'batch_size',
+    type: 'number',
+    instructions: 'This is used when running an import on a full index.',
+    value: settings.batch_size,
+    disabled: 'batch_size' in overrides,
+    warning: 'batch_size' in overrides ? configWarning('batch_size'),
+}) }}
+
+{{ forms.autosuggestfield({
+    label: 'Application ID',
+    name: 'application_id',
+    instructions: 'The Algolia Application ID can be found in your [Algolia Account](https://www.algolia.com/api-keys)',
+    suggestEnvVars: true,
+    value: settings.application_id,
+    disabled: 'application_id' in overrides,
+    warning: 'application_id' in overrides ? configWarning('application_id'),
+}) }}
+
+{{ forms.autosuggestfield({
+    label: 'Admin API Key',
+    name: 'admin_api_key',
+    instructions: 'The Algolia Admin API Key can be found in your [Algolia Account](https://www.algolia.com/api-keys)',
+    suggestEnvVars: true,
+    value: settings.admin_api_key,
+    disabled: 'admin_api_key' in overrides,
+    warning: 'admin_api_key' in overrides ? configWarning('admin_api_key'),
+}) }}
+
+{{ forms.autosuggestfield({
+    label: 'Search API Key',
+    name: 'search_api_key',
+    instructions: 'The Algolia Search API Key can be found in your [Algolia Account](https://www.algolia.com/api-keys)',
+    suggestEnvVars: true,
+    value: settings.search_api_key,
+    disabled: 'search_api_key' in overrides,
+    warning: 'search_api_key' in overrides ? configWarning('search_api_key'),
+}) }}
+
+<div class="field">
+    <div class="heading">
+        <label>Indices</label>
+
+        <div class="instructions">
+            {{ "Scout’s index settings can only be set using the `scout.php` config file." | t('scout') | markdown }}
+        </div>
+    </div>
+</div>
