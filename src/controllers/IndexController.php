@@ -3,14 +3,12 @@
 namespace rias\scout\controllers;
 
 use Craft;
-use craft\helpers\Console;
 use craft\helpers\UrlHelper;
 use craft\web\Controller;
 use rias\scout\engines\Engine;
 use rias\scout\jobs\ImportIndex;
 use rias\scout\Scout;
 use rias\scout\utilities\ScoutUtility;
-use yii\console\ExitCode;
 
 class IndexController extends Controller
 {
@@ -71,7 +69,7 @@ class IndexController extends Controller
         $index = Craft::$app->getRequest()->getRequiredBodyParam('index');
         $engines = Scout::$plugin->getSettings()->getEngines();
 
-        /** @var \rias\scout\engines\Engine $engine */
+        /* @var \rias\scout\engines\Engine $engine */
         return $engines->first(function (Engine $engine) use ($index) {
             return $engine->scoutIndex->indexName === $index;
         });

@@ -4,16 +4,7 @@ namespace yournamespace\tests;
 
 use Codeception\Test\Unit;
 use Craft;
-use craft\elements\Entry;
-use craft\events\ModelEvent;
-use craft\models\Section;
-use craft\models\Section_SiteSettings;
-use FakeEngine;
-use InvalidEngine;
-use rias\scout\engines\AlgoliaEngine;
-use rias\scout\engines\Engine;
 use rias\scout\Scout;
-use rias\scout\ScoutIndex;
 use UnitTester;
 
 class ScoutVariableTest extends Unit
@@ -32,7 +23,7 @@ class ScoutVariableTest extends Unit
         ]);
         $scout->init();
 
-        $template = "{{ craft.scout.algoliaApplicationId }}";
+        $template = '{{ craft.scout.algoliaApplicationId }}';
 
         $output = Craft::$app->getView()->renderString($template);
 
@@ -48,7 +39,7 @@ class ScoutVariableTest extends Unit
         ]);
         $scout->init();
 
-        $template = "{{ craft.scout.algoliaAdminApiKey }}";
+        $template = '{{ craft.scout.algoliaAdminApiKey }}';
 
         $output = Craft::$app->getView()->renderString($template);
 
@@ -64,7 +55,7 @@ class ScoutVariableTest extends Unit
         ]);
         $scout->init();
 
-        $template = "{{ craft.scout.algoliaSearchApiKey }}";
+        $template = '{{ craft.scout.algoliaSearchApiKey }}';
 
         $output = Craft::$app->getView()->renderString($template);
 
@@ -77,7 +68,7 @@ class ScoutVariableTest extends Unit
         $scout = new Scout('scout');
         $scout->init();
 
-        $template = "{{ craft.scout.pluginName }}";
+        $template = '{{ craft.scout.pluginName }}';
 
         $output = Craft::$app->getView()->renderString($template);
 

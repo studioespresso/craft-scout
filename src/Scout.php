@@ -9,10 +9,8 @@ use craft\base\Element;
 use craft\base\Plugin;
 use craft\events\DefineBehaviorsEvent;
 use craft\events\RegisterComponentTypesEvent;
-use craft\events\RegisterUrlRulesEvent;
 use craft\services\Utilities;
 use craft\web\twig\variables\CraftVariable;
-use craft\web\UrlManager;
 use Exception;
 use rias\scout\behaviors\SearchableBehavior;
 use rias\scout\models\Settings;
@@ -46,8 +44,8 @@ class Scout extends Plugin
 
         Craft::$container->setSingleton(SearchClient::class, function () {
             $config = SearchConfig::create(
-                Scout::$plugin->getSettings()->getApplicationId(),
-                Scout::$plugin->getSettings()->getAdminApiKey()
+                self::$plugin->getSettings()->getApplicationId(),
+                self::$plugin->getSettings()->getAdminApiKey()
             );
 
             $config->setConnectTimeout($this->getSettings()->connect_timeout);
@@ -85,7 +83,7 @@ class Scout extends Plugin
         $overrides = Craft::$app->getConfig()->getConfigFromFile(strtolower($this->handle));
 
         return Craft::$app->getView()->renderTemplate('scout/settings', [
-            'settings' => $this->getSettings(),
+            'settings'  => $this->getSettings(),
             'overrides' => array_keys($overrides),
         ]);
     }
@@ -95,7 +93,7 @@ class Scout extends Plugin
         Event::on(
             Utilities::class,
             Utilities::EVENT_REGISTER_UTILITY_TYPES,
-            function(RegisterComponentTypesEvent $event) {
+            function (RegisterComponentTypesEvent $event) {
                 $event->types[] = ScoutUtility::class;
             }
         );
@@ -132,7 +130,7 @@ class Scout extends Plugin
         $indices = $this->getSettings()->getIndices();
 
         if ($indices->unique('indexName')->count() !== $indices->count()) {
-            throw new Exception("Index names must be unique in the Scout config.");
+            throw new Exception('Index names must be unique in the Scout config.');
         }
     }
 }

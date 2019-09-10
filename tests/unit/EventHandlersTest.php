@@ -9,11 +9,7 @@ use craft\events\ModelEvent;
 use craft\fields\Entries;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
-use crafttests\fixtures\EntryFixture;
 use FakeEngine;
-use InvalidEngine;
-use rias\scout\engines\AlgoliaEngine;
-use rias\scout\engines\Engine;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
 use UnitTester;
@@ -42,18 +38,18 @@ class EventHandlersTest extends Unit
         parent::_before();
 
         $section = new Section([
-            'name' => 'News',
-            'handle' => 'news',
-            'type' => Section::TYPE_CHANNEL,
+            'name'         => 'News',
+            'handle'       => 'news',
+            'type'         => Section::TYPE_CHANNEL,
             'siteSettings' => [
                 new Section_SiteSettings([
-                    'siteId' => Craft::$app->getSites()->getPrimarySite()->id,
+                    'siteId'           => Craft::$app->getSites()->getPrimarySite()->id,
                     'enabledByDefault' => true,
-                    'hasUrls' => true,
-                    'uriFormat' => 'foo/{slug}',
-                    'template' => 'foo/_entry',
+                    'hasUrls'          => true,
+                    'uriFormat'        => 'foo/{slug}',
+                    'template'         => 'foo/_entry',
                 ]),
-            ]
+            ],
         ]);
 
         Craft::$app->getSections()->saveSection($section);
@@ -73,8 +69,8 @@ class EventHandlersTest extends Unit
         $scout = new Scout('scout');
         $scout->setSettings([
             'indices' => [$scoutIndex],
-            'engine' => FakeEngine::class,
-            'queue' => false,
+            'engine'  => FakeEngine::class,
+            'queue'   => false,
         ]);
         $scout->init();
 
@@ -84,8 +80,8 @@ class EventHandlersTest extends Unit
         $element->siteId = 1;
         $element->sectionId = $this->section->id;
         $element->typeId = $this->section->getEntryTypes()[0]->id;
-        $element->title = "A new beginning.";
-        $element->slug = "a-new-beginning";
+        $element->title = 'A new beginning.';
+        $element->slug = 'a-new-beginning';
 
         Craft::$app->getElements()->saveElement($element);
 
@@ -95,8 +91,8 @@ class EventHandlersTest extends Unit
         $element2->siteId = 1;
         $element2->sectionId = $this->section->id;
         $element2->typeId = $this->section->getEntryTypes()[0]->id;
-        $element2->title = "Second element.";
-        $element2->slug = "second-element";
+        $element2->title = 'Second element.';
+        $element2->slug = 'second-element';
 
         Craft::$app->getElements()->saveElement($element2);
 
@@ -119,7 +115,7 @@ class EventHandlersTest extends Unit
     public function it_also_updates_related_elements()
     {
         $relationField = new Entries([
-            'name' => 'Entry field',
+            'name'   => 'Entry field',
             'handle' => 'entryField',
         ]);
         Craft::$app->getFields()->saveField($relationField);
@@ -197,7 +193,7 @@ class EventHandlersTest extends Unit
     public function it_also_updates_related_elements_before_delete()
     {
         $relationField = new Entries([
-            'name' => 'Entry field',
+            'name'   => 'Entry field',
             'handle' => 'entryField',
         ]);
         Craft::$app->getFields()->saveField($relationField);

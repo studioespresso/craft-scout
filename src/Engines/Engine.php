@@ -5,7 +5,6 @@ namespace rias\scout\engines;
 use Algolia\AlgoliaSearch\SearchClient;
 use rias\scout\IndexSettings;
 use rias\scout\ScoutIndex;
-use yii\helpers\VarDumper;
 
 abstract class Engine
 {
@@ -50,7 +49,7 @@ abstract class Engine
         }
 
         return [
-            'save' => $objectsToSave,
+            'save'   => $objectsToSave,
             'delete' => $objectsToDelete,
         ];
     }

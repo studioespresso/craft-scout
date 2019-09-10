@@ -51,11 +51,11 @@ class AlgoliaEngineTest extends Unit
         $scoutIndex->transformer = function ($entry) {
             if ($entry->title === 'split') {
                 return [
-                    'title' => $entry->title,
+                    'title'   => $entry->title,
                     'article' => [
                         'Paragraph 1',
                         'Paragraph 2',
-                    ]
+                    ],
                 ];
             }
 
@@ -170,7 +170,7 @@ class AlgoliaEngineTest extends Unit
         $this->engine->updateSettings(IndexSettings::create()->minWordSizefor2Typos(10));
 
         $this->assertEquals([
-            'minWordSizefor2Typos' => 10
+            'minWordSizefor2Typos' => 10,
         ], $this->searchClient->settings);
     }
 
@@ -180,7 +180,7 @@ class AlgoliaEngineTest extends Unit
         $this->engine->updateSettings(IndexSettings::create()->minWordSizefor2Typos(10));
 
         $this->assertEquals([
-            'minWordSizefor2Typos' => 10
+            'minWordSizefor2Typos' => 10,
         ], $this->engine->getSettings());
     }
 

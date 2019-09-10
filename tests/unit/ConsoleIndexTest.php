@@ -34,7 +34,7 @@ class ConsoleIndexTest extends ConsoleTest
 
         $scout = Craft::$app->getPlugins()->getPlugin('scout');
         $scout->setSettings([
-            'engine' => FakeEngine::class,
+            'engine'  => FakeEngine::class,
             'indices' => [
                 ScoutIndex::create('blog_nl')->criteria(function (EntryQuery $query) {
                     return $query->anyStatus()->site('*')->title('NL');
@@ -46,20 +46,20 @@ class ConsoleIndexTest extends ConsoleTest
                 })->transformer(function (Entry $entry) {
                     return ['title' => $entry->title];
                 }),
-            ]
+            ],
         ]);
 
         $section = new Section([
-            'name' => 'News',
-            'handle' => 'news',
-            'type' => Section::TYPE_CHANNEL,
+            'name'         => 'News',
+            'handle'       => 'news',
+            'type'         => Section::TYPE_CHANNEL,
             'siteSettings' => [
                 new Section_SiteSettings([
-                    'siteId' => Craft::$app->getSites()->getPrimarySite()->id,
+                    'siteId'           => Craft::$app->getSites()->getPrimarySite()->id,
                     'enabledByDefault' => true,
-                    'hasUrls' => false,
+                    'hasUrls'          => false,
                 ]),
-            ]
+            ],
         ]);
 
         Craft::$app->getSections()->saveSection($section);
@@ -68,8 +68,8 @@ class ConsoleIndexTest extends ConsoleTest
         $element->siteId = 1;
         $element->sectionId = $section->id;
         $element->typeId = $section->getEntryTypes()[0]->id;
-        $element->title = "NL";
-        $element->slug = "nl";
+        $element->title = 'NL';
+        $element->slug = 'nl';
 
         Craft::$app->getElements()->saveElement($element, false, false);
 
@@ -79,8 +79,8 @@ class ConsoleIndexTest extends ConsoleTest
         $element2->siteId = 1;
         $element2->sectionId = $section->id;
         $element2->typeId = $section->getEntryTypes()[0]->id;
-        $element2->title = "FR";
-        $element2->slug = "fr";
+        $element2->title = 'FR';
+        $element2->slug = 'fr';
 
         Craft::$app->getElements()->saveElement($element2, false, false);
 
@@ -92,8 +92,8 @@ class ConsoleIndexTest extends ConsoleTest
     /** @test * */
     public function it_can_flush_all_indices()
     {
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
 
         $this->consoleCommand('scout/index/flush')
             ->confirm('Are you sure you want to flush Scout?', true)
@@ -102,15 +102,15 @@ class ConsoleIndexTest extends ConsoleTest
             ->exitCode(ExitCode::OK)
             ->run();
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
     }
 
     /** @test * */
     public function it_can_flush_a_specific_index()
     {
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
 
         $this->consoleCommand('scout/index/flush', ['blog_nl'])
             ->confirm('Are you sure you want to flush Scout?', true)
@@ -118,30 +118,30 @@ class ConsoleIndexTest extends ConsoleTest
             ->exitCode(ExitCode::OK)
             ->run();
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
     }
 
     /** @test * */
     public function it_needs_confirmation_to_flush()
     {
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
 
         $this->consoleCommand('scout/index/flush')
             ->confirm('Are you sure you want to flush Scout?', false)
             ->exitCode(ExitCode::OK)
             ->run();
 
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
     }
 
     /** @test * */
     public function it_can_force_flush()
     {
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
 
         $this->consoleCommand('scout/index/flush', ['force' => true])
             ->stdOut("Flushed index blog_nl\n")
@@ -149,15 +149,15 @@ class ConsoleIndexTest extends ConsoleTest
             ->exitCode(ExitCode::OK)
             ->run();
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
     }
 
     /** @test * */
     public function it_can_update_all_indices()
     {
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
 
         $this->consoleCommand('scout/index/import')
             ->stdOut("Updated 1/1 element(s) in blog_nl\n")
@@ -165,32 +165,32 @@ class ConsoleIndexTest extends ConsoleTest
             ->exitCode(ExitCode::OK)
             ->run();
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
     }
 
     /** @test * */
     public function it_can_update_a_specific_index()
     {
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
 
         $this->consoleCommand('scout/index/import', ['blog_nl'])
             ->stdOut("Updated 1/1 element(s) in blog_nl\n")
             ->exitCode(ExitCode::OK)
             ->run();
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
     }
 
     /** @test * */
     public function it_can_refresh_all_indices()
     {
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
 
         $this->consoleCommand('scout/index/refresh')
             ->confirm('Are you sure you want to flush Scout?', true)
@@ -201,19 +201,19 @@ class ConsoleIndexTest extends ConsoleTest
             ->exitCode(ExitCode::OK)
             ->run();
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
     }
 
     /** @test * */
     public function it_can_refresh_a_specific_index()
     {
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
 
         $this->consoleCommand('scout/index/refresh', ['blog_nl'])
             ->confirm('Are you sure you want to flush Scout?', true)
@@ -222,19 +222,19 @@ class ConsoleIndexTest extends ConsoleTest
             ->exitCode(ExitCode::OK)
             ->run();
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
     }
 
     /** @test * */
     public function it_can_force_refresh_indices()
     {
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
 
         $this->consoleCommand('scout/index/refresh', ['force' => true])
             ->stdOut("Flushed index blog_nl\n")
@@ -244,9 +244,9 @@ class ConsoleIndexTest extends ConsoleTest
             ->exitCode(ExitCode::OK)
             ->run();
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
     }
 }
