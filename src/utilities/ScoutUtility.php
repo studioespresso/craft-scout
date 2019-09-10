@@ -21,7 +21,11 @@ class ScoutUtility extends Utility
 
     public static function iconPath()
     {
-        return Craft::getAlias('@app/icons/magnifying-glass.svg');
+        if ($icon = Craft::getAlias('@app/icons/magnifying-glass.svg')) {
+            return $icon;
+        }
+
+        return '';
     }
 
     public static function contentHtml(): string

@@ -27,6 +27,7 @@ use yii\base\Event;
 
 /**
  * @property Element $owner
+ * @mixin Element
  */
 class SearchableBehavior extends Behavior
 {
@@ -53,7 +54,7 @@ class SearchableBehavior extends Behavior
         $event->sender->searchable();
     }
 
-    public function eventBeforeDelete(ModelEvent $event): void
+    public function eventBeforeDelete(): void
     {
         if (!Scout::$plugin->getSettings()->sync) {
             return;
