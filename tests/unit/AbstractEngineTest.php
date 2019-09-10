@@ -3,12 +3,9 @@
 namespace yournamespace\tests;
 
 use Codeception\Test\Unit;
-use Craft;
-use craft\elements\Entry;
 use FakeEngine;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
-use UnitTester;
 
 class AbstractEngineTest extends Unit
 {
@@ -18,14 +15,14 @@ class AbstractEngineTest extends Unit
 
         $scout = new Scout('scout');
         $scout->setSettings([
-            'engine' => FakeEngine::class,
+            'engine'  => FakeEngine::class,
             'indices' => [
                 ScoutIndex::create('blog')
                     ->splitElementsOn([
                         'body',
                         'article',
-                    ])
-            ]
+                    ]),
+            ],
         ]);
         $scout->init();
     }
@@ -39,13 +36,13 @@ class AbstractEngineTest extends Unit
         $objects = [
             [
                 'objectID' => 1,
-                'title' => 'One',
-                'body' => [
+                'title'    => 'One',
+                'body'     => [
                     'Paragraph 1',
                     'Paragraph 2',
                     'Paragraph 3',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->assertEqualsCanonicalizing([
@@ -57,14 +54,14 @@ class AbstractEngineTest extends Unit
             'delete' => [
                 [
                     'objectID' => 1,
-                    'title' => 'One',
-                    'body' => [
+                    'title'    => 'One',
+                    'body'     => [
                         'Paragraph 1',
                         'Paragraph 2',
                         'Paragraph 3',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ], $engine->splitObjects($objects));
     }
 
@@ -77,19 +74,18 @@ class AbstractEngineTest extends Unit
         $objects = [
             [
                 'objectID' => 1,
-                'title' => 'One',
-                'body' => 'Paragraph 1',
-            ]
+                'title'    => 'One',
+                'body'     => 'Paragraph 1',
+            ],
         ];
 
         $this->assertEqualsCanonicalizing([
             'save' => [
                 ['objectID' => 1, 'title' => 'One', 'body' => 'Paragraph 1', 'distinctID' => 1],
             ],
-            'delete' => []
+            'delete' => [],
         ], $engine->splitObjects($objects));
     }
-
 
     /** @test * */
     public function it_handles_multiple_split_fields()
@@ -100,8 +96,8 @@ class AbstractEngineTest extends Unit
         $objects = [
             [
                 'objectID' => 1,
-                'title' => 'One',
-                'body' => [
+                'title'    => 'One',
+                'body'     => [
                     'Paragraph 1',
                     'Paragraph 2',
                     'Paragraph 3',
@@ -110,8 +106,8 @@ class AbstractEngineTest extends Unit
                     'Paragraph 1',
                     'Paragraph 2',
                     'Paragraph 3',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->assertEqualsCanonicalizing([
@@ -129,8 +125,8 @@ class AbstractEngineTest extends Unit
             'delete' => [
                 [
                     'objectID' => 1,
-                    'title' => 'One',
-                    'body' => [
+                    'title'    => 'One',
+                    'body'     => [
                         'Paragraph 1',
                         'Paragraph 2',
                         'Paragraph 3',
@@ -139,9 +135,9 @@ class AbstractEngineTest extends Unit
                         'Paragraph 1',
                         'Paragraph 2',
                         'Paragraph 3',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ], $engine->splitObjects($objects));
     }
 }

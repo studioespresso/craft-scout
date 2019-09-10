@@ -103,10 +103,9 @@ class ScoutIndexTest extends Unit
     {
         $index = new ScoutIndex('Blog');
 
-        $this->expectExceptionMessage("You must return a valid ElementQuery from the criteria function.");
+        $this->expectExceptionMessage('You must return a valid ElementQuery from the criteria function.');
 
         $index->criteria(function ($query) {
-            return null;
         });
     }
 

@@ -29,7 +29,7 @@ class MakeSearchable extends BaseJob
 
     public function execute($queue)
     {
-        if (! $this->element) {
+        if (!$this->element) {
             return;
         }
 
@@ -42,7 +42,7 @@ class MakeSearchable extends BaseJob
 
     protected function defaultDescription()
     {
-        if (! $this->element) {
+        if (!$this->element) {
             return '';
         }
 

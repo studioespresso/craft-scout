@@ -1,10 +1,10 @@
 <?php
 
 use Algolia\AlgoliaSearch\SearchClient;
-use rias\scout\IndexSettings;
-use Tightenco\Collect\Support\Arr;
 use rias\scout\engines\Engine;
+use rias\scout\IndexSettings;
 use rias\scout\ScoutIndex;
+use Tightenco\Collect\Support\Arr;
 
 class FakeEngine extends Engine
 {
@@ -19,11 +19,11 @@ class FakeEngine extends Engine
     public function update($models): void
     {
         $previousUpdates = Craft::$app->getCache()->get("scout-{$this->scoutIndex->indexName}-updateCalled") ?? 0;
-        Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-updateCalled", $previousUpdates+1);
+        Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-updateCalled", $previousUpdates + 1);
 
         foreach (Arr::wrap($models) as $model) {
             $previousUpdates = Craft::$app->getCache()->get("scout-{$this->scoutIndex->indexName}-{$model->id}-updateCalled") ?? 0;
-            Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-{$model->id}-updateCalled", $previousUpdates+1);
+            Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-{$model->id}-updateCalled", $previousUpdates + 1);
 
             Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-{$model->id}", $model);
         }
@@ -33,7 +33,7 @@ class FakeEngine extends Engine
     {
         foreach (Arr::wrap($models) as $model) {
             $previousDeletes = Craft::$app->getCache()->get("scout-{$this->scoutIndex->indexName}-{$model->id}-deleteCalled") ?? 0;
-            Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-{$model->id}-deleteCalled", $previousDeletes+1);
+            Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-{$model->id}-deleteCalled", $previousDeletes + 1);
 
             if (Craft::$app->getCache()->get("scout-{$this->scoutIndex->indexName}-{$model->id}")) {
                 Craft::$app->getCache()->delete("scout-{$this->scoutIndex->indexName}-{$model->id}");
@@ -44,7 +44,7 @@ class FakeEngine extends Engine
     public function flush(): void
     {
         $previousFlushes = Craft::$app->getCache()->get("scout-{$this->scoutIndex->indexName}-flushCalled") ?? 0;
-        Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-flushCalled", $previousFlushes+1);
+        Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-flushCalled", $previousFlushes + 1);
     }
 
     public function updateSettings(IndexSettings $indexSettings): void

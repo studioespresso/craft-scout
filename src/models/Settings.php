@@ -68,7 +68,7 @@ class Settings extends Model
     {
         $engine = Craft::$container->get($this->engine, [$scoutIndex]);
 
-        if (! $engine instanceof Engine) {
+        if (!$engine instanceof Engine) {
             throw new Exception("Invalid engine {$this->engine}, must implement ".Engine::class);
         }
 

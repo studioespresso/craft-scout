@@ -45,7 +45,7 @@ class AlgoliaEngine extends Engine
         $objects = $elements->map(function (Element $element) {
             /** @var \rias\scout\behaviors\SearchableBehavior $element */
             if (empty($searchableData = $element->toSearchableArray($this->scoutIndex))) {
-                return null;
+                return;
             }
 
             return array_merge(
@@ -54,7 +54,7 @@ class AlgoliaEngine extends Engine
             );
         })->filter()->values()->all();
 
-        if (! empty($this->scoutIndex->splitElementsOn)) {
+        if (!empty($this->scoutIndex->splitElementsOn)) {
             $result = $this->splitObjects($objects);
 
             $this->delete($result['delete']);
@@ -62,7 +62,7 @@ class AlgoliaEngine extends Engine
             $objects = $result['save'];
         }
 
-        if (! empty($objects)) {
+        if (!empty($objects)) {
             $index = $this->algolia->initIndex($this->scoutIndex->indexName);
             $index->saveObjects($objects);
         }

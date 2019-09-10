@@ -7,7 +7,6 @@ use Craft;
 use craft\elements\Entry;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
-use craft\services\Plugins;
 use InvalidEngine;
 use rias\scout\engines\AlgoliaEngine;
 use rias\scout\engines\Engine;
@@ -30,18 +29,18 @@ class ScoutTest extends Unit
         parent::_before();
 
         $section = new Section([
-            'name' => 'News',
-            'handle' => 'news',
-            'type' => Section::TYPE_CHANNEL,
+            'name'         => 'News',
+            'handle'       => 'news',
+            'type'         => Section::TYPE_CHANNEL,
             'siteSettings' => [
                 new Section_SiteSettings([
-                    'siteId' => Craft::$app->getSites()->getPrimarySite()->id,
+                    'siteId'           => Craft::$app->getSites()->getPrimarySite()->id,
                     'enabledByDefault' => true,
-                    'hasUrls' => true,
-                    'uriFormat' => 'foo/{slug}',
-                    'template' => 'foo/_entry',
+                    'hasUrls'          => true,
+                    'uriFormat'        => 'foo/{slug}',
+                    'template'         => 'foo/_entry',
                 ]),
-            ]
+            ],
         ]);
 
         Craft::$app->getSections()->saveSection($section);
@@ -85,7 +84,7 @@ class ScoutTest extends Unit
         ]);
         $scoutIndex = new ScoutIndex('Blog');
 
-        $this->expectExceptionMessage("Invalid engine ". InvalidEngine::class.", must implement ".Engine::class);
+        $this->expectExceptionMessage('Invalid engine '.InvalidEngine::class.', must implement '.Engine::class);
 
         $scout->getSettings()->getEngine($scoutIndex);
     }
@@ -101,7 +100,7 @@ class ScoutTest extends Unit
             ],
         ]);
 
-        $this->expectExceptionMessage("Index names must be unique in the Scout config.");
+        $this->expectExceptionMessage('Index names must be unique in the Scout config.');
 
         $scout->init();
     }

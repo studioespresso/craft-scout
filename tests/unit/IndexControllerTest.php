@@ -7,7 +7,6 @@ use Craft;
 use craft\elements\Entry;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
-use craft\web\Request;
 use FakeEngine;
 use rias\scout\controllers\IndexController;
 use rias\scout\Scout;
@@ -29,8 +28,8 @@ class IndexControllerTest extends Unit
 
         $scout = new Scout('scout');
         $scout->setSettings([
-            'queue' => false,
-            'engine' => FakeEngine::class,
+            'queue'   => false,
+            'engine'  => FakeEngine::class,
             'indices' => [
                 ScoutIndex::create('blog_nl')
                     ->criteria(function ($query) {
@@ -40,23 +39,23 @@ class IndexControllerTest extends Unit
                     ->criteria(function ($query) {
                         return $query;
                     }),
-            ]
+            ],
         ]);
         $scout->init();
 
         $section = new Section([
-            'name' => 'News',
-            'handle' => 'news',
-            'type' => Section::TYPE_CHANNEL,
+            'name'         => 'News',
+            'handle'       => 'news',
+            'type'         => Section::TYPE_CHANNEL,
             'siteSettings' => [
                 new Section_SiteSettings([
-                    'siteId' => Craft::$app->getSites()->getPrimarySite()->id,
+                    'siteId'           => Craft::$app->getSites()->getPrimarySite()->id,
                     'enabledByDefault' => true,
-                    'hasUrls' => true,
-                    'uriFormat' => 'foo/{slug}',
-                    'template' => 'foo/_entry',
+                    'hasUrls'          => true,
+                    'uriFormat'        => 'foo/{slug}',
+                    'template'         => 'foo/_entry',
                 ]),
-            ]
+            ],
         ]);
 
         Craft::$app->getSections()->saveSection($section);
@@ -65,8 +64,8 @@ class IndexControllerTest extends Unit
         $element->siteId = 1;
         $element->sectionId = $section->id;
         $element->typeId = $section->getEntryTypes()[0]->id;
-        $element->title = "A new beginning.";
-        $element->slug = "a-new-beginning";
+        $element->title = 'A new beginning.';
+        $element->slug = 'a-new-beginning';
 
         Craft::$app->getElements()->saveElement($element);
 
@@ -79,7 +78,7 @@ class IndexControllerTest extends Unit
     public function it_can_flush_an_index()
     {
         $this->tester->mockCraftMethods('request', [
-            'getIsPost' => true,
+            'getIsPost'            => true,
             'getRequiredBodyParam' => 'blog_nl',
         ]);
 
@@ -87,15 +86,15 @@ class IndexControllerTest extends Unit
 
         $controller->actionFlush();
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(false, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(false, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
     }
 
     /** @test * */
     public function it_can_import_an_index()
     {
         $this->tester->mockCraftMethods('request', [
-            'getIsPost' => true,
+            'getIsPost'            => true,
             'getRequiredBodyParam' => 'blog_nl',
         ]);
 
@@ -103,8 +102,8 @@ class IndexControllerTest extends Unit
 
         $controller->actionImport();
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(false, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(false, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
     }
 
     /** @test * */
@@ -113,7 +112,7 @@ class IndexControllerTest extends Unit
         $this->scout->setSettings(['queue' => true]);
 
         $this->tester->mockCraftMethods('request', [
-            'getIsPost' => true,
+            'getIsPost'            => true,
             'getRequiredBodyParam' => 'blog_nl',
         ]);
 
@@ -121,21 +120,21 @@ class IndexControllerTest extends Unit
 
         $controller->actionImport();
 
-        $this->assertEquals(false, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(false, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(false, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(false, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
 
-        $this->tester->assertPushedToQueue("Indexing element(s) in “blog_nl”");
+        $this->tester->assertPushedToQueue('Indexing element(s) in “blog_nl”');
         Craft::$app->getQueue()->run();
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(false, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(false, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
     }
 
     /** @test * */
     public function it_can_refresh_an_index()
     {
         $this->tester->mockCraftMethods('request', [
-            'getIsPost' => true,
+            'getIsPost'            => true,
             'getRequiredBodyParam' => 'blog_nl',
         ]);
 
@@ -143,9 +142,9 @@ class IndexControllerTest extends Unit
 
         $controller->actionRefresh();
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-flushCalled"));
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-blog_nl-updateCalled"));
-        $this->assertEquals(false, Craft::$app->getCache()->get("scout-blog_fr-flushCalled"));
-        $this->assertEquals(false, Craft::$app->getCache()->get("scout-blog_fr-updateCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(false, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
+        $this->assertEquals(false, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
     }
 }

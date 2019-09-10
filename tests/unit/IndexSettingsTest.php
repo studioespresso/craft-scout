@@ -18,15 +18,15 @@ class IndexSettingsTest extends Unit
     {
         $indexSettings = IndexSettings::create([
             'forwardToReplicas' => false,
-            'settings' => [
-                'minWordSizefor1Typo' => 4,
+            'settings'          => [
+                'minWordSizefor1Typo'  => 4,
                 'minWordSizefor2Typos' => 10,
-            ]
+            ],
         ]);
 
         $this->assertEquals(false, $indexSettings->forwardToReplicas);
         $this->assertEquals([
-            'minWordSizefor1Typo' => 4,
+            'minWordSizefor1Typo'  => 4,
             'minWordSizefor2Typos' => 10,
         ], $indexSettings->settings);
     }
@@ -43,7 +43,7 @@ class IndexSettingsTest extends Unit
 
         $this->assertEquals(false, $indexSettings->forwardToReplicas);
         $this->assertEquals([
-            'minWordSizefor1Typo' => 4,
+            'minWordSizefor1Typo'  => 4,
             'minWordSizefor2Typos' => 10,
         ], $indexSettings->settings);
     }
