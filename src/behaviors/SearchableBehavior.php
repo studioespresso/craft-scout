@@ -36,17 +36,17 @@ class SearchableBehavior extends Behavior
     public function events()
     {
         return [
-            Element::EVENT_AFTER_SAVE => 'eventUpdate',
-            Element::EVENT_AFTER_RESTORE => 'eventUpdate',
+            Element::EVENT_AFTER_SAVE              => 'eventUpdate',
+            Element::EVENT_AFTER_RESTORE           => 'eventUpdate',
             Element::EVENT_AFTER_MOVE_IN_STRUCTURE => 'eventUpdate',
-            Element::EVENT_BEFORE_DELETE => 'eventBeforeDelete',
-            Element::EVENT_AFTER_DELETE => 'eventAfterDelete',
+            Element::EVENT_BEFORE_DELETE           => 'eventBeforeDelete',
+            Element::EVENT_AFTER_DELETE            => 'eventAfterDelete',
         ];
     }
 
     public function eventUpdate(ModelEvent $event): void
     {
-        if (! Scout::$plugin->getSettings()->sync) {
+        if (!Scout::$plugin->getSettings()->sync) {
             return;
         }
 
@@ -55,7 +55,7 @@ class SearchableBehavior extends Behavior
 
     public function eventBeforeDelete(ModelEvent $event): void
     {
-        if (! Scout::$plugin->getSettings()->sync) {
+        if (!Scout::$plugin->getSettings()->sync) {
             return;
         }
 
@@ -64,7 +64,7 @@ class SearchableBehavior extends Behavior
 
     public function eventAfterDelete(Event $event): void
     {
-        if (! Scout::$plugin->getSettings()->sync) {
+        if (!Scout::$plugin->getSettings()->sync) {
             return;
         }
 
@@ -103,15 +103,15 @@ class SearchableBehavior extends Behavior
     public function searchable(bool $propagate = true): void
     {
         $this->searchableUsing()->each(function (Engine $engine) {
-            if (! $this->validatesCriteria($engine->scoutIndex)) {
+            if (!$this->validatesCriteria($engine->scoutIndex)) {
                 return $engine->delete($this->owner);
             }
 
             if (Scout::$plugin->getSettings()->queue) {
                 return Craft::$app->getQueue()->push(
                     new MakeSearchable([
-                        'id' => $this->owner->id,
-                        'siteId' => $this->owner->siteId,
+                        'id'        => $this->owner->id,
+                        'siteId'    => $this->owner->siteId,
                         'indexName' => $engine->scoutIndex->indexName,
                     ])
                 );
@@ -122,7 +122,7 @@ class SearchableBehavior extends Behavior
 
         if ($propagate) {
             $this->getRelatedElements()->each(function (Element $relatedElement) {
-                /** @var SearchableBehavior $relatedElement */
+                /* @var SearchableBehavior $relatedElement */
                 $relatedElement->searchable(false);
             });
         }
@@ -134,7 +134,7 @@ class SearchableBehavior extends Behavior
 
         if ($propagate && $this->beforeDeleteRelated) {
             $this->beforeDeleteRelated->each(function (Element $relatedElement) {
-                /** @var SearchableBehavior $relatedElement */
+                /* @var SearchableBehavior $relatedElement */
                 $relatedElement->searchable(false);
             });
         }
@@ -142,8 +142,8 @@ class SearchableBehavior extends Behavior
 
     public function toSearchableArray(ScoutIndex $scoutIndex): array
     {
-        return (new Manager)
-            ->setSerializer(new ArraySerializer)
+        return (new Manager())
+            ->setSerializer(new ArraySerializer())
             ->createData(new Item($this->owner, $scoutIndex->getTransformer()))
             ->toArray();
     }

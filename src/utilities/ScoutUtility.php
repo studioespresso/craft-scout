@@ -4,15 +4,8 @@ namespace rias\scout\utilities;
 
 use Craft;
 use craft\base\Utility;
-use craft\db\Table;
-use craft\events\RegisterCacheOptionsEvent;
-use craft\helpers\ArrayHelper;
-use craft\helpers\FileHelper;
-use craft\web\assets\clearcaches\ClearCachesAsset;
 use rias\scout\engines\Engine;
 use rias\scout\Scout;
-use yii\base\Event;
-use yii\base\InvalidArgumentException;
 
 class ScoutUtility extends Utility
 {
@@ -39,11 +32,11 @@ class ScoutUtility extends Utility
 
         $stats = $engines->map(function (Engine $engine) {
             return [
-                'name' => $engine->scoutIndex->indexName,
+                'name'        => $engine->scoutIndex->indexName,
                 'elementType' => $engine->scoutIndex->elementType,
-                'site' => Craft::$app->getSites()->getSiteById($engine->scoutIndex->criteria->siteId),
-                'indexed' => $engine->getTotalRecords(),
-                'elements' => $engine->scoutIndex->criteria->count(),
+                'site'        => Craft::$app->getSites()->getSiteById($engine->scoutIndex->criteria->siteId),
+                'indexed'     => $engine->getTotalRecords(),
+                'elements'    => $engine->scoutIndex->criteria->count(),
             ];
         });
 

@@ -35,14 +35,14 @@ class ScoutIndex
         $this->criteria = $this->elementType::find();
     }
 
-    public static function create(string $indexName): ScoutIndex
+    public static function create(string $indexName): self
     {
         return new self($indexName);
     }
 
-    public function elementType(string $class): ScoutIndex
+    public function elementType(string $class): self
     {
-        if (! (new $class) instanceof Element) {
+        if (!(new $class()) instanceof Element) {
             throw new Exception("Invalid Element Type {$class}");
         }
 
@@ -51,12 +51,12 @@ class ScoutIndex
         return $this;
     }
 
-    public function criteria(callable $criteria): ScoutIndex
+    public function criteria(callable $criteria): self
     {
         $elementQuery = $criteria($this->elementType::find());
 
-        if (! $elementQuery instanceof ElementQuery) {
-            throw new Exception("You must return a valid ElementQuery from the criteria function.");
+        if (!$elementQuery instanceof ElementQuery) {
+            throw new Exception('You must return a valid ElementQuery from the criteria function.');
         }
 
         if (is_null($elementQuery->siteId)) {
@@ -71,14 +71,14 @@ class ScoutIndex
     /*
      * @param $transformer callable|string|array|TransformerAbstract
      */
-    public function transformer($transformer): ScoutIndex
+    public function transformer($transformer): self
     {
         $this->transformer = $transformer;
 
         return $this;
     }
 
-    public function splitElementsOn(array $splitElementsOn): ScoutIndex
+    public function splitElementsOn(array $splitElementsOn): self
     {
         $this->splitElementsOn = $splitElementsOn;
 
@@ -86,8 +86,9 @@ class ScoutIndex
     }
 
     /**
-     * @return callable|\League\Fractal\TransformerAbstract|object
      * @throws \yii\base\InvalidConfigException
+     *
+     * @return callable|\League\Fractal\TransformerAbstract|object
      */
     public function getTransformer()
     {
@@ -102,7 +103,7 @@ class ScoutIndex
         return Craft::createObject($this->transformer);
     }
 
-    public function indexSettings(IndexSettings $indexSettings): ScoutIndex
+    public function indexSettings(IndexSettings $indexSettings): self
     {
         $this->indexSettings = $indexSettings;
 

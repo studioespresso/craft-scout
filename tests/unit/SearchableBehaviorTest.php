@@ -39,18 +39,18 @@ class SearchableBehaviorTest extends Unit
         parent::_before();
 
         $section = new Section([
-            'name' => 'News',
-            'handle' => 'news',
-            'type' => Section::TYPE_CHANNEL,
+            'name'         => 'News',
+            'handle'       => 'news',
+            'type'         => Section::TYPE_CHANNEL,
             'siteSettings' => [
                 new Section_SiteSettings([
-                    'siteId' => Craft::$app->getSites()->getPrimarySite()->id,
+                    'siteId'           => Craft::$app->getSites()->getPrimarySite()->id,
                     'enabledByDefault' => true,
-                    'hasUrls' => true,
-                    'uriFormat' => 'foo/{slug}',
-                    'template' => 'foo/_entry',
+                    'hasUrls'          => true,
+                    'uriFormat'        => 'foo/{slug}',
+                    'template'         => 'foo/_entry',
                 ]),
-            ]
+            ],
         ]);
 
         Craft::$app->getSections()->saveSection($section);
@@ -59,9 +59,9 @@ class SearchableBehaviorTest extends Unit
 
         $scout = new Scout('scout');
         $scout->setSettings([
-            'engine' => FakeEngine::class,
-            'sync' => true,
-            'queue' => false,
+            'engine'  => FakeEngine::class,
+            'sync'    => true,
+            'queue'   => false,
             'indices' => [
                 ScoutIndex::create('Blog')
                     ->elementType(Entry::class)
@@ -78,7 +78,7 @@ class SearchableBehaviorTest extends Unit
                     ->criteria(function (CategoryQuery $query) {
                         return $query->siteId(2);
                     }),
-            ]
+            ],
         ]);
         $scout->init();
         $this->scout = $scout;
@@ -87,8 +87,8 @@ class SearchableBehaviorTest extends Unit
         $element->siteId = 1;
         $element->sectionId = $this->section->id;
         $element->typeId = $this->section->getEntryTypes()[0]->id;
-        $element->title = "A new beginning.";
-        $element->slug = "a-new-beginning";
+        $element->title = 'A new beginning.';
+        $element->slug = 'a-new-beginning';
 
         Craft::$app->getElements()->saveElement($element);
 
@@ -101,7 +101,7 @@ class SearchableBehaviorTest extends Unit
     public function it_can_get_related_elements()
     {
         $relationField = new Entries([
-            'name' => 'Entry field',
+            'name'   => 'Entry field',
             'handle' => 'entryField',
         ]);
         Craft::$app->getFields()->saveField($relationField);

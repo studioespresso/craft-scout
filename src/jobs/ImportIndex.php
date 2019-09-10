@@ -2,12 +2,9 @@
 
 namespace rias\scout\jobs;
 
-use Craft;
-use craft\base\Element;
 use craft\queue\BaseJob;
 use rias\scout\engines\Engine;
 use rias\scout\Scout;
-use Tightenco\Collect\Support\Collection;
 
 class ImportIndex extends BaseJob
 {
@@ -21,7 +18,7 @@ class ImportIndex extends BaseJob
             return $engine->scoutIndex->indexName === $this->indexName;
         });
 
-        if (! $engine) {
+        if (!$engine) {
             return;
         }
 
@@ -33,8 +30,8 @@ class ImportIndex extends BaseJob
 
         foreach ($batch as $elements) {
             $engine->update($elements);
-            $elementsUpdated+= count($elements);
-            $this->setProgress($queue, $elementsUpdated/$elementsCount);
+            $elementsUpdated += count($elements);
+            $this->setProgress($queue, $elementsUpdated / $elementsCount);
         }
     }
 

@@ -2,18 +2,9 @@
 
 namespace yournamespace\tests;
 
-use Algolia\AlgoliaSearch\SearchClient;
 use Codeception\Test\Unit;
 use Craft;
-use craft\elements\Entry;
-use craft\events\ModelEvent;
-use craft\models\Section;
-use craft\models\Section_SiteSettings;
 use FakeEngine;
-use FakeSearchClient;
-use InvalidEngine;
-use rias\scout\engines\AlgoliaEngine;
-use rias\scout\engines\Engine;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
 use rias\scout\utilities\ScoutUtility;
@@ -33,13 +24,13 @@ class ScoutUtilityTest extends Unit
         $scout = new Scout('scout');
         $scout->edition = Scout::EDITION_PRO;
         $scout->setSettings([
-            'engine' => FakeEngine::class,
+            'engine'  => FakeEngine::class,
             'indices' => [
                 ScoutIndex::create('Blog')
                     ->criteria(function ($query) {
                         return $query;
                     }),
-            ]
+            ],
         ]);
         $scout->init();
     }

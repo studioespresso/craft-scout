@@ -3,10 +3,6 @@
 namespace yournamespace\tests;
 
 use Craft;
-use craft\elements\db\EntryQuery;
-use craft\elements\Entry;
-use craft\models\Section;
-use craft\models\Section_SiteSettings;
 use craft\test\console\ConsoleTest;
 use FakeEngine;
 use rias\scout\IndexSettings;
@@ -31,7 +27,7 @@ class ConsoleSettingsTest extends ConsoleTest
 
         $scout = Craft::$app->getPlugins()->getPlugin('scout');
         $scout->setSettings([
-            'engine' => FakeEngine::class,
+            'engine'  => FakeEngine::class,
             'indices' => [
                 ScoutIndex::create('blog_nl')->indexSettings(
                     IndexSettings::create()
@@ -43,7 +39,7 @@ class ConsoleSettingsTest extends ConsoleTest
                         ->minWordSizefor1Typo(30)
                         ->minWordSizefor2Typos(40)
                 ),
-            ]
+            ],
         ]);
 
         Craft::$app->getCache()->flush();
@@ -65,11 +61,11 @@ class ConsoleSettingsTest extends ConsoleTest
             ->run();
 
         $this->assertEquals([
-            'minWordSizefor1Typo' => 10,
+            'minWordSizefor1Typo'  => 10,
             'minWordSizefor2Typos' => 20,
         ], Craft::$app->getCache()->get('indexSettings-blog_nl'));
         $this->assertEquals([
-            'minWordSizefor1Typo' => 30,
+            'minWordSizefor1Typo'  => 30,
             'minWordSizefor2Typos' => 40,
         ], Craft::$app->getCache()->get('indexSettings-blog_fr'));
     }
@@ -89,7 +85,7 @@ class ConsoleSettingsTest extends ConsoleTest
             ->run();
 
         $this->assertEquals([
-            'minWordSizefor1Typo' => 10,
+            'minWordSizefor1Typo'  => 10,
             'minWordSizefor2Typos' => 20,
         ], Craft::$app->getCache()->get('indexSettings-blog_nl'));
         $this->assertEquals(false, Craft::$app->getCache()->get('indexSettings-blog_fr'));
@@ -107,13 +103,13 @@ class ConsoleSettingsTest extends ConsoleTest
         $this->consoleCommand('scout/settings/dump')
             ->stdOut(VarDumper::dumpAsString([
                 'blog_nl' => [
-                    'minWordSizefor1Typo' => 10,
+                    'minWordSizefor1Typo'  => 10,
                     'minWordSizefor2Typos' => 20,
                 ],
                 'blog_fr' => [
-                    'minWordSizefor1Typo' => 30,
+                    'minWordSizefor1Typo'  => 30,
                     'minWordSizefor2Typos' => 40,
-                ]
+                ],
             ]))
             ->exitCode(ExitCode::OK)
             ->run();
@@ -131,7 +127,7 @@ class ConsoleSettingsTest extends ConsoleTest
         $this->consoleCommand('scout/settings/dump', ['blog_nl'])
             ->stdOut(VarDumper::dumpAsString([
                 'blog_nl' => [
-                    'minWordSizefor1Typo' => 10,
+                    'minWordSizefor1Typo'  => 10,
                     'minWordSizefor2Typos' => 20,
                 ],
             ]))

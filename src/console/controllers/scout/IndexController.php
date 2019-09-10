@@ -22,7 +22,7 @@ class IndexController extends BaseController
 
     public function actionFlush($index = '')
     {
-        if (! $this->force && ! $this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?'))) {
+        if (!$this->force && !$this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?'))) {
             return ExitCode::OK;
         }
 
@@ -52,7 +52,7 @@ class IndexController extends BaseController
 
             foreach ($batch as $elements) {
                 $engine->update($elements);
-                $elementsUpdated+= count($elements);
+                $elementsUpdated += count($elements);
                 $this->stdout("Updated {$elementsUpdated}/{$totalElements} element(s) in {$engine->scoutIndex->indexName}\n", Console::FG_GREEN);
             }
         });

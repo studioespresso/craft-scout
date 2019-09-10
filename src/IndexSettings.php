@@ -3,8 +3,8 @@
 namespace rias\scout;
 
 /**
+ * Attributes.
  *
- * Attributes
  * @method self searchableAttributes(string[] $attributes)
  * @method self attributesForFaceting(string[] $attributes)
  * @method self unretrievableAttributes(string[] $attributes)
@@ -75,7 +75,6 @@ namespace rias\scout;
  * @method self maxFacetHits(int $maxHits)
  * @method self attributeCriteriaComputedByMinProximity(bool $attributeCriteriaComputedByMinProximity)
  * @method self userData(object $userData)
- *
  */
 class IndexSettings
 {
@@ -85,9 +84,9 @@ class IndexSettings
     /** @var array */
     public $settings = [];
 
-    public static function create(array $indexSettings = []): IndexSettings
+    public static function create(array $indexSettings = []): self
     {
-        $new = new self;
+        $new = new self();
 
         if (isset($indexSettings['forwardToReplicas'])) {
             $new->forwardToReplicas = (bool) $indexSettings['forwardToReplicas'];
@@ -100,14 +99,14 @@ class IndexSettings
         return $new;
     }
 
-    public function forwardToReplicas(bool $forwardToReplicas): IndexSettings
+    public function forwardToReplicas(bool $forwardToReplicas): self
     {
         $this->forwardToReplicas = $forwardToReplicas;
 
         return $this;
     }
 
-    public function __call($name, $arguments): IndexSettings
+    public function __call($name, $arguments): self
     {
         $this->settings[$name] = $arguments[0];
 

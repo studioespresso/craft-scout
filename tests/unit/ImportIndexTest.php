@@ -5,19 +5,13 @@ namespace yournamespace\tests;
 use Codeception\Test\Unit;
 use Craft;
 use craft\elements\Entry;
-use craft\events\ModelEvent;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
 use craft\queue\Queue;
 use FakeEngine;
-use InvalidEngine;
-use rias\scout\engines\AlgoliaEngine;
-use rias\scout\engines\Engine;
 use rias\scout\jobs\ImportIndex;
-use rias\scout\jobs\MakeSearchable;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
-use rias\scout\utilities\ScoutUtility;
 use UnitTester;
 
 class ImportIndexTest extends Unit
@@ -49,26 +43,26 @@ class ImportIndexTest extends Unit
     {
         $scout = new Scout('scout');
         $scout->setSettings([
-            'engine' => FakeEngine::class,
+            'engine'  => FakeEngine::class,
             'indices' => [
-                ScoutIndex::create('Blog')
-            ]
+                ScoutIndex::create('Blog'),
+            ],
         ]);
         $scout->init();
 
         $section = new Section([
-            'name' => 'News',
-            'handle' => 'news',
-            'type' => Section::TYPE_CHANNEL,
+            'name'         => 'News',
+            'handle'       => 'news',
+            'type'         => Section::TYPE_CHANNEL,
             'siteSettings' => [
                 new Section_SiteSettings([
-                    'siteId' => Craft::$app->getSites()->getPrimarySite()->id,
+                    'siteId'           => Craft::$app->getSites()->getPrimarySite()->id,
                     'enabledByDefault' => true,
-                    'hasUrls' => true,
-                    'uriFormat' => 'foo/{slug}',
-                    'template' => 'foo/_entry',
+                    'hasUrls'          => true,
+                    'uriFormat'        => 'foo/{slug}',
+                    'template'         => 'foo/_entry',
                 ]),
-            ]
+            ],
         ]);
 
         Craft::$app->getSections()->saveSection($section);
@@ -77,8 +71,8 @@ class ImportIndexTest extends Unit
         $element->siteId = 1;
         $element->sectionId = $section->id;
         $element->typeId = $section->getEntryTypes()[0]->id;
-        $element->title = "A new beginning.";
-        $element->slug = "a-new-beginning";
+        $element->title = 'A new beginning.';
+        $element->slug = 'a-new-beginning';
 
         Craft::$app->getElements()->saveElement($element);
 
@@ -88,6 +82,6 @@ class ImportIndexTest extends Unit
 
         $job->execute(new Queue());
 
-        $this->assertEquals(1, Craft::$app->getCache()->get("scout-Blog-updateCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get('scout-Blog-updateCalled'));
     }
 }
