@@ -19,13 +19,9 @@ class ScoutUtility extends Utility
         return 'scout-indices';
     }
 
-    public static function iconPath()
+    public static function iconPath(): string
     {
-        if ($icon = Craft::getAlias('@app/icons/magnifying-glass.svg')) {
-            return $icon;
-        }
-
-        return '';
+        return Craft::getAlias('@app/icons/magnifying-glass.svg');
     }
 
     public static function contentHtml(): string
