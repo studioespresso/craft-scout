@@ -27,7 +27,7 @@ use yii\base\Event;
 
 /**
  * @property Element $owner
- * @mixin Element
+ * @property int $id
  */
 class SearchableBehavior extends Behavior
 {
