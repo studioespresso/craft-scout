@@ -27,6 +27,7 @@ use yii\base\Event;
 
 /**
  * @mixin Element
+ *
  * @property Element $owner
  * @property int $id
  */
