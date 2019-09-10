@@ -1,0 +1,6 @@
+php:
+  preset: recommended
+  enabled:
+    - alpha_ordered_imports
+  disabled:
+    - length_ordered_imports
