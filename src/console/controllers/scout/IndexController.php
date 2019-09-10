@@ -13,6 +13,7 @@ class IndexController extends BaseController
 {
     public $defaultAction = 'refresh';
 
+    /** @var bool */
     public $force = false;
 
     public function options($actionID)
@@ -22,7 +23,10 @@ class IndexController extends BaseController
 
     public function actionFlush($index = '')
     {
-        if (!$this->force && !$this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?'))) {
+        if (
+            $this->force === false
+            && $this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?')) === false
+        ) {
             return ExitCode::OK;
         }
 
