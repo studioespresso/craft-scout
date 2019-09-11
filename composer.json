@@ -22,6 +22,7 @@
         }
     ],
     "require": {
+        "php": ">=7.1",
         "craftcms/cms": "^3.3.0",
         "algolia/algoliasearch-client-php": "^2.3",
         "league/fractal": "^0.18",
@@ -40,11 +41,6 @@
     "autoload": {
         "psr-4": {
           "rias\\scout\\": "src/"
-        }
-    },
-    "config": {
-        "platform": {
-            "php": "7.0"
         }
     },
     "extra": {
