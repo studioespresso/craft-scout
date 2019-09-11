@@ -17,7 +17,7 @@ Craft Scout provides a simple solution for adding full-text search to your entri
 
 ## Requirements
 
-This plugin requires Craft CMS 3.3 or later and PHP 7.1 or later.
+This plugin requires Craft CMS 3.2 or later and PHP 7.1 or later.
 
 ## Installation
 
