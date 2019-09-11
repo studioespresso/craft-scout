@@ -33,6 +33,11 @@ return [
     'connect_timeout' => 1,
 
     /*
+     * The batch size Scout uses when importing a large amount of elements
+     */
+    'batch_size' => 1000,
+
+    /*
      * The Algolia Application ID, this id can be found in your Algolia Account
      * https://www.algolia.com/api-keys. This id is used to update records.
      */
