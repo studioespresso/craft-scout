@@ -15,7 +15,7 @@ matrix:
       env: CODECEPT_FLAGS=''
     - php: 7.3
       env: CODECEPT_FLAGS=''
-    - php: 7.4
+    - php: 7.4snapshot
       env: CODECEPT_FLAGS=''
   fast_finish: true
   allow_failures:
