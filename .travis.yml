@@ -9,6 +9,8 @@ services:
 
 matrix:
   include:
+    - php: 7.0
+      env: TASK_TESTS_COVERAGE=0
     - php: 7.1
       env: TASK_TESTS_COVERAGE=1
     - php: 7.2
