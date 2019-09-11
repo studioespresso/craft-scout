@@ -14,7 +14,6 @@ while (true) {
             exit(1);
         }
         fwrite(STDOUT, 'Waiting for container to start...'.PHP_EOL);
-        fwrite(STDOUT, $exception->getMessage().PHP_EOL);
         sleep(1);
     }
 }
