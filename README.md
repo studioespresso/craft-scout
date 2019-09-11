@@ -12,7 +12,7 @@ Craft Scout provides a simple solution for adding full-text search to your entri
 
 ## Support Open Source. Buy beer.
 
-[![Beerpay](https://beerpay.io/riasvdv/craft-scout/badge.svg?style=beer-square)](https://beerpay.io/riasvdv/craft-scout)
+[![Beerpay](https://beerpay.io/rias500/craft-scout/badge.svg?style=beer-square)](https://beerpay.io/rias500/craft-scout)
 
 ## Requirements
 
