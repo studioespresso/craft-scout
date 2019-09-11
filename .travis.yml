@@ -10,21 +10,13 @@ services:
 matrix:
   include:
     - php: 7.1
-      env: COMPOSER_FLAGS='--prefer-lowest' CODECEPT_FLAGS=''
-    - php: 7.1
-      env: COMPOSER_FLAGS='--prefer-stable' CODECEPT_FLAGS='--coverage --coverage-xml'
+      env: CODECEPT_FLAGS='--coverage --coverage-xml'
     - php: 7.2
-      env: COMPOSER_FLAGS='--prefer-lowest' CODECEPT_FLAGS=''
-    - php: 7.2
-      env: COMPOSER_FLAGS='--prefer-stable' CODECEPT_FLAGS=''
+      env: CODECEPT_FLAGS=''
     - php: 7.3
-      env: COMPOSER_FLAGS='--prefer-lowest' CODECEPT_FLAGS=''
-    - php: 7.3
-      env: COMPOSER_FLAGS='--prefer-stable' CODECEPT_FLAGS=''
+      env: CODECEPT_FLAGS=''
     - php: 7.4
-      env: COMPOSER_FLAGS='--prefer-lowest' CODECEPT_FLAGS=''
-    - php: 7.4
-      env: COMPOSER_FLAGS='--prefer-stable' CODECEPT_FLAGS=''
+      env: CODECEPT_FLAGS=''
   fast_finish: true
   allow_failures:
     - php: 7.4snapshot
