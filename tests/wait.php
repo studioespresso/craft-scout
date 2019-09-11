@@ -9,7 +9,7 @@ while (true) {
         exit(0);
     } catch (PDOException $exception) {
         $elapsed = time() - $start;
-        if ($elapsed > 30) {
+        if ($elapsed > 60) {
             fwrite(STDERR, 'Docker container did not start in time...'.PHP_EOL);
             exit(1);
         }
