@@ -53,7 +53,7 @@ before_script:
   - touch ./tests/.env
 
 script:
-  - vendor/bin/codecept --coverage-text
+  - vendor/bin/codecept --coverage-xml
 
 after_script:
   - docker-compose -f ./tests/docker-compose.yml down
