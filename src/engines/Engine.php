@@ -13,13 +13,13 @@ abstract class Engine
 
     abstract public function __construct(ScoutIndex $scoutIndex, SearchClient $algolia);
 
-    abstract public function update($models): void;
+    abstract public function update($models);
 
-    abstract public function delete($models): void;
+    abstract public function delete($models);
 
-    abstract public function flush(): void;
+    abstract public function flush();
 
-    abstract public function updateSettings(IndexSettings $indexSettings): void;
+    abstract public function updateSettings(IndexSettings $indexSettings);
 
     abstract public function getSettings(): array;
 
