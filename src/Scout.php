@@ -88,7 +88,7 @@ class Scout extends Plugin
         ]);
     }
 
-    private function registerUtility(): void
+    private function registerUtility()
     {
         Event::on(
             Utilities::class,
@@ -99,7 +99,7 @@ class Scout extends Plugin
         );
     }
 
-    private function registerBehaviors(): void
+    private function registerBehaviors()
     {
         // Register the behavior on the Element class
         Event::on(
@@ -111,7 +111,7 @@ class Scout extends Plugin
         );
     }
 
-    private function registerVariables(): void
+    private function registerVariables()
     {
         // Register our variables
         Event::on(
@@ -125,7 +125,7 @@ class Scout extends Plugin
         );
     }
 
-    private function validateConfig(): void
+    private function validateConfig()
     {
         $indices = $this->getSettings()->getIndices();
 

@@ -30,7 +30,7 @@ class AlgoliaEngine extends Engine
      *
      * @throws \Algolia\AlgoliaSearch\Exceptions\AlgoliaException
      */
-    public function update($elements): void
+    public function update($elements)
     {
         $elements = new Collection(Arr::wrap($elements));
 
@@ -68,7 +68,7 @@ class AlgoliaEngine extends Engine
         }
     }
 
-    public function delete($elements): void
+    public function delete($elements)
     {
         $elements = collect(Arr::wrap($elements));
 
@@ -83,13 +83,13 @@ class AlgoliaEngine extends Engine
         })->values()->all());
     }
 
-    public function flush(): void
+    public function flush()
     {
         $index = $this->algolia->initIndex($this->scoutIndex->indexName);
         $index->clearObjects();
     }
 
-    public function updateSettings(IndexSettings $indexSettings): void
+    public function updateSettings(IndexSettings $indexSettings)
     {
         $index = $this->algolia->initIndex($this->scoutIndex->indexName);
         $index->setSettings($indexSettings->settings);

@@ -47,7 +47,7 @@ class SearchableBehavior extends Behavior
         ];
     }
 
-    public function eventUpdate(ModelEvent $event): void
+    public function eventUpdate(ModelEvent $event)
     {
         if (!Scout::$plugin->getSettings()->sync) {
             return;
@@ -56,7 +56,7 @@ class SearchableBehavior extends Behavior
         $event->sender->searchable();
     }
 
-    public function eventBeforeDelete(): void
+    public function eventBeforeDelete()
     {
         if (!Scout::$plugin->getSettings()->sync) {
             return;
@@ -65,7 +65,7 @@ class SearchableBehavior extends Behavior
         $this->beforeDeleteRelated = $this->getRelatedElements();
     }
 
-    public function eventAfterDelete(Event $event): void
+    public function eventAfterDelete(Event $event)
     {
         if (!Scout::$plugin->getSettings()->sync) {
             return;
@@ -103,7 +103,7 @@ class SearchableBehavior extends Behavior
         });
     }
 
-    public function searchable(bool $propagate = true): void
+    public function searchable(bool $propagate = true)
     {
         $this->searchableUsing()->each(function (Engine $engine) {
             if (!$this->validatesCriteria($engine->scoutIndex)) {
@@ -131,7 +131,7 @@ class SearchableBehavior extends Behavior
         }
     }
 
-    public function unsearchable(bool $propagate = true): void
+    public function unsearchable(bool $propagate = true)
     {
         $this->searchableUsing()->each->delete($this->owner);
 
