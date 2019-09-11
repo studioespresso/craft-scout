@@ -10,21 +10,21 @@ services:
 matrix:
   include:
     - php: 7.1
-      env: COMPOSER_FLAGS='--prefer-lowest'
+      env: COMPOSER_FLAGS='--prefer-lowest' CODECEPT_FLAGS=''
     - php: 7.1
-      env: COMPOSER_FLAGS='--prefer-stable'
+      env: COMPOSER_FLAGS='--prefer-stable' CODECEPT_FLAGS='--coverage --coverage-xml'
     - php: 7.2
-      env: COMPOSER_FLAGS='--prefer-lowest'
+      env: COMPOSER_FLAGS='--prefer-lowest' CODECEPT_FLAGS=''
     - php: 7.2
-      env: COMPOSER_FLAGS='--prefer-stable'
+      env: COMPOSER_FLAGS='--prefer-stable' CODECEPT_FLAGS=''
     - php: 7.3
-      env: COMPOSER_FLAGS='--prefer-lowest'
+      env: COMPOSER_FLAGS='--prefer-lowest' CODECEPT_FLAGS=''
     - php: 7.3
-      env: COMPOSER_FLAGS='--prefer-stable'
+      env: COMPOSER_FLAGS='--prefer-stable' CODECEPT_FLAGS=''
     - php: 7.4
-      env: COMPOSER_FLAGS='--prefer-lowest'
+      env: COMPOSER_FLAGS='--prefer-lowest' CODECEPT_FLAGS=''
     - php: 7.4
-      env: COMPOSER_FLAGS='--prefer-stable'
+      env: COMPOSER_FLAGS='--prefer-stable' CODECEPT_FLAGS=''
   fast_finish: true
   allow_failures:
     - php: 7.4snapshot
@@ -43,7 +43,7 @@ before_script:
   - cp ./tests/.env.travis ./tests/.env
 
 script:
-  - vendor/bin/codecept run --coverage --coverage-xml
+  - vendor/bin/codecept run unit ${CODECEPT_FLAGS}
 
 after_script:
   - docker-compose -f ./tests/docker-compose.yml down
