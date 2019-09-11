@@ -1,6 +1,7 @@
 ![Icon](./src/icon.svg)
 
 [![Latest Version](https://img.shields.io/github/release/riasvdv/craft-scout.svg?style=flat-square)](https://github.com/riasvdv/craft-scout/releases)
+[![Build Status](https://travis-ci.org/riasvdv/craft-scout.svg?branch=v2)](https://travis-ci.org/riasvdv/craft-scout)
 [![Quality Score](https://img.shields.io/scrutinizer/g/rias500/craft-scout.svg?style=flat-square)](https://scrutinizer-ci.com/g/rias500/craft-scout)
 [![StyleCI](https://styleci.io/repos/113917206/shield)](https://styleci.io/repos/113917206)
 [![Total Downloads](https://img.shields.io/packagist/dt/rias/craft-scout.svg?style=flat-square)](https://packagist.org/packages/rias/craft-scout)
