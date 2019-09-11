@@ -8,13 +8,14 @@ services:
   - docker
 
 env:
-  - DB_DRIVER="mysql"
-  - DB_SERVER="localhost"
-  - DB_USER="username"
-  - DB_PASSWORD="password"
-  - DB_DATABASE="scout_testing"
-  - SECURITY_KEY="8Nq2DigszBHoASg5ApyLDPeVuuIGwarF"
-  - DEFAULT_SITE_URL="https://your-site-url.test/"
+  global:
+    - DB_DRIVER="mysql"
+    - DB_SERVER="localhost"
+    - DB_USER="username"
+    - DB_PASSWORD="password"
+    - DB_DATABASE="scout_testing"
+    - SECURITY_KEY="8Nq2DigszBHoASg5ApyLDPeVuuIGwarF"
+    - DEFAULT_SITE_URL="https://your-site-url.test/"
 
 matrix:
   include:
