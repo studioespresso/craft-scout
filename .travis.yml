@@ -7,16 +7,6 @@ language: php
 services:
   - docker
 
-env:
-  global:
-    - DB_DRIVER="mysql"
-    - DB_SERVER="localhost"
-    - DB_USER="username"
-    - DB_PASSWORD="password"
-    - DB_DATABASE="scout_testing"
-    - SECURITY_KEY="8Nq2DigszBHoASg5ApyLDPeVuuIGwarF"
-    - DEFAULT_SITE_URL="https://your-site-url.test/"
-
 matrix:
   include:
     - php: 7.1
@@ -50,7 +40,7 @@ before_script:
   - sudo service mysql stop
   - docker-compose -f ./tests/docker-compose.yml up -d
   - php tests/wait.php
-  - touch ./tests/.env
+  - cp ./tests/.env.travis ./tests/.env
 
 script:
   - vendor/bin/codecept run --coverage --coverage-xml
