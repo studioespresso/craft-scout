@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.0.0 - xx
+
+- Rewrite of the full plugin
+- Added tests for all functionality
+- Added a comprehensive syntax to configure the Indices
+- Added a settings page for all settings except Indices
+- Added a Utility in Scout Pro to manage your indices
+
 ## 1.3.1 - 2019-08-09
 - Fixed a bug when skipping elements when splitElementIndex is also set (#81)
 
