@@ -148,8 +148,8 @@ class Scout extends Plugin
             [Elements::class, Elements::EVENT_AFTER_UPDATE_SLUG_AND_URI],
         ];
 
-        foreach ($events as [$class, $event]) {
-            Event::on($class, $event,
+        foreach ($events as $event) {
+            Event::on($event[0], $event[1],
                 function (ElementEvent $event) {
                     /** @var SearchableBehavior $element */
                     $element = $event->element;

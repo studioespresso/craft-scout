@@ -144,9 +144,6 @@ class EventHandlersTest extends Unit
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-deleteCalled"));
 
-        Craft::$app->getElements()->off(Elements::EVENT_AFTER_SAVE_ELEMENT);
-        Craft::$app->getElements()->off(Elements::EVENT_AFTER_DELETE_ELEMENT);
-
         Craft::$app->getElements()->saveElement($this->element);
         Craft::$app->getElements()->deleteElement($this->element);
 
