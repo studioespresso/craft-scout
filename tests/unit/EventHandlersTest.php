@@ -8,7 +8,6 @@ use craft\elements\Entry;
 use craft\fields\Entries;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
-use craft\services\Elements;
 use FakeEngine;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
