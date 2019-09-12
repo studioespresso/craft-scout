@@ -13,9 +13,7 @@ use craft\elements\GlobalSet;
 use craft\elements\MatrixBlock;
 use craft\elements\Tag;
 use craft\elements\User;
-use craft\events\ElementEvent;
 use craft\helpers\ElementHelper;
-use craft\services\Elements;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\Serializer\ArraySerializer;
@@ -25,7 +23,6 @@ use rias\scout\Scout;
 use rias\scout\ScoutIndex;
 use Tightenco\Collect\Support\Collection;
 use yii\base\Behavior;
-use yii\base\Event;
 
 /**
  * @mixin Element

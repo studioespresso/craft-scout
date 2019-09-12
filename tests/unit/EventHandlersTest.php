@@ -5,8 +5,6 @@ namespace yournamespace\tests;
 use Codeception\Test\Unit;
 use Craft;
 use craft\elements\Entry;
-use craft\events\ElementEvent;
-use craft\events\ModelEvent;
 use craft\fields\Entries;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;

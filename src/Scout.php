@@ -6,12 +6,10 @@ use Algolia\AlgoliaSearch\Config\SearchConfig;
 use Algolia\AlgoliaSearch\SearchClient;
 use Craft;
 use craft\base\Element;
-use craft\base\ElementInterface;
 use craft\base\Plugin;
 use craft\events\DefineBehaviorsEvent;
 use craft\events\ElementEvent;
 use craft\events\RegisterComponentTypesEvent;
-use craft\helpers\ElementHelper;
 use craft\services\Elements;
 use craft\services\Utilities;
 use craft\web\twig\variables\CraftVariable;
@@ -152,7 +150,7 @@ class Scout extends Plugin
 
         foreach ($events as [$class, $event]) {
             Event::on($class, $event,
-                function(ElementEvent $event) {
+                function (ElementEvent $event) {
                     /** @var SearchableBehavior $element */
                     $element = $event->element;
                     $element->searchable();
