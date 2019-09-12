@@ -72,7 +72,7 @@ class AlgoliaEngine extends Engine
         }
 
         return $index->deleteBy([
-            'filters' => 'distinctID:'.join(' OR distinctID:', $objectIds),
+            'filters' => 'distinctID:'.implode(' OR distinctID:', $objectIds),
         ]);
     }
 
