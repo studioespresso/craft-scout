@@ -5,10 +5,12 @@ namespace yournamespace\tests;
 use Codeception\Test\Unit;
 use Craft;
 use craft\elements\Entry;
+use craft\events\ElementEvent;
 use craft\events\ModelEvent;
 use craft\fields\Entries;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
+use craft\services\Elements;
 use FakeEngine;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
@@ -72,7 +74,6 @@ class EventHandlersTest extends Unit
             'engine'  => FakeEngine::class,
             'queue'   => false,
         ]);
-        $scout->init();
 
         $this->scout = $scout;
 
@@ -106,7 +107,7 @@ class EventHandlersTest extends Unit
 
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
 
-        $this->element->trigger(Entry::EVENT_AFTER_SAVE, new ModelEvent());
+        Craft::$app->getElements()->saveElement($this->element);
 
         $this->assertEquals(1, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
     }
@@ -128,7 +129,7 @@ class EventHandlersTest extends Unit
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element2->id}-updateCalled"));
 
-        $this->element->trigger(Entry::EVENT_AFTER_SAVE, new ModelEvent());
+        Craft::$app->getElements()->saveElement($this->element);
 
         $this->assertEquals(1, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
         $this->assertEquals(1, Craft::$app->getCache()->get("scout-Blog-{$this->element2->id}-updateCalled"));
@@ -145,9 +146,11 @@ class EventHandlersTest extends Unit
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-deleteCalled"));
 
-        $this->element->trigger(Entry::EVENT_AFTER_SAVE, new ModelEvent());
-        $this->element->trigger(Entry::EVENT_BEFORE_DELETE, new ModelEvent());
-        $this->element->trigger(Entry::EVENT_AFTER_DELETE, new ModelEvent());
+        Craft::$app->getElements()->off(Elements::EVENT_AFTER_SAVE_ELEMENT);
+        Craft::$app->getElements()->off(Elements::EVENT_AFTER_DELETE_ELEMENT);
+
+        Craft::$app->getElements()->saveElement($this->element);
+        Craft::$app->getElements()->deleteElement($this->element);
 
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-deleteCalled"));
@@ -160,7 +163,7 @@ class EventHandlersTest extends Unit
 
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
 
-        $this->element->trigger(Entry::EVENT_AFTER_MOVE_IN_STRUCTURE, new ModelEvent());
+        Craft::$app->getElements()->updateElementSlugAndUri($this->element);
 
         $this->assertEquals(1, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
     }
@@ -169,10 +172,11 @@ class EventHandlersTest extends Unit
     public function it_attaches_to_the_element_restore_event()
     {
         Craft::$app->getCache()->set("scout-Blog-{$this->element->id}-updateCalled", 0);
+        Craft::$app->getElements()->deleteElement($this->element);
 
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
 
-        $this->element->trigger(Entry::EVENT_AFTER_RESTORE, new ModelEvent());
+        Craft::$app->getElements()->restoreElement($this->element);
 
         $this->assertEquals(1, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
     }
@@ -184,7 +188,7 @@ class EventHandlersTest extends Unit
 
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-deleteCalled"));
 
-        $this->element->trigger(Entry::EVENT_AFTER_DELETE, new ModelEvent());
+        Craft::$app->getElements()->deleteElement($this->element);
 
         $this->assertEquals(1, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-deleteCalled"));
     }

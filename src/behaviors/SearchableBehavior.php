@@ -13,6 +13,9 @@ use craft\elements\GlobalSet;
 use craft\elements\MatrixBlock;
 use craft\elements\Tag;
 use craft\elements\User;
+use craft\events\ElementEvent;
+use craft\helpers\ElementHelper;
+use craft\services\Elements;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\Serializer\ArraySerializer;
@@ -32,47 +35,6 @@ use yii\base\Event;
  */
 class SearchableBehavior extends Behavior
 {
-    /** @var Collection */
-    private $beforeDeleteRelated;
-
-    public function events()
-    {
-        return [
-            Element::EVENT_AFTER_SAVE              => 'eventUpdate',
-            Element::EVENT_AFTER_RESTORE           => 'eventUpdate',
-            Element::EVENT_AFTER_MOVE_IN_STRUCTURE => 'eventUpdate',
-            Element::EVENT_BEFORE_DELETE           => 'eventBeforeDelete',
-            Element::EVENT_AFTER_DELETE            => 'eventAfterDelete',
-        ];
-    }
-
-    public function eventUpdate(Event $event)
-    {
-        if (!Scout::$plugin->getSettings()->sync) {
-            return;
-        }
-
-        $event->sender->searchable();
-    }
-
-    public function eventBeforeDelete()
-    {
-        if (!Scout::$plugin->getSettings()->sync) {
-            return;
-        }
-
-        $this->beforeDeleteRelated = $this->getRelatedElements();
-    }
-
-    public function eventAfterDelete(Event $event)
-    {
-        if (!Scout::$plugin->getSettings()->sync) {
-            return;
-        }
-
-        $event->sender->unsearchable();
-    }
-
     public function validatesCriteria(ScoutIndex $scoutIndex): bool
     {
         return $scoutIndex->criteria
@@ -82,10 +44,6 @@ class SearchableBehavior extends Behavior
 
     public function getIndices(): Collection
     {
-        if ($this->owner->getIsDraft() || $this->owner->getIsRevision()) {
-            return collect();
-        }
-
         return Scout::$plugin
             ->getSettings()
             ->getIndices()
@@ -104,6 +62,10 @@ class SearchableBehavior extends Behavior
 
     public function searchable(bool $propagate = true)
     {
+        if (!$this->shouldBeSearchable()) {
+            return;
+        }
+
         $this->searchableUsing()->each(function (Engine $engine) {
             if (!$this->validatesCriteria($engine->scoutIndex)) {
                 return $engine->delete($this->owner);
@@ -130,16 +92,13 @@ class SearchableBehavior extends Behavior
         }
     }
 
-    public function unsearchable(bool $propagate = true)
+    public function unsearchable()
     {
-        $this->searchableUsing()->each->delete($this->owner);
-
-        if ($propagate && $this->beforeDeleteRelated) {
-            $this->beforeDeleteRelated->each(function (Element $relatedElement) {
-                /* @var SearchableBehavior $relatedElement */
-                $relatedElement->searchable(false);
-            });
+        if (!Scout::$plugin->getSettings()->sync) {
+            return;
         }
+
+        $this->searchableUsing()->each->delete($this->owner);
     }
 
     public function toSearchableArray(ScoutIndex $scoutIndex): array
@@ -180,5 +139,22 @@ class SearchableBehavior extends Behavior
             $products,
             $variants
         ));
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        if (!Scout::$plugin->getSettings()->sync) {
+            return false;
+        }
+
+        if ($this->owner->propagating) {
+            return false;
+        }
+
+        if (ElementHelper::isDraftOrRevision($this->owner)) {
+            return false;
+        }
+
+        return true;
     }
 }

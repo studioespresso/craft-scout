@@ -6,9 +6,13 @@ use Algolia\AlgoliaSearch\Config\SearchConfig;
 use Algolia\AlgoliaSearch\SearchClient;
 use Craft;
 use craft\base\Element;
+use craft\base\ElementInterface;
 use craft\base\Plugin;
 use craft\events\DefineBehaviorsEvent;
+use craft\events\ElementEvent;
 use craft\events\RegisterComponentTypesEvent;
+use craft\helpers\ElementHelper;
+use craft\services\Elements;
 use craft\services\Utilities;
 use craft\web\twig\variables\CraftVariable;
 use Exception;
@@ -36,6 +40,9 @@ class Scout extends Plugin
 
     public $hasCpSettings = true;
 
+    /** @var \Tightenco\Collect\Support\Collection */
+    private $beforeDeleteRelated;
+
     public function init()
     {
         parent::init();
@@ -61,6 +68,7 @@ class Scout extends Plugin
         $this->validateConfig();
         $this->registerBehaviors();
         $this->registerVariables();
+        $this->registerEventHandlers();
 
         if (self::getInstance()->is(self::EDITION_PRO)) {
             $this->registerUtility();
@@ -132,5 +140,51 @@ class Scout extends Plugin
         if ($indices->unique('indexName')->count() !== $indices->count()) {
             throw new Exception('Index names must be unique in the Scout config.');
         }
+    }
+
+    private function registerEventHandlers()
+    {
+        $events = [
+            [Elements::class, Elements::EVENT_AFTER_SAVE_ELEMENT],
+            [Elements::class, Elements::EVENT_AFTER_RESTORE_ELEMENT],
+            [Elements::class, Elements::EVENT_AFTER_UPDATE_SLUG_AND_URI],
+        ];
+
+        foreach ($events as [$class, $event]) {
+            Event::on($class, $event,
+                function(ElementEvent $event) {
+                    /** @var SearchableBehavior $element */
+                    $element = $event->element;
+                    $element->searchable();
+                }
+            );
+        }
+
+        Event::on(
+            Elements::class,
+            Elements::EVENT_BEFORE_DELETE_ELEMENT,
+            function (ElementEvent $event) {
+                /** @var SearchableBehavior $element */
+                $element = $event->element;
+                $this->beforeDeleteRelated = $element->getRelatedElements();
+            }
+        );
+
+        Event::on(
+            Elements::class,
+            Elements::EVENT_AFTER_DELETE_ELEMENT,
+            function (ElementEvent $event) {
+                /** @var SearchableBehavior $element */
+                $element = $event->element;
+                $element->unsearchable();
+
+                if ($this->beforeDeleteRelated) {
+                    $this->beforeDeleteRelated->each(function (Element $relatedElement) {
+                        /* @var SearchableBehavior $relatedElement */
+                        $relatedElement->searchable(false);
+                    });
+                }
+            }
+        );
     }
 }
