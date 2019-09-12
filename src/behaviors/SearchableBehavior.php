@@ -13,7 +13,6 @@ use craft\elements\GlobalSet;
 use craft\elements\MatrixBlock;
 use craft\elements\Tag;
 use craft\elements\User;
-use craft\events\ModelEvent;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\Serializer\ArraySerializer;
