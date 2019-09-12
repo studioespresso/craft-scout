@@ -38,7 +38,7 @@ class FakeSearchClient extends SearchClient
         foreach (explode(' OR ', $filters) as $orfilter) {
             $filter = explode(':', $orfilter);
             foreach ($this->indexedModels as $index => $indexedModel) {
-                if (isset ($indexedModel[$filter[0]]) && $indexedModel[$filter[0]] == $filter[1]) {
+                if (isset($indexedModel[$filter[0]]) && $indexedModel[$filter[0]] == $filter[1]) {
                     unset($this->indexedModels[$index]);
                 }
             }
