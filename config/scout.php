@@ -41,20 +41,20 @@ return [
      * The Algolia Application ID, this id can be found in your Algolia Account
      * https://www.algolia.com/api-keys. This id is used to update records.
      */
-    'application_id' => 'algolia',
+    'application_id' => '$ALGOLIA_APPLICATION_ID',
 
     /*
      * The Algolia Admin API key, this key can be found in your Algolia Account
      * https://www.algolia.com/api-keys. This key is used to update records.
      */
-    'admin_api_key'  => 'algolia',
+    'admin_api_key'  => '$ALGOLIA_ADMIN_API_KEY',
 
     /*
      * The Algolia search API key, this key can be found in your Algolia Account
      * https://www.algolia.com/api-keys. This search key is not used in Scout
      * but can be used through the Scout variable in your template files.
      */
-    'search_api_key' => 'algolia', //optional
+    'search_api_key' => '$ALGOLIA_SEARCH_API_KEY', //optional
 
     /*
      * A collection of indices that Scout should sync to, these can be configured
