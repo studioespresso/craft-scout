@@ -196,4 +196,12 @@ class SearchableBehaviorTest extends Unit
             'title' => 'A new beginning.',
         ], $this->element->toSearchableArray($this->element->getIndices()->first()));
     }
+
+    /** @test * */
+    public function it_is_not_searchable_when_it_is_propagating()
+    {
+        $this->element->propagating = true;
+
+        $this->assertFalse($this->element->shouldBeSearchable());
+    }
 }
