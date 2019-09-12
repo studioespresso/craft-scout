@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## 2.0.0 - xx
 
+> {warning} This is a major release, the way you configure Scout has been changed, please read the [docs](https://github.com/riasvdv/craft-scout/blob/master/README.md#upgrading) on how to upgrade.
+
 - Rewrite of the full plugin
 - Added tests for all functionality
 - Added a comprehensive syntax to configure the Indices

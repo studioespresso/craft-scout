@@ -23,6 +23,16 @@ This plugin requires Craft CMS 3.2 or later and PHP 7.1 or later.
 
 Go to the Plugin Store in your project’s Control Panel and search for “Scout”. Then click on the “Install” button in its modal window.
 
+## Upgrading
+
+The configuration has changed from how Scout v1 did its configuration. Please see the [setup](#setup) section below on how to configure Scout.
+
+The following changes are the most notable:
+- The `mappings` configuration key has been changed to `indices` and there is a new way to configure the indices
+- The `criteria` is now a callable that returns an `ElementQuery`. Every Index should define a `siteId` in the criteria, otherwise the primary site is chosen.
+- New `queue` and `batch` options added to the settings
+- Old confuguration keys on the mappings have been replaced by functions on the `rias\scout\ScoutIndex` object.
+
 ## Setup
 
 To define your indices, copy the [scout.php](config/scout.php) file to your `config` folder.
@@ -58,20 +68,20 @@ return [
      * The Algolia Application ID, this id can be found in your Algolia Account
      * https://www.algolia.com/api-keys. This id is used to update records.
      */
-    'application_id' => 'algolia',
+    'application_id' => '$ALGOLIA_APPLICATION_ID',
 
     /*
      * The Algolia Admin API key, this key can be found in your Algolia Account
      * https://www.algolia.com/api-keys. This key is used to update records.
      */
-    'admin_api_key'  => 'algolia',
+    'admin_api_key'  => '$ALGOLIA_ADMIN_API_KEY',
 
     /*
      * The Algolia search API key, this key can be found in your Algolia Account
      * https://www.algolia.com/api-keys. This search key is not used in Scout
      * but can be used through the Scout variable in your template files.
      */
-    'search_api_key' => 'algolia', //optional
+    'search_api_key' => '$ALGOLIA_SEARCH_API_KEY', //optional
     
     /*
      * A collection of indices that Scout should sync to, these can be configured
