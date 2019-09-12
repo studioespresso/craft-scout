@@ -47,7 +47,7 @@ class SearchableBehavior extends Behavior
         ];
     }
 
-    public function eventUpdate(ModelEvent $event)
+    public function eventUpdate(Event $event)
     {
         if (!Scout::$plugin->getSettings()->sync) {
             return;
