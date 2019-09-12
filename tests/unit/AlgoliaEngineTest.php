@@ -35,6 +35,9 @@ class AlgoliaEngineTest extends Unit
     /** @var Entry */
     private $splitModel;
 
+    /** @var Entry */
+    private $splitModel2;
+
     protected function _before()
     {
         parent::_before();
@@ -80,11 +83,21 @@ class AlgoliaEngineTest extends Unit
         $splitModel->id = 2;
         $splitModel->siteId = 1;
         $this->splitModel = $splitModel;
+
+        $splitModel2 = new Entry();
+        $splitModel2->title = 'split';
+        $splitModel2->id = 3;
+        $splitModel2->siteId = 1;
+        $this->splitModel2 = $splitModel2;
     }
 
     /** @test * */
     public function it_can_index_an_element()
     {
+        $scoutIndex = $this->scoutIndex;
+        $scoutIndex->splitElementsOn([]);
+        $this->engine = new AlgoliaEngine($scoutIndex, $this->searchClient);
+
         $this->engine->update($this->model);
 
         $this->assertEquals(1, count($this->searchClient->indexedModels));
@@ -137,6 +150,10 @@ class AlgoliaEngineTest extends Unit
     /** @test * */
     public function it_can_delete_an_element_from_the_index()
     {
+        $scoutIndex = $this->scoutIndex;
+        $scoutIndex->splitElementsOn([]);
+        $this->engine = new AlgoliaEngine($scoutIndex, $this->searchClient);
+
         $this->engine->update($this->model);
 
         $this->assertEquals(1, count($this->searchClient->indexedModels));
@@ -144,6 +161,46 @@ class AlgoliaEngineTest extends Unit
         $this->engine->delete($this->model);
 
         $this->assertEquals(0, count($this->searchClient->indexedModels));
+    }
+
+    /** @test * */
+    public function it_can_delete_a_split_element()
+    {
+        $this->engine->update($this->splitModel);
+
+        $this->assertEquals(2, count($this->searchClient->indexedModels));
+
+        $this->engine->delete($this->splitModel);
+
+        $this->assertEquals(0, count($this->searchClient->indexedModels));
+    }
+
+    /** @test * */
+    public function it_can_delete_multiple_split_elements()
+    {
+        $this->engine->update($this->splitModel);
+        $this->engine->update($this->splitModel2);
+
+        $this->assertEquals(4, count($this->searchClient->indexedModels));
+
+        $this->engine->delete([
+            $this->splitModel,
+            $this->splitModel2,
+        ]);
+
+        $this->assertEquals(0, count($this->searchClient->indexedModels));
+    }
+
+    /** @test * */
+    public function it_does_nothing_with_empty_array()
+    {
+        $this->engine->update($this->splitModel);
+
+        $this->assertEquals(2, count($this->searchClient->indexedModels));
+
+        $this->engine->delete([]);
+
+        $this->assertEquals(2, count($this->searchClient->indexedModels));
     }
 
     /** @test * */

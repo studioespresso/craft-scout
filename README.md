@@ -144,7 +144,13 @@ Craft's default element type classes are:
 - `craft\elements\User`
 
 #### `->criteria(callable $query)`
-This function accept an `ElementQuery` and should also return an `ElementQuery`
+This function accepts an `ElementQuery` and should also return an `ElementQuery`
+
+```php
+->criteria(function (ElementQuery $query) {
+    return $query->section('blog');
+});
+```
 
 #### `->transformer(callable|string|array|TransformerAbstract $transformer)`
 The [transformer](http://fractal.thephpleague.com/transformers/) that should be used to define the data that should be sent to Algolia for each element. If you don’t set this, the default transformer will be used, which includes all of the element’s direct attribute values, but no custom field values.
@@ -195,7 +201,7 @@ Array items are array indexes returned from the transformer.
 ])
 ```
 
-> *Important* - distinctId (available after indexing) must be set up as an attribute for faceting for deletion of objects to work when using splitElementsOn.
+> *Important* - `distinctID` (available after indexing) must be set up as an attribute for faceting for deletion of objects to work when using splitElementsOn.
 
 ## Twig variables
 You can access the Algolia settings set in your config file through the following Twig variables.
