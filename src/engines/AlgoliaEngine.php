@@ -41,26 +41,7 @@ class AlgoliaEngine extends Engine
         if ($elements->isEmpty()) {
             return;
         }
-
-        $objects = $elements->map(function (Element $element) {
-            /** @var \rias\scout\behaviors\SearchableBehavior $element */
-            if (empty($searchableData = $element->toSearchableArray($this->scoutIndex))) {
-                return;
-            }
-
-            return array_merge(
-                ['objectID' => $element->id],
-                $searchableData
-            );
-        })->filter()->values()->all();
-
-        if (!empty($this->scoutIndex->splitElementsOn)) {
-            $result = $this->splitObjects($objects);
-
-            $this->delete($result['delete']);
-
-            $objects = $result['save'];
-        }
+        $objects = $this->transformElements($elements);
 
         if (!empty($objects)) {
             $index = $this->algolia->initIndex($this->scoutIndex->indexName);
@@ -70,17 +51,29 @@ class AlgoliaEngine extends Engine
 
     public function delete($elements)
     {
-        $elements = collect(Arr::wrap($elements));
+        $elements = new Collection(Arr::wrap($elements));
 
         $index = $this->algolia->initIndex($this->scoutIndex->indexName);
 
-        $index->deleteObjects($elements->map(function ($element) {
-            if ($element instanceof Element) {
-                return $element->id;
+        $objectIds = $elements->map(function ($object) {
+            if ($object instanceof Element) {
+                return $object->id;
             }
 
-            return $element['objectID'];
-        })->values()->all());
+            return $object['distinctID'] ?? $object['objectID'];
+        })->unique()->values()->all();
+
+        if (empty($objectIds)) {
+            return;
+        }
+
+        if (empty($this->scoutIndex->splitElementsOn)) {
+            return $index->deleteObjects($objectIds);
+        }
+
+        return $index->deleteBy([
+            'filters' => 'distinctID:'.join(' OR distinctID:', $objectIds),
+        ]);
     }
 
     public function flush()
@@ -110,5 +103,32 @@ class AlgoliaEngine extends Engine
         ]);
 
         return (int) $response['nbHits'];
+    }
+
+    private function transformElements(Collection $elements): array
+    {
+        $objects = $elements->map(function (Element $element) {
+            /** @var \rias\scout\behaviors\SearchableBehavior $element */
+            if (empty($searchableData = $element->toSearchableArray($this->scoutIndex))) {
+                return;
+            }
+
+            return array_merge(
+                ['objectID' => $element->id],
+                $searchableData
+            );
+        })->filter()->values()->all();
+
+        if (empty($this->scoutIndex->splitElementsOn)) {
+            return $objects;
+        }
+
+        $result = $this->splitObjects($objects);
+
+        $this->delete($result['delete']);
+
+        $objects = $result['save'];
+
+        return $objects;
     }
 }

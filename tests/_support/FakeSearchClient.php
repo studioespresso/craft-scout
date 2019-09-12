@@ -31,6 +31,20 @@ class FakeSearchClient extends SearchClient
         }
     }
 
+    public function deleteBy(array $filters)
+    {
+        $filters = $filters['filters'];
+
+        foreach (explode(' OR ', $filters) as $orfilter) {
+            $filter = explode(':', $orfilter);
+            foreach ($this->indexedModels as $index => $indexedModel) {
+                if (isset ($indexedModel[$filter[0]]) && $indexedModel[$filter[0]] == $filter[1]) {
+                    unset($this->indexedModels[$index]);
+                }
+            }
+        }
+    }
+
     public function clearObjects()
     {
         $this->indexedModels = [];
