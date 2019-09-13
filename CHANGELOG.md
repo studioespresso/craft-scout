@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## 2.0.0 - xx
+## 2.0.0 - 2019-09-13
 
 > {warning} This is a major release, the way you configure Scout has been changed, please read the [docs](https://github.com/riasvdv/craft-scout/blob/master/README.md#upgrading) on how to upgrade.
 
@@ -10,7 +10,6 @@ All notable changes to this project will be documented in this file.
 - Added tests for all functionality
 - Added a comprehensive syntax to configure the Indices
 - Added a settings page for all settings except Indices
-- Added a Utility in Scout Pro to manage your indices
 
 ## 1.3.2 - 2019-09-05
 - Resolve fractal conflict
