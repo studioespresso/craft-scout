@@ -203,7 +203,7 @@ Array items are array indices returned from the transformer.
 
 > *Important* - `distinctID` (available after indexing) must be set up as an attribute for faceting for deletion of objects to work when using splitElementsOn.
 
-### `->indexSettings(IndexSettings $settings)`
+#### `->indexSettings(IndexSettings $settings)`
 
 You can use this to define index settings that get synced when you call the `./craft scout/settings/update` console command. 
 This way you can keep your index settings in source control. 
