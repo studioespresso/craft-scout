@@ -1,0 +1,58 @@
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+language: php
+
+services:
+  - docker
+
+matrix:
+  include:
+    - php: 7.0
+      env: TASK_TESTS_COVERAGE=0
+    - php: 7.1
+      env: TASK_TESTS_COVERAGE=1
+    - php: 7.2
+      env: TASK_TESTS_COVERAGE=0
+    - php: 7.3
+      env: TASK_TESTS_COVERAGE=0
+    - php: 7.4snapshot
+      env: TASK_TESTS_COVERAGE=0
+  fast_finish: true
+  allow_failures:
+    - php: 7.4snapshot
+    
+before_install:
+  - composer config discard-changes true
+  - travis_retry composer self-update
+
+install:
+  - |
+    if [[ $TASK_TESTS_COVERAGE != 1 ]]; then
+      # disable xdebug for performance reasons when code coverage is not needed.
+      phpenv config-rm xdebug.ini || echo "xdebug is not installed"
+    fi
+    travis_retry composer update ${COMPOSER_FLAGS} --prefer-dist --no-interaction --no-suggest
+
+before_script:
+  - sudo service mysql stop
+  - docker-compose -f ./tests/docker-compose.yml up -d
+  - php tests/wait.php
+  - cp ./tests/.env.travis ./tests/.env
+
+script:
+  - |
+    if [[ $TASK_TESTS_COVERAGE != 1 ]]; then
+      vendor/bin/codecept run unit
+    else
+      mkdir -p build/logs
+      vendor/bin/codecept run unit --coverage-xml coverage.xml;
+    fi
+
+after_script:
+  - docker-compose -f ./tests/docker-compose.yml down
+  - |
+    if [ $TASK_TESTS_COVERAGE == 1 ]; then
+      bash <(curl -s https://codecov.io/bash)
+    fi

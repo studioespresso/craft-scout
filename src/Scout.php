@@ -1,71 +1,124 @@
 <?php
-/**
- * Scout plugin for Craft CMS 3.x.
- *
- * Craft Scout provides a simple solution for adding full-text search to your entries.
- * Scout will automatically keep your search indexes in sync with your entries.
- *
- * @link      https://rias.be
- *
- * @copyright Copyright (c) 2017 Rias
- */
 
 namespace rias\scout;
 
+use Algolia\AlgoliaSearch\Config\SearchConfig;
+use Algolia\AlgoliaSearch\SearchClient;
 use Craft;
 use craft\base\Element;
-use craft\base\ElementInterface;
 use craft\base\Plugin;
-use craft\elements\Asset;
-use craft\elements\Category;
-use craft\elements\Entry;
-use craft\elements\GlobalSet;
-use craft\elements\MatrixBlock;
-use craft\elements\Tag;
-use craft\elements\User;
-use craft\events\ModelEvent;
+use craft\events\DefineBehaviorsEvent;
+use craft\events\ElementEvent;
+use craft\events\RegisterComponentTypesEvent;
+use craft\services\Elements;
+use craft\services\Utilities;
 use craft\web\twig\variables\CraftVariable;
 use Exception;
+use rias\scout\behaviors\SearchableBehavior;
 use rias\scout\models\Settings;
-use rias\scout\services\ScoutService as ScoutServiceService;
+use rias\scout\utilities\ScoutUtility;
 use rias\scout\variables\ScoutVariable;
 use yii\base\Event;
 
-/**
- * Class Scout.
- *
- * @author    Rias
- *
- * @since     0.1.0
- *
- * @property  ScoutServiceService $scoutService
- */
 class Scout extends Plugin
 {
-    // Static Properties
-    // =========================================================================
+    const EDITION_STANDARD = 'standard';
+    const EDITION_PRO = 'pro';
 
-    /**
-     * @var Scout
-     */
+    public static function editions(): array
+    {
+        return [
+            self::EDITION_STANDARD,
+            self::EDITION_PRO,
+        ];
+    }
+
+    /** @var \rias\scout\Scout */
     public static $plugin;
 
-    // Public Methods
-    // =========================================================================
+    public $hasCpSettings = true;
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @var \Tightenco\Collect\Support\Collection */
+    private $beforeDeleteRelated;
+
     public function init()
     {
         parent::init();
+
         self::$plugin = $this;
+
+        Craft::$container->setSingleton(SearchClient::class, function () {
+            $config = SearchConfig::create(
+                self::$plugin->getSettings()->getApplicationId(),
+                self::$plugin->getSettings()->getAdminApiKey()
+            );
+
+            $config->setConnectTimeout($this->getSettings()->connect_timeout);
+
+            return SearchClient::createWithConfig($config);
+        });
 
         $request = Craft::$app->getRequest();
         if ($request->getIsConsoleRequest()) {
             $this->controllerNamespace = 'rias\scout\console\controllers\scout';
         }
 
+        $this->validateConfig();
+        $this->registerBehaviors();
+        $this->registerVariables();
+        $this->registerEventHandlers();
+
+        if (self::getInstance()->is(self::EDITION_PRO)) {
+            $this->registerUtility();
+        }
+    }
+
+    protected function createSettingsModel(): Settings
+    {
+        return new Settings();
+    }
+
+    public function getSettings(): Settings
+    {
+        return parent::getSettings();
+    }
+
+    /** @codeCoverageIgnore */
+    protected function settingsHtml()
+    {
+        $overrides = Craft::$app->getConfig()->getConfigFromFile(strtolower($this->handle));
+
+        return Craft::$app->getView()->renderTemplate('scout/settings', [
+            'settings'  => $this->getSettings(),
+            'overrides' => array_keys($overrides),
+        ]);
+    }
+
+    private function registerUtility()
+    {
+        Event::on(
+            Utilities::class,
+            Utilities::EVENT_REGISTER_UTILITY_TYPES,
+            function (RegisterComponentTypesEvent $event) {
+                $event->types[] = ScoutUtility::class;
+            }
+        );
+    }
+
+    private function registerBehaviors()
+    {
+        // Register the behavior on the Element class
+        Event::on(
+            Element::class,
+            Element::EVENT_DEFINE_BEHAVIORS,
+            function (DefineBehaviorsEvent $event) {
+                $event->behaviors['searchable'] = SearchableBehavior::class;
+            }
+        );
+    }
+
+    private function registerVariables()
+    {
         // Register our variables
         Event::on(
             CraftVariable::class,
@@ -76,143 +129,60 @@ class Scout extends Plugin
                 $variable->set('scout', ScoutVariable::class);
             }
         );
-
-        /*
-         * Add or update an element to the index
-         */
-        Event::on(
-            Element::class,
-            Element::EVENT_AFTER_SAVE,
-            function (ModelEvent $event) {
-                if ($this->getSettings()->sync) {
-                    $this->indexElements($event->sender);
-                }
-            }
-        );
-
-        /*
-         * Order can be important for search indexes, so update when this changes
-         */
-        Event::on(
-            Element::class,
-            Element::EVENT_AFTER_MOVE_IN_STRUCTURE,
-            function (ModelEvent $event) {
-                if ($this->getSettings()->sync) {
-                    $this->indexElements($event->sender);
-                }
-            }
-        );
-
-        /*
-         * Delete an element from the index
-         */
-        Event::on(
-            Element::class,
-            Element::EVENT_BEFORE_DELETE,
-            function (ModelEvent $event) {
-                if ($this->getSettings()->sync) {
-                    $this->deindexElements($event->sender);
-                }
-            }
-        );
-
-        /*
-         * When a Category is saved, reindex the related Entries
-         */
-        Event::on(
-            Category::class,
-            Category::EVENT_AFTER_SAVE,
-            function (ModelEvent $event) {
-                // Only do this when the category isn't new
-                if (!$event->isNew && $this->getSettings()->sync) {
-                    $this->indexElements($this->getElementsRelatedTo($event->sender));
-                }
-            }
-        );
-
-        /*
-         * When a Category is deleted, reindex the related Entries
-         */
-        Event::on(
-            Category::class,
-            Category::EVENT_BEFORE_DELETE,
-            function (ModelEvent $event) {
-                if ($this->getSettings()->sync) {
-                    $this->indexElements($this->getElementsRelatedTo($event->sender));
-                }
-            }
-        );
     }
 
-    // Protected Methods
-    // =========================================================================
-
-    /**
-     * @param $elements
-     *
-     * @throws Exception
-     */
-    protected function indexElements($elements)
+    private function validateConfig()
     {
-        if (!is_array($elements)) {
-            $elements = [$elements];
+        $indices = $this->getSettings()->getIndices();
+
+        if ($indices->unique('indexName')->count() !== $indices->count()) {
+            throw new Exception('Index names must be unique in the Scout config.');
+        }
+    }
+
+    private function registerEventHandlers()
+    {
+        $events = [
+            [Elements::class, Elements::EVENT_AFTER_SAVE_ELEMENT],
+            [Elements::class, Elements::EVENT_AFTER_RESTORE_ELEMENT],
+            [Elements::class, Elements::EVENT_AFTER_UPDATE_SLUG_AND_URI],
+        ];
+
+        foreach ($events as $event) {
+            Event::on($event[0], $event[1],
+                function (ElementEvent $event) {
+                    /** @var SearchableBehavior $element */
+                    $element = $event->element;
+                    $element->searchable();
+                }
+            );
         }
 
-        self::$plugin->scoutService->indexElements($elements);
-    }
+        Event::on(
+            Elements::class,
+            Elements::EVENT_BEFORE_DELETE_ELEMENT,
+            function (ElementEvent $event) {
+                /** @var SearchableBehavior $element */
+                $element = $event->element;
+                $this->beforeDeleteRelated = $element->getRelatedElements();
+            }
+        );
 
-    /**
-     * @param $elements
-     *
-     * @throws Exception
-     */
-    protected function deindexElements($elements)
-    {
-        if (!is_array($elements)) {
-            $elements = [$elements];
-        }
+        Event::on(
+            Elements::class,
+            Elements::EVENT_AFTER_DELETE_ELEMENT,
+            function (ElementEvent $event) {
+                /** @var SearchableBehavior $element */
+                $element = $event->element;
+                $element->unsearchable();
 
-        self::$plugin->scoutService->deindexElements($elements);
-    }
-
-    /**
-     * Get all possible elements related to another element.
-     *
-     * @param mixed $element
-     *
-     * @return ElementInterface[]
-     */
-    protected function getElementsRelatedTo($element)
-    {
-        $assets = Asset::find()->relatedTo($element)->all();
-        $categories = Category::find()->relatedTo($element)->all();
-        $entries = Entry::find()->relatedTo($element)->all();
-        $tags = Tag::find()->relatedTo($element)->all();
-        $users = User::find()->relatedTo($element)->all();
-        $globalSets = GlobalSet::find()->relatedTo($element)->all();
-        $matrixBlocks = MatrixBlock::find()->relatedTo($element)->all();
-
-        return array_merge($assets, $categories, $entries, $tags, $users, $globalSets, $matrixBlocks);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createSettingsModel()
-    {
-        return new Settings();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function settingsHtml(): string
-    {
-        return Craft::$app->view->renderTemplate(
-            'scout/settings',
-            [
-                'settings' => $this->getSettings(),
-            ]
+                if ($this->beforeDeleteRelated) {
+                    $this->beforeDeleteRelated->each(function (Element $relatedElement) {
+                        /* @var SearchableBehavior $relatedElement */
+                        $relatedElement->searchable(false);
+                    });
+                }
+            }
         );
     }
 }
