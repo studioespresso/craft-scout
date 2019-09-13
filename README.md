@@ -213,6 +213,19 @@ You can access the Algolia settings set in your config file through the followin
 {{ craft.scout.algoliaSearchApiKey }}
 ```
 
+### `->indexSettings(IndexSettings $settings)`
+
+You can use this to define index settings that get synced when you call the `./craft scout/settings/update` console command. 
+This way you can keep your index settings in source control. 
+The IndexSettings object provides autocompletion for all Algolia's settings
+
+```php
+->indexSettings(
+    \rias\scout\IndexSettings::create()
+        ->minWordSizefor1Typo(4)
+)
+```
+
 ## Console commands
 Scout provides two easy console commands for managing your indices.
 
