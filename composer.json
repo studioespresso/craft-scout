@@ -1,6 +1,5 @@
 {
     "name": "rias/craft-scout",
-    "version": "2.0",
     "description": "Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.",
     "type": "craft-plugin",
     "keywords": [
