@@ -203,16 +203,6 @@ Array items are array indices returned from the transformer.
 
 > *Important* - `distinctID` (available after indexing) must be set up as an attribute for faceting for deletion of objects to work when using splitElementsOn.
 
-## Twig variables
-You can access the Algolia settings set in your config file through the following Twig variables.
-
-```twig
-{{ craft.scout.pluginName }}
-{{ craft.scout.algoliaApplicationId }}
-{{ craft.scout.algoliaAdminApiKey }}
-{{ craft.scout.algoliaSearchApiKey }}
-```
-
 ### `->indexSettings(IndexSettings $settings)`
 
 You can use this to define index settings that get synced when you call the `./craft scout/settings/update` console command. 
@@ -224,6 +214,16 @@ The IndexSettings object provides autocompletion for all Algolia's settings
     \rias\scout\IndexSettings::create()
         ->minWordSizefor1Typo(4)
 )
+```
+
+## Twig variables
+You can access the Algolia settings set in your config file through the following Twig variables.
+
+```twig
+{{ craft.scout.pluginName }}
+{{ craft.scout.algoliaApplicationId }}
+{{ craft.scout.algoliaAdminApiKey }}
+{{ craft.scout.algoliaSearchApiKey }}
 ```
 
 ## Console commands
