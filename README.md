@@ -9,7 +9,7 @@
 
 # Scout plugin for Craft CMS 3
 
-Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.
+Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indices in sync with your entries.
 
 ## Support Open Source. Buy beer.
 
@@ -192,7 +192,7 @@ class MyTransformerClassName extends TransformerAbstract
 
 #### `->splitElementsOn(array $keys)`
 For long documents it is advised to divide the element into multiple rows to keep each row within row data size. This can be done using `splitElementsOn()`.
-Array items are array indexes returned from the transformer.
+Array items are array indices returned from the transformer.
 
 ```php
 ->splitElementsOn([
