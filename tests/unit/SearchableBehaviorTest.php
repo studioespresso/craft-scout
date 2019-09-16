@@ -73,6 +73,16 @@ class SearchableBehaviorTest extends Unit
                     ->criteria(function (EntryQuery $query) {
                         return $query->sectionId(100);
                     }),
+                ScoutIndex::create('all-sites')
+                    ->elementType(Entry::class)
+                    ->criteria(function (EntryQuery $query) {
+                        return $query->site('*');
+                    }),
+                ScoutIndex::create('many-sites')
+                    ->elementType(Entry::class)
+                    ->criteria(function (EntryQuery $query) {
+                        return $query->siteId([1, 2, 3]);
+                    }),
                 ScoutIndex::create('categories')
                     ->elementType(Category::class)
                     ->criteria(function (CategoryQuery $query) {
@@ -117,7 +127,7 @@ class SearchableBehaviorTest extends Unit
     {
         $indices = $this->element->getIndices();
 
-        $this->assertEquals(2, $indices->count());
+        $this->assertEquals(4, $indices->count());
         $this->assertEquals('Blog', $indices->first()->indexName);
     }
 
@@ -130,7 +140,7 @@ class SearchableBehaviorTest extends Unit
             return $this->element->validatesCriteria($scoutIndex);
         });
 
-        $this->assertEquals(1, $indices->count());
+        $this->assertEquals(3, $indices->count());
         $this->assertEquals('Blog', $indices->first()->indexName);
     }
 
@@ -141,7 +151,7 @@ class SearchableBehaviorTest extends Unit
         /** @var \rias\scout\engines\Engine $engine */
         $engine = $engines->first();
 
-        $this->assertEquals(2, $engines->count());
+        $this->assertEquals(4, $engines->count());
         $this->assertInstanceOf(Engine::class, $engine);
         $this->assertInstanceOf(FakeEngine::class, $engine);
     }
@@ -203,5 +213,18 @@ class SearchableBehaviorTest extends Unit
         $this->element->propagating = true;
 
         $this->assertFalse($this->element->shouldBeSearchable());
+    }
+
+    /** @test * */
+    public function it_is_searchable_when_using_multiple_sites()
+    {
+        $indexNames = $this->element->getIndices()->filter(function (ScoutIndex $scoutIndex) {
+            return $this->element->validatesCriteria($scoutIndex);
+        })->map(function (ScoutIndex $scoutIndex) {
+            return $scoutIndex->indexName;
+        });
+
+        $this->assertContains('all-sites', $indexNames);
+        $this->assertContains('many-sites', $indexNames);
     }
 }

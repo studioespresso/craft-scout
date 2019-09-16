@@ -46,7 +46,8 @@ class SearchableBehavior extends Behavior
             ->getIndices()
             ->filter(function (ScoutIndex $scoutIndex) {
                 return $scoutIndex->elementType === get_class($this->owner)
-                    && (int) $scoutIndex->criteria->siteId === (int) $this->owner->siteId;
+                    && ($scoutIndex->criteria->siteId === '*'
+                        || in_array($this->owner->siteId, (array) $scoutIndex->criteria->siteId));
             });
     }
 
