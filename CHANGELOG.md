@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.0.1 - 2019-09-17
+
+- Fixed a bug when using `->site('*')` in your criteria, thanks @timkelty
+
 ## 2.0.0 - 2019-09-13
 
 > {warning} This is a major release, the way you configure Scout has been changed, please read the [docs](https://github.com/riasvdv/craft-scout/blob/master/README.md#upgrading) on how to upgrade.
