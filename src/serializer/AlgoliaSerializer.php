@@ -1,8 +1,6 @@
 <?php
-namespace rias\scout\serializer;
 
-use League\Fractal\Serializer\ArraySerializer;
-use yii\helpers\VarDumper;
+namespace rias\scout\serializer;
 
 class AlgoliaSerializer extends \League\Fractal\Serializer\ArraySerializer
 {
