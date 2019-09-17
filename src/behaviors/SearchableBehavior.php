@@ -21,6 +21,7 @@ use rias\scout\engines\Engine;
 use rias\scout\jobs\MakeSearchable;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
+use Tightenco\Collect\Support\Arr;
 use Tightenco\Collect\Support\Collection;
 use yii\base\Behavior;
 
@@ -34,7 +35,8 @@ class SearchableBehavior extends Behavior
 {
     public function validatesCriteria(ScoutIndex $scoutIndex): bool
     {
-        return $scoutIndex->criteria
+        $criteria = clone $scoutIndex->criteria;
+        return $criteria
             ->id($this->owner->id)
             ->exists();
     }
@@ -45,8 +47,13 @@ class SearchableBehavior extends Behavior
             ->getSettings()
             ->getIndices()
             ->filter(function (ScoutIndex $scoutIndex) {
+                $siteIds = array_map(function ($siteId) {
+                    return (int) $siteId;
+                }, Arr::wrap($scoutIndex->criteria->siteId));
+
                 return $scoutIndex->elementType === get_class($this->owner)
-                    && (int) $scoutIndex->criteria->siteId === (int) $this->owner->siteId;
+                    && ($scoutIndex->criteria->siteId === '*'
+                        || in_array((int) $this->owner->siteId, $siteIds));
             });
     }
 
