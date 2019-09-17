@@ -36,6 +36,7 @@ class SearchableBehavior extends Behavior
     public function validatesCriteria(ScoutIndex $scoutIndex): bool
     {
         $criteria = clone $scoutIndex->criteria;
+
         return $criteria
             ->id($this->owner->id)
             ->exists();
