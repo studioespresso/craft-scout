@@ -191,8 +191,8 @@ class MyTransformerClassName extends TransformerAbstract
 ```
 
 #### `->splitElementsOn(array $keys)`
-For long documents it is advised to divide the element into multiple rows to keep each row within row data size. This can be done using `splitElementsOn()`.
-Array items are array indices returned from the transformer.
+[For long documents](https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/how-to/indexing-long-documents/) it is advised to divide the element into multiple rows to keep each row within row data size. This can be done using `splitElementsOn()`.
+> Make sure to return an array in your transformer for these keys.
 
 ```php
 ->splitElementsOn([
