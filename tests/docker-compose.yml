@@ -1,5 +1,14 @@
 version: "2"
 services:
+  codecept:
+    build: ../docker/php/
+    volumes:
+      - ../:/project
+    # uncomment this line to run composer commands
+    # entrypoint: composer
+    links:
+      - mysql
+
   mysql:
     restart: always
     image: mysql/mysql-server:5.7
@@ -11,4 +20,4 @@ services:
       MYSQL_ROOT_HOST: "0.0.0.0"
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
-      - "3306:3306"
+      - 3306
