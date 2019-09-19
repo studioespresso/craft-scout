@@ -4,10 +4,8 @@ namespace yournamespace\tests;
 
 use Codeception\Test\Unit;
 use FractalMockTransformers;
-
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
-
 use rias\scout\serializer\AlgoliaSerializer;
 
 class FractalArraySerializerTest extends Unit
@@ -35,7 +33,7 @@ class FractalArraySerializerTest extends Unit
     {
         $dataSet = (new Manager())
             ->setSerializer(new AlgoliaSerializer())
-            ->createData(new Collection($this->entries, new FractalMockTransformers, 'entries'))
+            ->createData(new Collection($this->entries, new FractalMockTransformers(), 'entries'))
             ->toArray();
 
         $this->assertArrayHasKey('entries', $dataSet);
