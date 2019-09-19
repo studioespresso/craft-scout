@@ -133,7 +133,7 @@ class SearchableBehavior extends Behavior
         }
         // @codeCoverageIgnoreEnd
 
-        return collect(array_merge(
+        return new Collection(array_merge(
             $assets,
             $categories,
             $entries,
