@@ -19,17 +19,17 @@ class FractalArraySerializerTest extends Unit
     ]];
 
     /** @test **/
-    public function nested_transformer_should_be_array()
+    public function collection_should_be_index_array()
     {
         $dataSet = (new Manager())->setSerializer(new AlgoliaSerializer())
-            ->createData(new Collection($this->entries, new FractalMockTransformers(), 'entries'))
+            ->createData(new Collection($this->entries, new FractalMockTransformers()))
             ->toArray();
 
-        $this->assertCount(2, $dataSet);
+        $this->assertArrayHasKey('0', $dataSet);
     }
 
     /** @test **/
-    public function nested_transformer_should_be_object()
+    public function collection_should_be_multidimensional_array()
     {
         $dataSet = (new Manager())
             ->setSerializer(new AlgoliaSerializer())
