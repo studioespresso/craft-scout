@@ -38,4 +38,5 @@ class FractalArraySerializerTest extends Unit
 
         $this->assertArrayHasKey('entries', $dataSet);
     }
+
 }
