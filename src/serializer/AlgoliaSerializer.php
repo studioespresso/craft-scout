@@ -14,7 +14,7 @@ class AlgoliaSerializer extends \League\Fractal\Serializer\ArraySerializer
      */
     public function collection($resourceKey, array $data)
     {
-        if ($resourceKey === false) {
+        if ($resourceKey) {
             return [$resourceKey => $data];
         }
 
