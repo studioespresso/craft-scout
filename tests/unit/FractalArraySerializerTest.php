@@ -3,50 +3,44 @@
 namespace yournamespace\tests;
 
 use League\Fractal\Manager;
-use League\Fractal\Resource\Item;
+use League\Fractal\Resource\Collection;
 
 use Codeception\Test\Unit;
 use rias\scout\serializer\AlgoliaSerializer;
 use UnitTester;
+use FractalMockTransformers;
 
 class FractalArraySerializerTest extends Unit
 {
     /**
      * @var \UnitTester
      */
-    protected $tester;
+    protected $entries = [[
+        'title' => 'The Great Scout',
+        'id'    => 123,
+    ], [
+        'title' => 'The Great Scout Vol 2',
+        'id'    => 124,
+    ]];
 
-    protected $dataSet;
-    
-    protected function _before()
+    /** @test **/
+    public function nested_transformer_should_be_array()
     {
-        $manager = new Manager();
-        $this->dataSet = $manager->setSerializer(new AlgoliaSerializer())
-            ->createData(new Item($book, new yournamespace\transformer\BlogTransformer))
+        $dataSet = (new Manager())->setSerializer(new AlgoliaSerializer())
+            ->createData(new Collection($this->entries, new FractalMockTransformers))
             ->toArray();
+
+        $this->assertCount(2, $dataSet);
     }
 
-    // protected function _after()
-    // {
-    // }
-
-    // tests
-    public function transformer_output_should_not_have_nested_data_attribute()
+    /** @test **/
+    public function nested_transformer_should_be_object()
     {
-        $manager = new Manager();
-        $book = [
-            'title' => 'The Great Scout',
-            'id'    => 123,
-        ];
+        $dataSet = (new Manager())
+            ->setSerializer(new AlgoliaSerializer())
+            ->createData(new Collection($this->entries, new FractalMockTransformers, 'entries'))
+            ->toArray();
 
-        var_dump("\n-----\n");
-        var_dump($this->dataSet);
-        var_dump("\n-----\n");
-        $this->assertNull($this->dataSet['bookCategories']['data']);
+        $this->assertArrayHasKey('entries', $dataSet);
     }
-
-    // public function Transformer_Output_should_have_nested_data_attribute()
-    // {
-
-    // }
 }
