@@ -1,20 +1,17 @@
-<?php 
+<?php
 
 namespace yournamespace\tests;
+
+use Codeception\Test\Unit;
+use FractalMockTransformers;
 
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
 
-use Codeception\Test\Unit;
 use rias\scout\serializer\AlgoliaSerializer;
-use UnitTester;
-use FractalMockTransformers;
 
 class FractalArraySerializerTest extends Unit
 {
-    /**
-     * @var \UnitTester
-     */
     protected $entries = [[
         'title' => 'The Great Scout',
         'id'    => 123,
@@ -27,7 +24,7 @@ class FractalArraySerializerTest extends Unit
     public function nested_transformer_should_be_array()
     {
         $dataSet = (new Manager())->setSerializer(new AlgoliaSerializer())
-            ->createData(new Collection($this->entries, new FractalMockTransformers))
+            ->createData(new Collection($this->entries, new FractalMockTransformers(), 'entries'))
             ->toArray();
 
         $this->assertCount(2, $dataSet);
