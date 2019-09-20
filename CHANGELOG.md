@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.1.0 - 2019-09-20
+
+- Use a custom Serializer for Fractal (thanks @santi6291)
+
 ## 2.0.2 - 2019-09-19
 
 - Fixed a type hinting issue
