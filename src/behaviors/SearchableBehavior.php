@@ -16,11 +16,11 @@ use craft\elements\User;
 use craft\helpers\ElementHelper;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
-use League\Fractal\Serializer\ArraySerializer;
 use rias\scout\engines\Engine;
 use rias\scout\jobs\MakeSearchable;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
+use rias\scout\serializer\AlgoliaSerializer;
 use Tightenco\Collect\Support\Arr;
 use Tightenco\Collect\Support\Collection;
 use yii\base\Behavior;
@@ -109,7 +109,7 @@ class SearchableBehavior extends Behavior
     public function toSearchableArray(ScoutIndex $scoutIndex): array
     {
         return (new Manager())
-            ->setSerializer(new ArraySerializer())
+            ->setSerializer(new AlgoliaSerializer())
             ->createData(new Item($this->owner, $scoutIndex->getTransformer()))
             ->toArray();
     }
