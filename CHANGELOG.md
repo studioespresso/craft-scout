@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.1.1 - xxxx-xx-xx
+- Don't use element as a prop, as it will get serialized with the whole class int the job queue.
+
 ## 2.1.0 - 2019-09-20
 
 - Use a custom Serializer for Fractal (thanks @santi6291)
