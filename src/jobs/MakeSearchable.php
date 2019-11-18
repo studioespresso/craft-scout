@@ -44,7 +44,14 @@ class MakeSearchable extends BaseJob
         );
     }
 
-    private function getElement(): ?Element
+    /**
+     * We use this method instead of setting a prop in the constructor,
+     * because Yii will serialize the entire class into the queue table,
+     * including the gigantic element prop.
+     *
+     * @return Element
+     */
+    private function getElement()
     {
         return Craft::$app->getElements()->getElementById($this->id, null, $this->siteId);
     }
