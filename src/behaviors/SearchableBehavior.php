@@ -85,6 +85,8 @@ class SearchableBehavior extends Behavior
                         'propagate' => $propagate,
                     ])
                 );
+            } elseif ($propagate) {
+                $this->searchableRelations();
             }
 
             return $engine->update($this->owner);
@@ -106,6 +108,14 @@ class SearchableBehavior extends Behavior
             ->setSerializer(new AlgoliaSerializer())
             ->createData(new Item($this->owner, $scoutIndex->getTransformer()))
             ->toArray();
+    }
+
+    public function searchableRelations()
+    {
+        $this->getRelatedElements()->each(function (Element $relatedElement) {
+            /* @var SearchableBehavior $relatedElement */
+            $relatedElement->searchable(false);
+        });
     }
 
     public function getRelatedElements(): Collection

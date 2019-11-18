@@ -34,10 +34,7 @@ class MakeSearchable extends BaseJob
         $engine->update($element);
 
         if ($this->propagate) {
-            $element->getRelatedElements()->each(function (Element $relatedElement) {
-                /* @var SearchableBehavior $relatedElement */
-                $relatedElement->searchable(false);
-            });
+            $this->element->searchableRelations();
         }
     }
 
