@@ -3,6 +3,7 @@
 namespace rias\scout\jobs;
 
 use Craft;
+use craft\base\Element;
 use craft\queue\BaseJob;
 use rias\scout\engines\Engine;
 
@@ -17,39 +18,34 @@ class MakeSearchable extends BaseJob
     /** @var string */
     public $indexName;
 
-    /** @var \rias\scout\behaviors\SearchableBehavior */
-    private $element;
-
-    public function __construct($config = [])
-    {
-        parent::__construct($config);
-
-        $this->element = Craft::$app->getElements()->getElementById($this->id, null, $this->siteId);
-    }
-
     public function execute($queue)
     {
-        if (!$this->element) {
+        if (!$element = $this->getElement()) {
             return;
         }
 
-        $engine = $this->element->searchableUsing()->first(function (Engine $engine) {
+        $engine = $element->searchableUsing()->first(function (Engine $engine) {
             return $engine->scoutIndex->indexName === $this->indexName;
         });
 
-        $engine->update($this->element);
+        $engine->update($element);
     }
 
     protected function defaultDescription()
     {
-        if (!$this->element) {
+        if (!$element = $this->getElement()) {
             return '';
         }
 
         return sprintf(
             'Indexing “%s” in “%s”',
-            ($this->element->title ?? $this->element->id),
+            ($element->title ?? $element->id),
             $this->indexName
         );
+    }
+
+    private function getElement(): ?Element
+    {
+        return Craft::$app->getElements()->getElementById($this->id, null, $this->siteId);
     }
 }
