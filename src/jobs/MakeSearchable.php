@@ -19,7 +19,7 @@ class MakeSearchable extends BaseJob
     public $indexName;
 
     /** @var bool */
-    public $propagate;
+    public $propagate = true;
 
     public function execute($queue)
     {
