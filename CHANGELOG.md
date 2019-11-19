@@ -2,8 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-## 2.1.1 - xxxx-xx-xx
+## 2.1.1 - 2019-11-19
 - Don't use element as a prop, as it will get serialized with the whole class int the job queue.
+- Defer related element propagation to queue
 
 ## 2.1.0 - 2019-09-20
 
