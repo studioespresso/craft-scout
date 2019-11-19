@@ -71,7 +71,7 @@ class SearchableBehavior extends Behavior
             return;
         }
 
-        $this->searchableUsing()->each(function (Engine $engine) {
+        $this->searchableUsing()->each(function (Engine $engine) use ($propagate) {
             if (!$this->validatesCriteria($engine->scoutIndex)) {
                 return $engine->delete($this->owner);
             }
@@ -82,19 +82,15 @@ class SearchableBehavior extends Behavior
                         'id'        => $this->owner->id,
                         'siteId'    => $this->owner->siteId,
                         'indexName' => $engine->scoutIndex->indexName,
+                        'propagate' => $propagate,
                     ])
                 );
+            } elseif ($propagate) {
+                $this->searchableRelations();
             }
 
             return $engine->update($this->owner);
         });
-
-        if ($propagate) {
-            $this->getRelatedElements()->each(function (Element $relatedElement) {
-                /* @var SearchableBehavior $relatedElement */
-                $relatedElement->searchable(false);
-            });
-        }
     }
 
     public function unsearchable()
@@ -112,6 +108,14 @@ class SearchableBehavior extends Behavior
             ->setSerializer(new AlgoliaSerializer())
             ->createData(new Item($this->owner, $scoutIndex->getTransformer()))
             ->toArray();
+    }
+
+    public function searchableRelations()
+    {
+        $this->getRelatedElements()->each(function (Element $relatedElement) {
+            /* @var SearchableBehavior $relatedElement */
+            $relatedElement->searchable(false);
+        });
     }
 
     public function getRelatedElements(): Collection

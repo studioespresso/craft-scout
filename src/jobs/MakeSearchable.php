@@ -18,6 +18,9 @@ class MakeSearchable extends BaseJob
     /** @var string */
     public $indexName;
 
+    /** @var bool */
+    public $propagate = true;
+
     public function execute($queue)
     {
         if (!$element = $this->getElement()) {
@@ -29,6 +32,10 @@ class MakeSearchable extends BaseJob
         });
 
         $engine->update($element);
+
+        if ($this->propagate) {
+            $this->element->searchableRelations();
+        }
     }
 
     protected function defaultDescription()
