@@ -85,7 +85,9 @@ class AlgoliaEngine extends Engine
     public function updateSettings(IndexSettings $indexSettings)
     {
         $index = $this->algolia->initIndex($this->scoutIndex->indexName);
-        $index->setSettings($indexSettings->settings);
+        $index->setSettings($indexSettings->settings, [
+            'forwardToReplicas' => $indexSettings->forwardToReplicas,
+        ]);
     }
 
     public function getSettings(): array
