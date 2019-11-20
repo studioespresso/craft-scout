@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.1.2 - 2019-11-20
+- Fix Index settings not being forwarded to replicas
+
 ## 2.1.1 - 2019-11-19
 - Don't use element as a prop, as it will get serialized with the whole class int the job queue.
 - Defer related element propagation to queue
