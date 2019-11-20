@@ -86,7 +86,7 @@ class AlgoliaEngine extends Engine
     {
         $index = $this->algolia->initIndex($this->scoutIndex->indexName);
         $index->setSettings($indexSettings->settings, [
-            'forwardToReplicas' => $indexSettings->forwardToReplicas
+            'forwardToReplicas' => $indexSettings->forwardToReplicas,
         ]);
     }
 
