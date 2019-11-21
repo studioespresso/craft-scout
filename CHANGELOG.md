@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.1.3 - 2019-11-21
+- Fix queued indexing error
+
 ## 2.1.2 - 2019-11-20
 - Fix Index settings not being forwarded to replicas
 

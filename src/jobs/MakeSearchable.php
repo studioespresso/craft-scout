@@ -34,7 +34,7 @@ class MakeSearchable extends BaseJob
         $engine->update($element);
 
         if ($this->propagate) {
-            $this->element->searchableRelations();
+            $element->searchableRelations();
         }
     }
 
