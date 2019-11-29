@@ -90,6 +90,11 @@ class AlgoliaEngine extends Engine
         ]);
     }
 
+    public function getClient(): Algolia
+    {
+        return $this->algolia;
+    }
+
     public function getSettings(): array
     {
         $index = $this->algolia->initIndex($this->scoutIndex->indexName);
