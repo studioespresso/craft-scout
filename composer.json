@@ -34,7 +34,7 @@
         }
     ],
     "require-dev": {
-        "vlucas/phpdotenv": "^3.0",
+        "vlucas/phpdotenv": "^4.0",
         "codeception/codeception": "^3.1"
     },
     "autoload": {
