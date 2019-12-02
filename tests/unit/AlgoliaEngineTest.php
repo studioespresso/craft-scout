@@ -248,8 +248,8 @@ class AlgoliaEngineTest extends Unit
     }
 
     /** @test * */
-    public function it_can_get_client()
+    public function it_can_get_proxy_client_methods()
     {
-        $this->assertInstanceOf(SearchClient::class, $this->engine->getClient());
+        $this->assertInstanceOf(SearchClient::class, $this->engine->get());
     }
 }
