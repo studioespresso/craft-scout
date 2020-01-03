@@ -11,12 +11,12 @@ class ScoutVariable
         return Scout::$plugin->getSettings()->getApplicationId();
     }
 
-    public function algoliaAdminApiKey() : string
+    public function algoliaAdminApiKey(): string
     {
         return Scout::$plugin->getSettings()->getAdminApiKey();
     }
 
-    public function algoliaSearchApiKey() : string
+    public function algoliaSearchApiKey(): string
     {
         return Scout::$plugin->getSettings()->getSearchApiKey();
     }

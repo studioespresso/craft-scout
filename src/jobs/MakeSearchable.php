@@ -31,7 +31,7 @@ class MakeSearchable extends BaseJob
             return $engine->scoutIndex->indexName === $this->indexName;
         });
 
-        if (! $engine) {
+        if (!$engine) {
             return;
         }
 
