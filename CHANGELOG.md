@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.1.4 - 2020-01-03
+- Fix an issue where engine could be null - #121
+
 ## 2.1.3 - 2019-11-21
 - Fix queued indexing error
 
