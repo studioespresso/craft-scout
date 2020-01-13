@@ -13,12 +13,15 @@ class IndexController extends BaseController
 {
     public $defaultAction = 'refresh';
 
+    /** @var int */
+    public $batchSize = null;
+
     /** @var bool */
     public $force = false;
 
     public function options($actionID)
     {
-        return ['force'];
+        return ['batchSize', 'force'];
     }
 
     public function actionFlush($index = '')
@@ -51,7 +54,7 @@ class IndexController extends BaseController
             $totalElements = $engine->scoutIndex->criteria->count();
             $elementsUpdated = 0;
             $batch = $engine->scoutIndex->criteria->batch(
-                Scout::$plugin->getSettings()->batch_size
+                $this->batchSize ?? Scout::$plugin->getSettings()->batch_size
             );
 
             foreach ($batch as $elements) {
