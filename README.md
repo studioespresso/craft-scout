@@ -11,10 +11,6 @@
 
 Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indices in sync with your entries.
 
-## Support Open Source. Buy beer.
-
-[![Beerpay](https://beerpay.io/Rias500/craft-scout/badge.svg?style=beer-square)](https://beerpay.io/Rias500/craft-scout)
-
 ## Requirements
 
 This plugin requires Craft CMS 3.2 or later and PHP 7.1 or later.
