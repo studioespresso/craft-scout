@@ -34,7 +34,7 @@ jobs:
               with:
                   php-version: '7.1'
                   extensions: mbstring,dom,fileinfo,mysql,imagick,bcmath,pcntl,zip,soap,intl,gd,exif,iconv
-                  coverage: none
+                  coverage: xdebug
 
             - name: Get composer cache directory
               id: composer-cache
