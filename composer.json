@@ -21,7 +21,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1",
         "craftcms/cms": "^3.3.0",
         "algolia/algoliasearch-client-php": "^2.3",
         "league/fractal": "^0.19",
@@ -39,7 +39,7 @@
         "codeception/module-asserts": "^1.1.1",
         "codeception/lib-asserts": "^1.1.0",
         "codeception/module-yii2": "^1.1.0",
-        "phpunit/phpunit": "^9.0.1"
+        "phpunit/phpunit": "^7.5.20"
     },
     "autoload": {
         "psr-4": {
