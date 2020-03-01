@@ -1,0 +1,61 @@
+name: Tests (PHP)
+
+on: [push, pull_request]
+
+jobs:
+    tests:
+        strategy:
+          fail-fast: true
+          matrix:
+            php: [7.4, 7.3, 7.2, 7.1, 7.0]
+            dependency-version: [prefer-lowest, prefer-stable]
+  
+        name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Create database
+              run: |
+                mysql -u root -proot -e 'CREATE DATABASE IF NOT EXISTS scout_testing;SET GLOBAL time_zone = "+00:00";'
+                mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -proot mysql
+
+            - name: Setup cache environment
+              id: cache-env
+              uses: shivammathur/cache-extensions@v1
+              with:
+                php-version: ${{ matrix.php }}
+                extensions: mbstring,dom,fileinfo,mysql,imagick,bcmath,pcntl,zip,soap,intl,gd,exif,iconv
+                key: extensions
+
+            - name: Cache extensions
+              uses: actions/cache@v1
+              with:
+                path: ${{ steps.cache-env.outputs.dir }}
+                key: ${{ steps.cache-env.outputs.key }}
+                restore-keys: ${{ steps.cache-env.outputs.key }}
+
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: mbstring,dom,fileinfo,mysql,imagick,bcmath,pcntl,zip,soap,intl,gd,exif,iconv
+
+            - name: Get composer cache directory
+              id: composer-cache
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            - name: Cache composer dependencies
+              uses: actions/cache@v1
+              with:
+                path: ~/.composer/cache/files
+                key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+            - name: Install Composer dependencies
+              run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+            - name: Run tests
+              run: ./vendor/bin/codecept run unit
+              env:
+                  APP_ENV: testing
+                  DB_PASSWORD: root
