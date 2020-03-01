@@ -4,13 +4,7 @@ on: [push, pull_request]
 
 jobs:
     tests:
-        strategy:
-          fail-fast: true
-          matrix:
-            php: [7.4, 7.3, 7.2, 7.1, 7.0]
-            dependency-version: [prefer-lowest, prefer-stable]
-
-        name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
+        name: Coverage
         runs-on: ubuntu-latest
 
         steps:
@@ -25,7 +19,7 @@ jobs:
               id: cache-env
               uses: shivammathur/cache-extensions@v1
               with:
-                php-version: ${{ matrix.php }}
+                php-version: 7.1
                 extensions: mbstring,dom,fileinfo,mysql,imagick,bcmath,pcntl,zip,soap,intl,gd,exif,iconv
                 key: extensions
 
@@ -38,7 +32,7 @@ jobs:
 
             - uses: shivammathur/setup-php@v2
               with:
-                  php-version: ${{ matrix.php }}
+                  php-version: '7.1'
                   extensions: mbstring,dom,fileinfo,mysql,imagick,bcmath,pcntl,zip,soap,intl,gd,exif,iconv
                   coverage: none
 
@@ -54,10 +48,13 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+                  composer install --prefer-dist --no-interaction --no-suggest
 
             - name: Run tests
-              run: ./vendor/bin/codecept run unit
+              run: |
+                mkdir -p build/logs
+                ./vendor/bin/codecept run unit --coverage-xml coverage.xml;
+                bash <(curl -s https://codecov.io/bash)
               env:
                   APP_ENV: testing
                   DB_PASSWORD: root
