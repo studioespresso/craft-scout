@@ -1,6 +1,6 @@
 <?php
 
-namespace yournamespace\tests;
+namespace rias\scout\tests;
 
 use Algolia\AlgoliaSearch\SearchClient;
 use Codeception\Test\Unit;
