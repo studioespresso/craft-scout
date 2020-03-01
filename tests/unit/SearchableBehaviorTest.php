@@ -1,6 +1,6 @@
 <?php
 
-namespace yournamespace\tests;
+namespace rias\scout\tests;
 
 use Codeception\Test\Unit;
 use Craft;
@@ -202,9 +202,10 @@ class SearchableBehaviorTest extends Unit
     /** @test * */
     public function it_can_transform_to_a_searchable_array()
     {
-        $this->assertContains([
-            'title' => 'A new beginning.',
-        ], $this->element->toSearchableArray($this->element->getIndices()->first()));
+        $this->assertEquals(
+            'A new beginning.',
+            $this->element->toSearchableArray($this->element->getIndices()->first())['title']
+        );
     }
 
     /** @test * */

@@ -2,6 +2,7 @@
 .env.php
 .env.sh
 .env
+!/tests/.env
 
 # COMPOSER
 /vendor

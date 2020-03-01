@@ -1,6 +1,6 @@
 <?php
 
-namespace yournamespace\tests;
+namespace rias\scout\tests;
 
 use Craft;
 use craft\test\console\ConsoleTest;
