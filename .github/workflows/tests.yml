@@ -9,9 +9,8 @@ jobs:
           matrix:
             php: [7.4, 7.3, 7.2, 7.1, 7.0]
             dependency-version: [prefer-lowest, prefer-stable]
-            craft-version: [3.0, 3.1, 3.2, 3.3, 3.4]
   
-        name: P${{ matrix.php }} - Craft ${{ matrix.craft-version }} - ${{ matrix.dependency-version }}
+        name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
         runs-on: ubuntu-latest
 
         steps:
@@ -51,11 +50,10 @@ jobs:
               uses: actions/cache@v1
               with:
                 path: ~/.composer/cache/files
-                key: dependencies-craft-${{ matrix.craft-version }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+                key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
             - name: Install dependencies
               run: |
-                  composer require "craftcms/cms:${{ matrix.craft-version }}" --no-interaction --no-update
                   composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
             - name: Run tests
