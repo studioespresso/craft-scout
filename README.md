@@ -1,7 +1,7 @@
 ![Icon](./src/icon.svg)
 
 [![Latest Version](https://img.shields.io/github/release/riasvdv/craft-scout.svg?style=flat-square)](https://github.com/riasvdv/craft-scout/releases)
-[![Build Status](https://travis-ci.org/riasvdv/craft-scout.svg)](https://travis-ci.org/riasvdv/craft-scout)
+![Tests (PHP)](https://github.com/riasvdv/craft-scout/workflows/Tests%20(PHP)/badge.svg)
 [![Coverage](https://codecov.io/gh/riasvdv/craft-scout/graph/badge.svg)](https://codecov.io/gh/riasvdv/craft-scout)
 [![Quality Score](https://img.shields.io/scrutinizer/g/riasvdv/craft-scout.svg?style=flat-square)](https://scrutinizer-ci.com/g/riasvdv/craft-scout)
 [![StyleCI](https://styleci.io/repos/113917206/shield)](https://styleci.io/repos/113917206)
