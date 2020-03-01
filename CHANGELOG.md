@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.2.0 - 2020-03-01
+- Fix dependencies, now requires PHP >= 7.1
+
 ## 2.1.4 - 2020-01-03
 - Fix an issue where engine could be null - #121
 
