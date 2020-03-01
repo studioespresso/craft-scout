@@ -40,6 +40,7 @@ jobs:
               with:
                   php-version: ${{ matrix.php }}
                   extensions: mbstring,dom,fileinfo,mysql,imagick,bcmath,pcntl,zip,soap,intl,gd,exif,iconv
+                  coverage: none
 
             - name: Get composer cache directory
               id: composer-cache
