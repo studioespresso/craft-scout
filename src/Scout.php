@@ -149,7 +149,9 @@ class Scout extends Plugin
         ];
 
         foreach ($events as $event) {
-            Event::on($event[0], $event[1],
+            Event::on(
+                $event[0],
+                $event[1],
                 function (ElementEvent $event) {
                     /** @var SearchableBehavior $element */
                     $element = $event->element;
