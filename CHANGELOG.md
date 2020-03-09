@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.2.2 - 2020-03-09
+
+- Allow tightenco/collect ^7.0
+
 ## 2.2.1 - 2020-03-01
 - Fix Fractal dependency to stay compatible with element-api
 
