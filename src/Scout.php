@@ -67,10 +67,7 @@ class Scout extends Plugin
         $this->registerBehaviors();
         $this->registerVariables();
         $this->registerEventHandlers();
-
-        if (self::getInstance()->is(self::EDITION_PRO)) {
-            $this->registerUtility();
-        }
+        $this->registerUtility();
     }
 
     protected function createSettingsModel(): Settings
