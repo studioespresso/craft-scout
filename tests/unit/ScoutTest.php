@@ -125,13 +125,10 @@ class ScoutTest extends Unit
     }
 
     /** @test * */
-    public function it_registers_utility_when_pro()
+    public function it_registers_utility()
     {
         Craft::$app->getPlugins()->installPlugin('scout');
 
-        $this->assertNull(Craft::$app->getUtilities()->getUtilityTypeById('scout-indices'));
-
-        Scout::getInstance()->edition = Scout::EDITION_PRO;
         Scout::getInstance()->init();
 
         $this->assertNotNull(Craft::$app->getUtilities()->getUtilityTypeById('scout-indices'));
