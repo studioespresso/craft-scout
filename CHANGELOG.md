@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.3.0 - 2020-04-09
+
+- Remove pro requirement for Utility
+
 ## 2.2.2 - 2020-03-09
 
 - Allow tightenco/collect ^7.0
