@@ -12,6 +12,7 @@ jobs:
 
             - name: Create database
               run: |
+                sudo systemctl start mysql
                 mysql -u root -proot -e 'CREATE DATABASE IF NOT EXISTS scout_testing;SET GLOBAL time_zone = "+00:00";'
                 mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -proot mysql
 
