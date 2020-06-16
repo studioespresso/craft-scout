@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.3.1 - 2020-06-16
+
+- Don't include indices in Settings::toArray() by default 
+
 ## 2.3.0 - 2020-04-09
 
 - Remove pro requirement for Utility
