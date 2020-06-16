@@ -42,6 +42,24 @@ class Settings extends Model
     /* @var int */
     public $batch_size = 1000;
 
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        // don't include indices by default
+        unset($fields['indices']);
+
+        return $fields;
+    }
+
+    public function extraFields()
+    {
+        return [
+            'indices',
+            'engines',
+        ];
+    }
+
     public function rules()
     {
         return [
