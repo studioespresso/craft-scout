@@ -175,7 +175,7 @@ class Scout extends Plugin
             function (ElementEvent $event) {
                 /** @var SearchableBehavior $element */
                 $element = $event->element;
-                
+
                 if ($element->shouldBeSearchable()) {
                     $element->unsearchable();
 
