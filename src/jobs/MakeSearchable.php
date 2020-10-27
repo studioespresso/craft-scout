@@ -2,11 +2,10 @@
 
 namespace rias\scout\jobs;
 
-use Craft;
 use craft\base\Element;
 use craft\queue\BaseJob;
-use rias\scout\ScoutIndex;
 use rias\scout\Scout;
+use rias\scout\ScoutIndex;
 
 class MakeSearchable extends BaseJob
 {
@@ -71,7 +70,7 @@ class MakeSearchable extends BaseJob
 
     protected function getIndex()
     {
-        return Scout::$plugin->getSettings()->getIndices()->first(function(ScoutIndex $scoutindex) {
+        return Scout::$plugin->getSettings()->getIndices()->first(function (ScoutIndex $scoutindex) {
             return $scoutindex->indexName === $this->indexName;
         });
     }
