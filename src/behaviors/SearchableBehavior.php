@@ -29,7 +29,7 @@ use yii\base\Behavior;
  * @mixin Element
  *
  * @property Element $owner
- * @property int $id
+ * @property int     $id
  */
 class SearchableBehavior extends Behavior
 {
