@@ -120,6 +120,10 @@ class SearchableBehavior extends Behavior
 
     public function getRelatedElements(): Collection
     {
+        if (!Scout::$plugin->getSettings()->sync) {
+            return new Collection();
+        }
+
         $assets = Asset::find()->relatedTo($this->owner)->site('*')->all();
         $categories = Category::find()->relatedTo($this->owner)->site('*')->all();
         $entries = Entry::find()->relatedTo($this->owner)->site('*')->all();
