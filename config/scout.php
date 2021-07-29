@@ -62,4 +62,13 @@ return [
      * index should define an ElementType, criteria and a transformer.
      */
     'indices'       => [],
+
+    /**
+     * Elements can create multiple records by using `splitElementsOn()`,
+     * which split the element on specified array values. If the array has just one item,
+     * no splitting occurs. The legacy and default behavior is to simply use the
+     * original, unchanged record, which means the value is still wrapped in an array.
+     * Make this false to use the single item itself.
+     */
+    'useOriginalRecordIfSplitValueIsArrayOfOne' => true,
 ];
