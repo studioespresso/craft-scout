@@ -1,5 +1,5 @@
 {
-    "name": "rias/craft-scout",
+    "name": "studioespresso/craft-scout",
     "description": "Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.",
     "type": "craft-plugin",
     "keywords": [
@@ -10,14 +10,18 @@
         "scout"
     ],
     "support": {
-        "docs": "https://github.com/riasvdv/craft-scout/blob/master/README.md",
-        "issues": "https://github.com/riasvdv/craft-scout/issues"
+        "docs": "https://github.com/studioespresso/craft-scout/blob/master/README.md",
+        "issues": "https://github.com/studioespresso/craft-scout/issues"
     },
     "license": "MIT",
     "authors": [
         {
             "name": "Rias",
             "homepage": "https://rias.be"
+        },
+        {
+            "name": "Studio Espresso",
+            "homepage": "https://studioespresso.dev"
         }
     ],
     "require": {
@@ -52,7 +56,7 @@
         "schemaVersion": "0.1.0",
         "hasCpSettings": true,
         "hasCpSection": false,
-        "changelogUrl": "https://raw.githubusercontent.com/riasvdv/craft-scout/master/CHANGELOG.md",
+        "changelogUrl": "https://raw.githubusercontent.com/studioespresso/craft-scout/master/CHANGELOG.md",
         "class": "rias\\scout\\Scout"
     }
 }
