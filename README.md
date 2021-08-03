@@ -1,5 +1,3 @@
-# Craft Scout is no longer being maintained. Feel free to fork this plugin to create a supported version.
-
 ![Icon](./src/icon.svg)
 
 [![Latest Version](https://img.shields.io/github/release/riasvdv/craft-scout.svg?style=flat-square)](https://github.com/riasvdv/craft-scout/releases)
