@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'password'    => "",
+    'password'    => "root",
     'user'        => "root",
     'database'    => "scout_testing",
     'tablePrefix' => getenv('DB_TABLE_PREFIX'),
