@@ -4,14 +4,26 @@ on: [push, pull_request]
 
 jobs:
     tests:
+        runs-on: ${{ matrix.os }}
         strategy:
           fail-fast: true
           matrix:
             php: [7.4]
+            os: [ ubuntu-latest ]
             dependency-version: [prefer-stable]
 
         name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
-        runs-on: ubuntu-latest
+
+        services:
+          mysql:
+            image: mysql:5.7
+            env:
+              MYSQL_ALLOW_EMPTY_PASSWORD: yes
+              MYSQL_DATABASE: scout_testing
+            ports:
+              - 3306
+            options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
 
         env:
           DB_DATABASE: scout_testing
@@ -23,45 +35,13 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - name: Set up MySQL
-              run: |
-                sudo /etc/init.d/mysql start
-                mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
-
-            - name: Setup cache environment
-              id: cache-env
-              uses: shivammathur/cache-extensions@v1
-              with:
-                php-version: ${{ matrix.php }}
-                extensions: mbstring,dom,fileinfo,mysql,imagick,bcmath,pcntl,zip,soap,intl,gd,exif,iconv
-                key: extensions
-
-            - name: Cache extensions
-              uses: actions/cache@v1
-              with:
-                path: ${{ steps.cache-env.outputs.dir }}
-                key: ${{ steps.cache-env.outputs.key }}
-                restore-keys: ${{ steps.cache-env.outputs.key }}
-
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
                   extensions: mbstring,dom,fileinfo,mysql,imagick,bcmath,pcntl,zip,soap,intl,gd,exif,iconv
                   coverage: none
-
-            - name: Get composer cache directory
-              id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: Cache composer dependencies
-              uses: actions/cache@v1
-              with:
-                path: ~/.composer/cache/files
-                key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
-
             - name: Install dependencies
-              run: |
-                  composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+              run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
             - name: Run tests
               run: ./vendor/bin/codecept run unit
