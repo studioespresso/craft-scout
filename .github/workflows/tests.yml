@@ -7,21 +7,24 @@ jobs:
         strategy:
           fail-fast: true
           matrix:
-            php: [7.4, 7.3, 7.2, 7.1]
+            php: [7.4]
             dependency-version: [prefer-lowest, prefer-stable]
 
         name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
         runs-on: ubuntu-latest
 
+        services:
+          mysql:
+            image: mysql:5.7
+            env:
+              MYSQL_ALLOW_EMPTY_PASSWORD: yes
+              MYSQL_DATABASE: scout_testing
+            ports:
+              - 3306
+            options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
         steps:
             - uses: actions/checkout@v2
-
-            - name: Create database
-              run: |
-                sudo systemctl start mysql
-                mysql -u root -proot -e 'CREATE DATABASE IF NOT EXISTS scout_testing;SET GLOBAL time_zone = "+00:00";'
-                mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -proot mysql
-
             - name: Setup cache environment
               id: cache-env
               uses: shivammathur/cache-extensions@v1
@@ -61,4 +64,4 @@ jobs:
               run: ./vendor/bin/codecept run unit
               env:
                   APP_ENV: testing
-                  DB_PASSWORD: root
+                  DB_PASSWORD: ""
