@@ -32,9 +32,11 @@ class IndexController extends Controller
         $engine = $this->getEngine();
 
         if (Scout::$plugin->getSettings()->queue) {
-            Craft::$app->getQueue()->push(new ImportIndex([
-                'indexName' => $engine->scoutIndex->indexName,
-            ]));
+            Craft::$app->getQueue()
+                ->ttr(Scout::$plugin->getSettings()->ttr)
+                ->push(new ImportIndex([
+                    'indexName' => $engine->scoutIndex->indexName,
+                ]));
 
             Craft::$app->getSession()->setNotice("Queued job to update element(s) in {$engine->scoutIndex->indexName}");
 

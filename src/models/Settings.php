@@ -24,6 +24,9 @@ class Settings extends Model
     /** @var bool */
     public $queue = true;
 
+    /** @var int */
+    public $ttr = 300;
+
     /** @var string */
     public $engine = AlgoliaEngine::class;
 
@@ -66,7 +69,7 @@ class Settings extends Model
     public function rules()
     {
         return [
-            [['connect_timeout', 'batch_size'], 'integer'],
+            [['connect_timeout', 'batch_size', 'ttr'], 'integer'],
             [['sync', 'queue'], 'boolean'],
             [['application_id', 'admin_api_key', 'search_api_key'], 'string'],
             [['application_id', 'admin_api_key', 'connect_timeout'], 'required'],

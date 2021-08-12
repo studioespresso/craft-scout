@@ -28,6 +28,12 @@ return [
     'queue' => true,
 
     /*
+     * If queue is enabled, you can override the default time-to-reserve a job.
+     * https://www.yiiframework.com/extension/yiisoft/yii2-queue/doc/api/2.0/yii-queue-queue#$ttr-detail
+     */
+    'ttr' => 300,
+
+    /*
      * The connection timeout (in seconds), increase this only if necessary
      */
     'connect_timeout' => 1,
