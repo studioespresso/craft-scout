@@ -2,7 +2,11 @@
     {% for index in stats %}
         <h2 style="width: 100%;">
             {{ index.name }}
-            <span class="light">&ndash; {{ index.site.name }}</span>&nbsp;
+            {% if index.site == "all" %}
+                <span class="light">&ndash; {{ "All sites"|t('scout') }}</span>&nbsp;
+            {% else %}
+                <span class="light">&ndash; {{ index.site.name }}</span>&nbsp;
+            {% endif %}
             <span class="light">&ndash; </span><small class="light">{{ index.elementType }}</small>
         </h2>
         <table class="data fullwidth fixed-layout">
