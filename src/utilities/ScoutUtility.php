@@ -34,7 +34,7 @@ class ScoutUtility extends Utility
             return [
                 'name'        => $engine->scoutIndex->indexName,
                 'elementType' => $engine->scoutIndex->elementType,
-                'site'        => Craft::$app->getSites()->getSiteById($engine->scoutIndex->criteria->siteId),
+                'site'        => $engine->scoutIndex->criteria->siteId === '*' ? 'all' : Craft::$app->getSites()->getSiteById($engine->scoutIndex->criteria->siteId),
                 'indexed'     => $engine->getTotalRecords(),
                 'elements'    => $engine->scoutIndex->criteria->count(),
             ];

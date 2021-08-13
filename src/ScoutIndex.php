@@ -42,7 +42,7 @@ class ScoutIndex
 
     public function elementType(string $class): self
     {
-        if (!(new $class()) instanceof Element) {
+        if (!is_subclass_of($class, Element::class)) {
             throw new Exception("Invalid Element Type {$class}");
         }
 

@@ -2,23 +2,27 @@
     {% for index in stats %}
         <h2 style="width: 100%;">
             {{ index.name }}
-            <span class="light">&ndash; {{ index.site.name }}</span>&nbsp;
+            {% if index.site == "all" %}
+                <span class="light">&ndash; {{ "All sites"|t('scout') }}</span>&nbsp;
+            {% else %}
+                <span class="light">&ndash; {{ index.site.name }}</span>&nbsp;
+            {% endif %}
             <span class="light">&ndash; </span><small class="light">{{ index.elementType }}</small>
         </h2>
         <table class="data fullwidth fixed-layout">
             <tbody>
             <tr>
-                <th class="light">Elements in Craft</th>
+                <th class="light">{{ "Elements in Craft"|t("scout") }}</th>
                 <td>{{ index.elements }}</td>
             </tr>
             <tr>
-                <th class="light">Records in Index</th>
+                <th class="light">{{ "Records in Index"|t("scout") }}</th>
                 <td>{{ index.indexed }}</td>
             </tr>
             <tr>
                 <th class="light">
-                    Actions<br>
-                    <small style="font-weight: normal;">These can take a while to process.</small>
+                    {{ "Actions"|t("scout") }}<br>
+                    <small style="font-weight: normal;">{{ "These can take a while to process."|t("scout") }}</small>
                 </th>
                 <td>
                     <div style="display: flex; justify-content: left; flex-wrap: wrap;">
