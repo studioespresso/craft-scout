@@ -16,7 +16,7 @@ modules:
             projectConfig: {}
             migrations: []
             plugins:
-                campaign:
+                scout:
                     class: '\studioespresso\scout\Scout'
                     handle: scout
             cleanup: true
