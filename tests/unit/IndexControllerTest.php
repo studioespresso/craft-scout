@@ -24,9 +24,8 @@ class IndexControllerTest extends Unit
 
     protected function _before()
     {
-
         $section = Craft::$app->getSections()->getSectionByHandle('news');
-        if($section) {
+        if ($section) {
             Craft::$app->getSections()->deleteSection($section);
         }
 

@@ -38,10 +38,9 @@ class SearchableBehaviorTest extends Unit
     {
         parent::_before();
         $section = Craft::$app->getSections()->getSectionByHandle('news');
-        if($section) {
+        if ($section) {
             Craft::$app->getSections()->deleteSection($section);
         }
-
 
         $section = new Section([
             'name'         => 'News',
@@ -119,7 +118,7 @@ class SearchableBehaviorTest extends Unit
         Craft::$app->getSections()->deleteSection($section);
 
         $field = Craft::$app->getFields()->getFieldByHandle('entryField');
-        if($field) {
+        if ($field) {
             Craft::$app->getFields()->deleteField($field);
         }
     }

@@ -104,7 +104,7 @@ class EventHandlersTest extends Unit
         Craft::$app->getSections()->deleteSection($section);
 
         $field = Craft::$app->getFields()->getFieldByHandle('entryField');
-        if($field) {
+        if ($field) {
             Craft::$app->getFields()->deleteField($field);
         }
     }
