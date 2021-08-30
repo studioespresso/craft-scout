@@ -58,7 +58,6 @@ class ScoutTest extends Unit
     /** @test */
     public function it_attaches_the_searchable_behavior_to_element_on_init()
     {
-
         $element = new Entry();
         new Scout('scout');
 
