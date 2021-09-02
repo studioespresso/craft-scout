@@ -17,6 +17,7 @@ use craft\helpers\ElementHelper;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use rias\scout\engines\Engine;
+use rias\scout\events\ShouldBeSearchableEvent;
 use rias\scout\jobs\MakeSearchable;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
@@ -24,15 +25,18 @@ use rias\scout\serializer\AlgoliaSerializer;
 use Tightenco\Collect\Support\Arr;
 use Tightenco\Collect\Support\Collection;
 use yii\base\Behavior;
+use yii\base\Event;
 
 /**
  * @mixin Element
  *
  * @property Element $owner
- * @property int     $id
+ * @property int $id
  */
 class SearchableBehavior extends Behavior
 {
+    const EVENT_SHOULD_BE_SEARCHABLE = "shouldBeSearchableEvent";
+
     public function validatesCriteria(ScoutIndex $scoutIndex): bool
     {
         $criteria = clone $scoutIndex->criteria;
@@ -49,12 +53,12 @@ class SearchableBehavior extends Behavior
             ->getIndices()
             ->filter(function (ScoutIndex $scoutIndex) {
                 $siteIds = array_map(function ($siteId) {
-                    return (int) $siteId;
+                    return (int)$siteId;
                 }, Arr::wrap($scoutIndex->criteria->siteId));
 
                 return $scoutIndex->elementType === get_class($this->owner)
                     && ($scoutIndex->criteria->siteId === '*'
-                        || in_array((int) $this->owner->siteId, $siteIds));
+                        || in_array((int)$this->owner->siteId, $siteIds));
             });
     }
 
@@ -79,8 +83,8 @@ class SearchableBehavior extends Behavior
             if (Scout::$plugin->getSettings()->queue) {
                 return Craft::$app->getQueue()->push(
                     new MakeSearchable([
-                        'id'        => $this->owner->id,
-                        'siteId'    => $this->owner->siteId,
+                        'id' => $this->owner->id,
+                        'siteId' => $this->owner->siteId,
                         'indexName' => $engine->scoutIndex->indexName,
                         'propagate' => $propagate,
                     ])
@@ -166,6 +170,15 @@ class SearchableBehavior extends Behavior
 
         if (ElementHelper::isDraftOrRevision($this->owner)) {
             return false;
+        }
+
+        if (Event::hasHandlers(SearchableBehavior::class, self::EVENT_SHOULD_BE_SEARCHABLE)) {
+            $event = new ShouldBeSearchableEvent([
+                'element' => $this->owner,
+                'shouldBeSearchable' => true
+            ]);
+            Event::trigger(SearchableBehavior::class, self::EVENT_SHOULD_BE_SEARCHABLE, $event);
+            return $event->shouldBeSearchable;
         }
 
         return true;
