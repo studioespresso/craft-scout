@@ -17,6 +17,7 @@ use craft\helpers\ElementHelper;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use rias\scout\engines\Engine;
+use rias\scout\events\ShouldBeSearchableEvent;
 use rias\scout\jobs\MakeSearchable;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
@@ -24,6 +25,7 @@ use rias\scout\serializer\AlgoliaSerializer;
 use Tightenco\Collect\Support\Arr;
 use Tightenco\Collect\Support\Collection;
 use yii\base\Behavior;
+use yii\base\Event;
 
 /**
  * @mixin Element
@@ -33,6 +35,8 @@ use yii\base\Behavior;
  */
 class SearchableBehavior extends Behavior
 {
+    const EVENT_SHOULD_BE_SEARCHABLE = 'shouldBeSearchableEvent';
+
     public function validatesCriteria(ScoutIndex $scoutIndex): bool
     {
         $criteria = clone $scoutIndex->criteria;
@@ -166,6 +170,16 @@ class SearchableBehavior extends Behavior
 
         if (ElementHelper::isDraftOrRevision($this->owner)) {
             return false;
+        }
+
+        if (Event::hasHandlers(SearchableBehavior::class, self::EVENT_SHOULD_BE_SEARCHABLE)) {
+            $event = new ShouldBeSearchableEvent([
+                'element'            => $this->owner,
+                'shouldBeSearchable' => true,
+            ]);
+            Event::trigger(SearchableBehavior::class, self::EVENT_SHOULD_BE_SEARCHABLE, $event);
+
+            return $event->shouldBeSearchable;
         }
 
         return true;

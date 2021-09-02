@@ -48,16 +48,18 @@ class ScoutTest extends Unit
         $this->section = $section;
     }
 
+    public function _after()
+    {
+        parent::_after();
+        $section = Craft::$app->getSections()->getSectionByHandle('news');
+        Craft::$app->getSections()->deleteSection($section);
+    }
+
     /** @test */
     public function it_attaches_the_searchable_behavior_to_element_on_init()
     {
         $element = new Entry();
-
-        $this->assertNull($element->getBehavior('searchable'));
-
         new Scout('scout');
-
-        $element = new Entry();
 
         $this->assertNotNull($element->getBehavior('searchable'));
     }

@@ -15,7 +15,10 @@ modules:
             entryUrl: 'https://your-site-url.test/index.php'
             projectConfig: {}
             migrations: []
-            plugins: []
+            plugins:
+                scout:
+                    class: '\studioespresso\scout\Scout'
+                    handle: scout
             cleanup: true
             transaction: true
             dbSetup: {clean: true, setupCraft: true}
