@@ -1,6 +1,11 @@
 # Scout Changelog
 
 All notable changes to this project will be documented in this file.
+## 2.4.2 - 2021-09-02
+
+### Added
+- Added `ShouldBeSearchableEvent` event, docs [here](https://github.com/studioespresso/craft-scout/tree/master#shouldbesearchableevent) ([#205](https://github.com/studioespresso/craft-scout/issues/205))
+
 ## 2.4.1 - 2021-08-13
 
 ### Fixed
