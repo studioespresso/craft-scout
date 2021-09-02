@@ -7,18 +7,20 @@ use yii\base\Event;
 
 /**
  * This event fires as apart of the chain that checks wether or not an element should be marked as searchable.
- * By settings `shouldBeSearchable` to false, you can change default behavior for certain elements or element types
+ * By settings `shouldBeSearchable` to false, you can change default behavior for certain elements or element types.
  */
 class ShouldBeSearchableEvent extends Event
 {
     /**
-     * Element that is being saved
+     * Element that is being saved.
+     *
      * @var Element
      */
     public $element;
 
     /**
-     * Wether or not the element should be marked as searchable
+     * Wether or not the element should be marked as searchable.
+     *
      * @var bool
      */
     public $shouldBeSearchable = true;
