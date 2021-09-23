@@ -34,6 +34,12 @@ return [
     'ttr' => 300,
 
     /*
+     * If queue is enabled, you can override the default priority for a job.
+     * https://www.yiiframework.com/extension/yiisoft/yii2-queue/doc/api/2.0/yii-queue-queue#priority()-detail
+     */
+    'priority' => 1024,
+
+    /*
      * The connection timeout (in seconds), increase this only if necessary
      */
     'connect_timeout' => 1,

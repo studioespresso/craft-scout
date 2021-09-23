@@ -34,6 +34,7 @@ class IndexController extends Controller
         if (Scout::$plugin->getSettings()->queue) {
             Craft::$app->getQueue()
                 ->ttr(Scout::$plugin->getSettings()->ttr)
+                ->priority(Scout::$plugin->getSettings()->priority)
                 ->push(new ImportIndex([
                     'indexName' => $engine->scoutIndex->indexName,
                 ]));
