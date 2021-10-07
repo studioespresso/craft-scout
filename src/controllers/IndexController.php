@@ -83,7 +83,7 @@ class IndexController extends Controller
         $settings = $engine->getSettings();
         $content = Json::encode($settings, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         $attachmentName = "scout-{$engine->scoutIndex->indexName}-settings.json";
-    
+
         return $this->response->sendContentAsFile($content, $attachmentName, [
             'mimeType' => 'application/json',
         ]);
