@@ -1,4 +1,4 @@
-<form method="post" accept-charset="UTF-8">
+<form style="margin-bottom:4px;" method="post" accept-charset="UTF-8">
     {{ csrfInput() }}
     <input type="hidden" name="action" value="{{ 'scout/index/'~action.slug }}">
     <input type="hidden" name="index" value="{{ action.index }}">

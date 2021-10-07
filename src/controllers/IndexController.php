@@ -3,6 +3,7 @@
 namespace rias\scout\controllers;
 
 use Craft;
+use craft\helpers\Json;
 use craft\helpers\UrlHelper;
 use craft\web\Controller;
 use rias\scout\engines\Engine;
@@ -62,6 +63,30 @@ class IndexController extends Controller
         $this->actionImport();
 
         return $this->redirect(UrlHelper::url('utilities/'.ScoutUtility::id()));
+    }
+
+    public function actionUpdateSettings()
+    {
+        $this->requirePostRequest();
+
+        $engine = $this->getEngine();
+        $engine->updateSettings($engine->scoutIndex->indexSettings);
+
+        Craft::$app->getSession()->setNotice("Updated settings for index {$engine->scoutIndex->indexName}");
+
+        return $this->redirect(UrlHelper::url('utilities/'.ScoutUtility::id()));
+    }
+
+    public function actionDumpSettings()
+    {
+        $engine = $this->getEngine();
+        $settings = $engine->getSettings();
+        $content = Json::encode($settings, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $attachmentName = "scout-{$engine->scoutIndex->indexName}-settings.json";
+    
+        return $this->response->sendContentAsFile($content, $attachmentName, [
+            'mimeType' => 'application/json',
+        ]);
     }
 
     private function getEngine(): Engine
