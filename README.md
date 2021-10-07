@@ -1,12 +1,5 @@
 ![Icon](./src/icon.svg)
 
-[![Latest Version](https://img.shields.io/github/release/riasvdv/craft-scout.svg?style=flat-square)](https://github.com/riasvdv/craft-scout/releases)
-![Tests (PHP)](https://github.com/riasvdv/craft-scout/workflows/Tests%20(PHP)/badge.svg)
-[![Coverage](https://codecov.io/gh/riasvdv/craft-scout/graph/badge.svg)](https://codecov.io/gh/riasvdv/craft-scout)
-[![Quality Score](https://img.shields.io/scrutinizer/g/riasvdv/craft-scout.svg?style=flat-square)](https://scrutinizer-ci.com/g/riasvdv/craft-scout)
-[![StyleCI](https://styleci.io/repos/113917206/shield)](https://styleci.io/repos/113917206)
-[![Total Downloads](https://img.shields.io/packagist/dt/rias/craft-scout.svg?style=flat-square)](https://packagist.org/packages/rias/craft-scout)
-
 # Scout plugin for Craft CMS 3
 
 Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indices in sync with your entries.
@@ -59,6 +52,12 @@ return [
      * The batch size Scout uses when importing a large amount of elements
      */
     'batch_size' => 1000,
+    
+    /*
+     * By default Scout will index elements related to the element being save (that are in the same index). 
+     * Disabling this can improve performance on larger sites that have lots of relations.
+     */
+    'indexRelations' => true,
 
     /*
      * The Algolia Application ID, this id can be found in your Algolia Account
