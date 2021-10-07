@@ -49,22 +49,23 @@
                                 index: index.name
                             }
                         } %}
-                        &nbsp;
-                        {% include 'scout/_partials/action' with {
-                            action: {
-                                name: 'Update Settings' | t('scout'),
-                                slug: 'update-settings',
-                                index: index.name
-                            }
-                        } %}
-                        &nbsp;
-                        {% include 'scout/_partials/action' with {
-                            action: {
-                                name: 'Dump Settings' | t('scout'),
-                                slug: 'dump-settings',
-                                index: index.name
-                            }
-                        } %}
+                        {% if index.hasSettings %}
+                            {% include 'scout/_partials/action' with {
+                                action: {
+                                    name: 'Update Settings' | t('scout'),
+                                    slug: 'update-settings',
+                                    index: index.name
+                                }
+                            } %}
+                            &nbsp;
+                            {% include 'scout/_partials/action' with {
+                                action: {
+                                    name: 'Dump Settings' | t('scout'),
+                                    slug: 'dump-settings',
+                                    index: index.name
+                                }
+                            } %}
+                        {% endif %}
                     </div>
                 </td>
             </tr>

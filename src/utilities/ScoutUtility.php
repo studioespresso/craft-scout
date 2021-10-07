@@ -30,6 +30,7 @@ class ScoutUtility extends Utility
 
         $engines = Scout::$plugin->getSettings()->getEngines();
 
+
         $stats = $engines->map(function (Engine $engine) {
             return [
                 'name'        => $engine->scoutIndex->indexName,
@@ -37,6 +38,7 @@ class ScoutUtility extends Utility
                 'site'        => $engine->scoutIndex->criteria->siteId === '*' ? 'all' : Craft::$app->getSites()->getSiteById($engine->scoutIndex->criteria->siteId),
                 'indexed'     => $engine->getTotalRecords(),
                 'elements'    => $engine->scoutIndex->criteria->count(),
+                'hasSettings' => $engine->scoutIndex->indexSettings ?? null
             ];
         });
 
