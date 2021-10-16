@@ -85,13 +85,13 @@ class SearchableBehavior extends Behavior
                     ->ttr(Scout::$plugin->getSettings()->ttr)
                     ->priority(Scout::$plugin->getSettings()->priority)
                     ->push(
-                    new MakeSearchable([
-                        'id'        => $this->owner->id,
-                        'siteId'    => $this->owner->siteId,
-                        'indexName' => $engine->scoutIndex->indexName,
-                        'propagate' => $propagate,
-                    ])
-                );
+                        new MakeSearchable([
+                            'id'        => $this->owner->id,
+                            'siteId'    => $this->owner->siteId,
+                            'indexName' => $engine->scoutIndex->indexName,
+                            'propagate' => $propagate,
+                        ])
+                    );
             } elseif ($propagate) {
                 $this->searchableRelations();
             }
