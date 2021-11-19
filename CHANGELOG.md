@@ -1,6 +1,12 @@
 # Scout Changelog
 
 All notable changes to this project will be documented in this file.
+
+## 2.5.0 - 2021-10-07
+### Added
+- Added ``indexRelations`` config setting (true by default) ([#175](https://github.com/studioespresso/craft-scout/pull/175) & [#205](https://github.com/studioespresso/craft-scout/issues/205))
+- Exposed options to update and dump index settings from the CP utility ([#209](https://github.com/studioespresso/craft-scout/pull/209))
+
 ## 2.4.2 - 2021-09-02
 
 ### Added

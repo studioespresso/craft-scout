@@ -37,6 +37,7 @@ class ScoutUtility extends Utility
                 'site'        => $engine->scoutIndex->criteria->siteId === '*' ? 'all' : Craft::$app->getSites()->getSiteById($engine->scoutIndex->criteria->siteId),
                 'indexed'     => $engine->getTotalRecords(),
                 'elements'    => $engine->scoutIndex->criteria->count(),
+                'hasSettings' => $engine->scoutIndex->indexSettings ?? null,
             ];
         });
 
