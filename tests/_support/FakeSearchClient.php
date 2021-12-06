@@ -8,10 +8,6 @@ class FakeSearchClient extends SearchClient
 
     public $settings = [];
 
-    public function __construct()
-    {
-    }
-
     public function initIndex($indexName)
     {
         return $this;
@@ -60,7 +56,7 @@ class FakeSearchClient extends SearchClient
         return $this->settings;
     }
 
-    public function search()
+    public function search($queries, $requestOptions = [])
     {
         return [
             'nbHits' => 0,
