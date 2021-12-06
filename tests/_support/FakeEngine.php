@@ -25,7 +25,7 @@ class FakeEngine extends Engine
             $previousUpdates = Craft::$app->getCache()->get("scout-{$this->scoutIndex->indexName}-{$model->id}-updateCalled") ?? 0;
             Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-{$model->id}-updateCalled", $previousUpdates + 1);
 
-            Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-{$model->id}", $model);
+            Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-{$model->id}", $model->id);
         }
     }
 

@@ -81,14 +81,17 @@ class SearchableBehavior extends Behavior
             }
 
             if (Scout::$plugin->getSettings()->queue) {
-                return Craft::$app->getQueue()->push(
-                    new MakeSearchable([
-                        'id'        => $this->owner->id,
-                        'siteId'    => $this->owner->siteId,
-                        'indexName' => $engine->scoutIndex->indexName,
-                        'propagate' => $propagate,
-                    ])
-                );
+                return Craft::$app->getQueue()
+                    ->ttr(Scout::$plugin->getSettings()->ttr)
+                    ->priority(Scout::$plugin->getSettings()->priority)
+                    ->push(
+                        new MakeSearchable([
+                            'id'        => $this->owner->id,
+                            'siteId'    => $this->owner->siteId,
+                            'indexName' => $engine->scoutIndex->indexName,
+                            'propagate' => $propagate,
+                        ])
+                    );
             } elseif ($propagate) {
                 $this->searchableRelations();
             }

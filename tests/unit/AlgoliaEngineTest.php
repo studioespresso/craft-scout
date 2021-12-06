@@ -2,6 +2,7 @@
 
 namespace rias\scout\tests;
 
+use Algolia\AlgoliaSearch\Config\SearchConfig;
 use Algolia\AlgoliaSearch\SearchClient;
 use Codeception\Test\Unit;
 use Craft;
@@ -46,7 +47,14 @@ class AlgoliaEngineTest extends Unit
         $scout->init();
 
         Craft::$container->setSingleton(SearchClient::class, function () {
-            return new FakeSearchClient();
+            $config = SearchConfig::create(
+                getenv('ALGOLIA_APP_ID'),
+                getenv('ALGOLIA_API_KEY')
+            );
+
+            $config->setConnectTimeout(Scout::getInstance()->getSettings()->connect_timeout);
+
+            return FakeSearchClient::createWithConfig($config);
         });
 
         $scoutIndex = new ScoutIndex('Blog');

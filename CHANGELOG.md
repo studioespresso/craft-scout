@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.6.0 - 2021-12-06
+### Added
+- Added support for PHP 8.x
+- Added support for algolia/algoliasearch-client-php 3.x
+
 ## 2.5.0 - 2021-10-07
 ### Added
 - Added ``indexRelations`` config setting (true by default) ([#175](https://github.com/studioespresso/craft-scout/pull/175) & [#205](https://github.com/studioespresso/craft-scout/issues/205))
