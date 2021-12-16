@@ -18,6 +18,7 @@ use rias\scout\behaviors\SearchableBehavior;
 use rias\scout\models\Settings;
 use rias\scout\utilities\ScoutUtility;
 use rias\scout\variables\ScoutVariable;
+use Tightenco\Collect\Support\Collection;
 use yii\base\Event;
 
 class Scout extends Plugin
@@ -161,6 +162,11 @@ class Scout extends Plugin
             Elements::class,
             Elements::EVENT_BEFORE_DELETE_ELEMENT,
             function (ElementEvent $event) {
+                if (!Scout::$plugin->getSettings()->indexRelations) {
+                    $this->beforeDeleteRelated = new Collection();
+                    return;
+                }
+
                 /** @var SearchableBehavior $element */
                 $element = $event->element;
                 $this->beforeDeleteRelated = $element->getRelatedElements();
