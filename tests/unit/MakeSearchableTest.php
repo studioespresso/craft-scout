@@ -6,6 +6,7 @@ use Codeception\Test\Unit;
 use craft\queue\Queue;
 use rias\scout\jobs\MakeSearchable;
 use rias\scout\Scout;
+use rias\scout\ScoutIndex;
 use UnitTester;
 
 class MakeSearchableTest extends Unit
@@ -20,6 +21,16 @@ class MakeSearchableTest extends Unit
         parent::_before();
 
         $scout = new Scout('scout');
+        $scout->setSettings([
+            'queue'   => false,
+            'engine'  => FakeEngine::class,
+            'indices' => [
+                ScoutIndex::create('Blog')
+                    ->criteria(function ($query) {
+                        return $query;
+                    }),
+            ],
+        ]);
         $scout->init();
     }
 
