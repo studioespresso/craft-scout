@@ -164,6 +164,7 @@ class Scout extends Plugin
             function (ElementEvent $event) {
                 if (!Scout::$plugin->getSettings()->indexRelations) {
                     $this->beforeDeleteRelated = new Collection();
+
                     return;
                 }
 
