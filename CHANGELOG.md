@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.6.1 - 2021-12-21
+### Fixed
+- MakeSearchable job now uses the index criteria ([#177](https://github.com/studioespresso/craft-scout/pull/177))
+- Disable relations on delete if so configured, should improve performance on larger installs ([#227](https://github.com/studioespresso/craft-scout/pull/227))
+
 ## 2.6.0 - 2021-12-06
 ### Added
 - Added support for PHP 8.x
