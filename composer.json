@@ -17,12 +17,12 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Rias",
-            "homepage": "https://rias.be"
-        },
-        {
             "name": "Studio Espresso",
             "homepage": "https://studioespresso.dev"
+        },
+        {
+            "name": "Rias",
+            "homepage": "https://rias.be"
         }
     ],
     "require": {
