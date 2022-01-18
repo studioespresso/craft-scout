@@ -11,7 +11,7 @@ class ImportIndex extends BaseJob
     /** @var string */
     public $indexName;
 
-    public function execute($queue)
+    public function execute($queue): void
     {
         /** @var Engine $engine */
         $engine = Scout::$plugin->getSettings()->getEngines()->first(function (Engine $engine) {
@@ -35,7 +35,7 @@ class ImportIndex extends BaseJob
         }
     }
 
-    protected function defaultDescription()
+    protected function defaultDescription(): string
     {
         return sprintf(
             'Indexing element(s) in “%s”',

@@ -35,7 +35,7 @@ use yii\base\Event;
  */
 class SearchableBehavior extends Behavior
 {
-    const EVENT_SHOULD_BE_SEARCHABLE = 'shouldBeSearchableEvent';
+    public const  EVENT_SHOULD_BE_SEARCHABLE = 'shouldBeSearchableEvent';
 
     public function validatesCriteria(ScoutIndex $scoutIndex): bool
     {
@@ -100,7 +100,7 @@ class SearchableBehavior extends Behavior
         });
     }
 
-    public function unsearchable()
+    public function unsearchable(): void
     {
         if (!Scout::$plugin->getSettings()->sync) {
             return;
@@ -117,7 +117,7 @@ class SearchableBehavior extends Behavior
             ->toArray();
     }
 
-    public function searchableRelations()
+    public function searchableRelations(): void
     {
         if (!Scout::$plugin->getSettings()->indexRelations) {
             return;

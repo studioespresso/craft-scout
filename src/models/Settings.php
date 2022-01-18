@@ -51,7 +51,7 @@ class Settings extends Model
     /* @var int */
     public $batch_size = 1000;
 
-    public function fields()
+    public function fields(): array
     {
         $fields = parent::fields();
 
@@ -61,7 +61,7 @@ class Settings extends Model
         return $fields;
     }
 
-    public function extraFields()
+    public function extraFields(): array
     {
         return [
             'indices',
@@ -69,7 +69,7 @@ class Settings extends Model
         ];
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['connect_timeout', 'batch_size', 'ttr', 'priority'], 'integer'],
