@@ -51,6 +51,9 @@ class Settings extends Model
     /* @var int */
     public $batch_size = 1000;
 
+    /** @var bool */
+    public $useOriginalRecordIfSplitValueIsArrayOfOne = true;
+
     public function fields()
     {
         $fields = parent::fields();
@@ -73,7 +76,7 @@ class Settings extends Model
     {
         return [
             [['connect_timeout', 'batch_size', 'ttr', 'priority'], 'integer'],
-            [['sync', 'queue'], 'boolean'],
+            [['sync', 'queue', 'useOriginalRecordIfSplitValueIsArrayOfOne'], 'boolean'],
             [['application_id', 'admin_api_key', 'search_api_key'], 'string'],
             [['application_id', 'admin_api_key', 'connect_timeout'], 'required'],
         ];
