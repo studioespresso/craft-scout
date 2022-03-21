@@ -59,7 +59,7 @@ class IndexController extends BaseController
                     ->push(new ImportIndex([
                         'indexName' => $engine->scoutIndex->indexName,
                     ]));
-                $this->stdout("Added ImportIndex job for '{$engine->scoutIndex->indexName}' to the queue" . PHP_EOL, Console::FG_GREEN);
+                $this->stdout("Added ImportIndex job for '{$engine->scoutIndex->indexName}' to the queue".PHP_EOL, Console::FG_GREEN);
             } else {
                 $totalElements = $engine->scoutIndex->criteria->count();
                 $elementsUpdated = 0;
