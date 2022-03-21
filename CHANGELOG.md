@@ -2,10 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.7.1 - 2022-03-21
+### Added
+- ``scout/index/import`` now optionally takes a ``--queue=1`` parameter to run the import(s) through the queue instead running them straigt away. 
+
 
 ## 2.7.0 - 2022-03-13
 ### Added
-- Added a config setting to keep using the orgingal object in case ``splittedObjects`` only contains 1 item. ([#193](https://github.com/studioespresso/craft-scout/issues/193) & [#219](https://github.com/studioespresso/craft-scout/pull/219), thanks [@gregkohn](https://github.com/gregkohn)) 
+- Added a config setting to keep using the orginal object in case ``splittedObjects`` only contains 1 item. ([#193](https://github.com/studioespresso/craft-scout/issues/193) & [#219](https://github.com/studioespresso/craft-scout/pull/219), thanks [@gregkohn](https://github.com/gregkohn)) 
 
 ## 2.6.1 - 2021-12-21
 ### Fixed
