@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.7.2 - 2022-03-22
+## Added
+- Added `renderingContent` to `IndexSettings` ([#230](https://github.com/studioespresso/craft-scout/issues/230) & [#231](https://github.com/studioespresso/craft-scout/pull/231) - thanks [@joshuabaker](https://github.com/joshuabaker))
+
 ## 2.7.1 - 2022-03-21
 ### Added
 - ``scout/index/import`` now optionally takes a ``--queue=1`` parameter to run the import(s) through the queue instead running them straigt away. 
