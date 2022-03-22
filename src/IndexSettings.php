@@ -17,6 +17,7 @@ namespace rias\scout;
  *
  * Faceting
  * @method self maxValuesPerFacet(int $maxValuesPerFacet)
+ * @method self renderingContent(array $renderingContent)
  * @method self sortFacetValuesBy(string $sortBy)
  *
  * Highlighting / Snippeting
