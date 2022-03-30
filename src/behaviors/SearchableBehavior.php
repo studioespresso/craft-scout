@@ -56,7 +56,6 @@ class SearchableBehavior extends Behavior
                     return (int) $siteId;
                 }, Arr::wrap($scoutIndex->criteria->siteId));
 
-
                 return $scoutIndex->elementType === get_class($this->owner)
                     && ($scoutIndex->criteria->siteId === '*'
                         || in_array((int) $this->owner->siteId, $siteIds));

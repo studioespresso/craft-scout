@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 use rias\scout\IndexSettings;
 use rias\scout\ScoutIndex;
 
-
 class AlgoliaEngine extends Engine
 {
     /** @var \Algolia\AlgoliaSearch\SearchClient */
