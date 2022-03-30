@@ -47,7 +47,7 @@ jobs:
               run: |
                   composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
-            - name: Run tests
-              run: ./vendor/bin/codecept run unit
+            - name: Run eventHandlersTest
+              run: ./vendor/bin/codecept run unit EventHandlersTest
               env:
                   APP_ENV: testing
