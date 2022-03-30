@@ -14,6 +14,8 @@ use craft\elements\MatrixBlock;
 use craft\elements\Tag;
 use craft\elements\User;
 use craft\helpers\ElementHelper;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use rias\scout\engines\Engine;
@@ -22,8 +24,6 @@ use rias\scout\jobs\MakeSearchable;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
 use rias\scout\serializer\AlgoliaSerializer;
-use Tightenco\Collect\Support\Arr;
-use Tightenco\Collect\Support\Collection;
 use yii\base\Behavior;
 use yii\base\Event;
 
@@ -55,6 +55,7 @@ class SearchableBehavior extends Behavior
                 $siteIds = array_map(function ($siteId) {
                     return (int) $siteId;
                 }, Arr::wrap($scoutIndex->criteria->siteId));
+
 
                 return $scoutIndex->elementType === get_class($this->owner)
                     && ($scoutIndex->criteria->siteId === '*'

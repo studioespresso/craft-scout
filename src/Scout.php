@@ -18,7 +18,6 @@ use rias\scout\behaviors\SearchableBehavior;
 use rias\scout\models\Settings;
 use rias\scout\utilities\ScoutUtility;
 use rias\scout\variables\ScoutVariable;
-use Tightenco\Collect\Support\Collection;
 use yii\base\Event;
 
 class Scout extends Plugin
@@ -39,7 +38,7 @@ class Scout extends Plugin
 
     public bool $hasCpSettings = true;
 
-    /** @var \Tightenco\Collect\Support\Collection */
+    /** @var \Illuminate\Support\Collection */
     private $beforeDeleteRelated;
 
     public function init()

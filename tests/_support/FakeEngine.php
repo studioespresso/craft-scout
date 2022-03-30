@@ -4,7 +4,7 @@ use Algolia\AlgoliaSearch\SearchClient;
 use rias\scout\engines\Engine;
 use rias\scout\IndexSettings;
 use rias\scout\ScoutIndex;
-use Tightenco\Collect\Support\Arr;
+use Illuminate\Support\Arr;
 
 class FakeEngine extends Engine
 {
@@ -21,7 +21,7 @@ class FakeEngine extends Engine
         $previousUpdates = Craft::$app->getCache()->get("scout-{$this->scoutIndex->indexName}-updateCalled") ?? 0;
         Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-updateCalled", $previousUpdates + 1);
 
-        foreach (Arr::wrap($models) as $model) {
+    foreach (Arr::wrap($models) as $model) {
             $previousUpdates = Craft::$app->getCache()->get("scout-{$this->scoutIndex->indexName}-{$model->id}-updateCalled") ?? 0;
             Craft::$app->getCache()->set("scout-{$this->scoutIndex->indexName}-{$model->id}-updateCalled", $previousUpdates + 1);
 
