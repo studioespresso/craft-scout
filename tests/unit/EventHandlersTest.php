@@ -65,7 +65,7 @@ class EventHandlersTest extends Unit
                 'title' => $entry->title,
             ];
         };
-        $scout = new Scout('scout');
+        $scout = Scout::getInstance();
         $scout->setSettings([
             'indices' => [$scoutIndex],
             'engine'  => FakeEngine::class,
@@ -166,7 +166,7 @@ class EventHandlersTest extends Unit
 
         Craft::$app->getElements()->saveElement($this->element);
 
-        $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
         $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element2->id}-updateCalled"));
     }
 

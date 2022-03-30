@@ -14,6 +14,7 @@ use craft\services\Elements;
 use craft\services\Utilities;
 use craft\web\twig\variables\CraftVariable;
 use Exception;
+use Illuminate\Support\Collection;
 use rias\scout\behaviors\SearchableBehavior;
 use rias\scout\models\Settings;
 use rias\scout\utilities\ScoutUtility;
