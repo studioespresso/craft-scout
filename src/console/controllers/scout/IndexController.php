@@ -16,7 +16,7 @@ class IndexController extends BaseController
     /** @var bool */
     public $force = false;
 
-    public function options($actionID)
+    public function options($actionID): array
     {
         return ['force'];
     }
