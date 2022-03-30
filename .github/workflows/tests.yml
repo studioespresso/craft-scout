@@ -10,7 +10,7 @@ jobs:
           matrix:
             php: [8.1, 8.0]
             os: [ ubuntu-latest ]
-            dependency-version: [prefer-stable]
+            dependency-version: [prefer-stable, latest]
 
         runs-on: ${{ matrix.os }}
 
@@ -20,6 +20,7 @@ jobs:
           DB_PASSWORD: root
           DB_PORT: 3306
           DB_DRIVER: mysql
+          APP_ENV: testing
 
         steps:
             - uses: actions/checkout@v2
@@ -49,5 +50,13 @@ jobs:
 
             - name: Run eventHandlersTest
               run: ./vendor/bin/codecept run unit EventHandlersTest
-              env:
-                  APP_ENV: testing
+
+            - name: Run AbstractEngineTest
+              run: ./vendor/bin/codecept run unit AbstractEngineTest
+
+            - name: Run ScoutVariableTest
+              run: ./vendor/bin/codecept run unit ScoutVariableTest
+
+            - name: Run SearchableBehaviorTest
+              run: ./vendor/bin/codecept run unit SearchableBehaviorTest
+
