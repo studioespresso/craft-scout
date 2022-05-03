@@ -16,12 +16,12 @@ class ShouldBeSearchableEvent extends Event
      *
      * @var Element
      */
-    public $element;
+    public Element $element;
 
     /**
      * Wether or not the element should be marked as searchable.
      *
      * @var bool
      */
-    public $shouldBeSearchable = true;
+    public bool $shouldBeSearchable = true;
 }

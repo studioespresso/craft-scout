@@ -20,7 +20,7 @@ class IndexController extends BaseController
     /** @var bool */
     public $queue = false;
 
-    public function options($actionID)
+    public function options($actionID): array
     {
         return ['force', 'queue'];
     }

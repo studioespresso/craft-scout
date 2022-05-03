@@ -8,8 +8,9 @@ jobs:
         strategy:
           fail-fast: true
           matrix:
-            php: [7.4, 7.3]
+            php: [8.1, 8.0]
             os: [ ubuntu-latest ]
+            stability: [stable, dev]
             dependency-version: [prefer-stable]
 
         runs-on: ${{ matrix.os }}
@@ -20,6 +21,7 @@ jobs:
           DB_PASSWORD: root
           DB_PORT: 3306
           DB_DRIVER: mysql
+          APP_ENV: testing
 
         steps:
             - uses: actions/checkout@v2
@@ -47,7 +49,15 @@ jobs:
               run: |
                   composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
-            - name: Run tests
-              run: ./vendor/bin/codecept run unit
-              env:
-                  APP_ENV: testing
+            - name: Run eventHandlersTest
+              run: ./vendor/bin/codecept run unit EventHandlersTest
+
+            - name: Run AbstractEngineTest
+              run: ./vendor/bin/codecept run unit AbstractEngineTest
+
+            - name: Run ScoutVariableTest
+              run: ./vendor/bin/codecept run unit ScoutVariableTest
+
+            - name: Run SearchableBehaviorTest
+              run: ./vendor/bin/codecept run unit SearchableBehaviorTest
+

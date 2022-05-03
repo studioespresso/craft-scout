@@ -14,11 +14,11 @@ use craft\services\Elements;
 use craft\services\Utilities;
 use craft\web\twig\variables\CraftVariable;
 use Exception;
+use Illuminate\Support\Collection;
 use rias\scout\behaviors\SearchableBehavior;
 use rias\scout\models\Settings;
 use rias\scout\utilities\ScoutUtility;
 use rias\scout\variables\ScoutVariable;
-use Tightenco\Collect\Support\Collection;
 use yii\base\Event;
 
 class Scout extends Plugin
@@ -37,9 +37,9 @@ class Scout extends Plugin
     /** @var \rias\scout\Scout */
     public static $plugin;
 
-    public $hasCpSettings = true;
+    public bool $hasCpSettings = true;
 
-    /** @var \Tightenco\Collect\Support\Collection */
+    /** @var \Illuminate\Support\Collection */
     private $beforeDeleteRelated;
 
     public function init()
@@ -82,7 +82,7 @@ class Scout extends Plugin
     }
 
     /** @codeCoverageIgnore */
-    protected function settingsHtml()
+    protected function settingsHtml(): string
     {
         $overrides = Craft::$app->getConfig()->getConfigFromFile(strtolower($this->handle));
 
@@ -92,7 +92,7 @@ class Scout extends Plugin
         ]);
     }
 
-    private function registerUtility()
+    private function registerUtility(): void
     {
         Event::on(
             Utilities::class,
@@ -103,7 +103,7 @@ class Scout extends Plugin
         );
     }
 
-    private function registerBehaviors()
+    private function registerBehaviors(): void
     {
         // Register the behavior on the Element class
         Event::on(
@@ -115,7 +115,7 @@ class Scout extends Plugin
         );
     }
 
-    private function registerVariables()
+    private function registerVariables(): void
     {
         // Register our variables
         Event::on(
@@ -129,7 +129,7 @@ class Scout extends Plugin
         );
     }
 
-    private function validateConfig()
+    private function validateConfig(): void
     {
         $indices = $this->getSettings()->getIndices();
 
@@ -138,7 +138,7 @@ class Scout extends Plugin
         }
     }
 
-    private function registerEventHandlers()
+    private function registerEventHandlers(): void
     {
         $events = [
             [Elements::class, Elements::EVENT_AFTER_SAVE_ELEMENT],

@@ -5,10 +5,10 @@ namespace rias\scout\models;
 use Craft;
 use craft\base\Model;
 use Exception;
+use Illuminate\Support\Collection;
 use rias\scout\engines\AlgoliaEngine;
 use rias\scout\engines\Engine;
 use rias\scout\ScoutIndex;
-use Tightenco\Collect\Support\Collection;
 
 class Settings extends Model
 {
@@ -54,7 +54,7 @@ class Settings extends Model
     /** @var bool */
     public $useOriginalRecordIfSplitValueIsArrayOfOne = true;
 
-    public function fields()
+    public function fields(): array
     {
         $fields = parent::fields();
 
@@ -64,7 +64,7 @@ class Settings extends Model
         return $fields;
     }
 
-    public function extraFields()
+    public function extraFields(): array
     {
         return [
             'indices',
@@ -72,7 +72,7 @@ class Settings extends Model
         ];
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['connect_timeout', 'batch_size', 'ttr', 'priority'], 'integer'],
