@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.0.0 - 2022-05-03
+### Added
+- Craft 4 🚀
 
 ## 3.0.0-beta.1 - 2022-03-02
 ### Added
