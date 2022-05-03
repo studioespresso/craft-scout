@@ -55,7 +55,6 @@ class Settings extends Model
     public $useOriginalRecordIfSplitValueIsArrayOfOne = true;
 
     public function fields(): array
-
     {
         $fields = parent::fields();
 
