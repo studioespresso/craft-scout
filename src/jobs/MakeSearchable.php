@@ -21,7 +21,7 @@ class MakeSearchable extends BaseJob
     /** @var bool */
     public $propagate = true;
 
-    public function execute($queue)
+    public function execute($queue): void
     {
         if (!$element = $this->getElement()) {
             return;
@@ -34,7 +34,7 @@ class MakeSearchable extends BaseJob
         }
     }
 
-    protected function defaultDescription()
+    protected function defaultDescription(): string
     {
         if (!$element = $this->getElement()) {
             return '';

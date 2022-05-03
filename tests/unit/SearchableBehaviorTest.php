@@ -12,10 +12,10 @@ use craft\fields\Entries;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
 use FakeEngine;
+use Illuminate\Support\Collection;
 use rias\scout\engines\Engine;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
-use Tightenco\Collect\Support\Collection;
 use UnitTester;
 
 class SearchableBehaviorTest extends Unit

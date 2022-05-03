@@ -1,10 +1,10 @@
 <?php
 
 use Algolia\AlgoliaSearch\SearchClient;
+use Illuminate\Support\Arr;
 use rias\scout\engines\Engine;
 use rias\scout\IndexSettings;
 use rias\scout\ScoutIndex;
-use Tightenco\Collect\Support\Arr;
 
 class FakeEngine extends Engine
 {
