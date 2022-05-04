@@ -40,7 +40,7 @@
     "require-dev": {
         "vlucas/phpdotenv": "^5.3.0",
         "codeception/codeception": "^4.1.1",
-        "codeception/module-asserts": "^1.1.1",
+        "codeception/module-asserts": "^2.0.0",
         "codeception/lib-asserts": "^1.1.0",
         "codeception/module-yii2": "^1.1.0",
         "phpunit/phpunit": "^9.3.3"
