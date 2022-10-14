@@ -155,12 +155,12 @@ class Scout extends Plugin
                     /** @var SearchableBehavior $element */
                     $element = $event->element;
 
-                    if (! $element->shouldBeSearchable()) {
+                    if (!$element->shouldBeSearchable()) {
                         return;
                     }
 
                     Craft::$app->getQueue()->push(
-                        new IndexElement([ 'id' => $element->id ])
+                        new IndexElement(['id' => $element->id])
                     );
                 }
             );
@@ -177,12 +177,12 @@ class Scout extends Plugin
                 /** @var SearchableBehavior $element */
                 $element = $event->element;
 
-                if (! $element->shouldBeSearchable()) {
+                if (!$element->shouldBeSearchable()) {
                     return;
                 }
 
                 Craft::$app->getQueue()->push(
-                    new DeindexElement([ 'id' => $element->id ])
+                    new DeindexElement(['id' => $element->id])
                 );
             }
         );

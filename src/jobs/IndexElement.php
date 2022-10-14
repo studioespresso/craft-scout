@@ -14,8 +14,8 @@ class IndexElement extends BaseJob
     {
         $element = Craft::$app->getElements()->getElementById($this->id);
 
-        if (! $element) {
-          return;
+        if (!$element) {
+            return;
         }
 
         $element->searchable();

@@ -15,10 +15,10 @@ class DeindexElement extends BaseJob
     {
         $element = Craft::$app->getElements()->getElementById($this->id, null, null, [
             'trashed' => null,
-          ]);
+        ]);
 
-        if (! $element) {
-          return;
+        if (!$element) {
+            return;
         }
 
         $relatedElements = $element->getRelatedElements();
