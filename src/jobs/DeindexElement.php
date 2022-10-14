@@ -33,6 +33,6 @@ class DeindexElement extends BaseJob
 
     protected function defaultDescription(): string
     {
-        return 'Dendexing element';
+        return 'Deindexing element';
     }
 }
