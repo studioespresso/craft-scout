@@ -14,8 +14,9 @@ use craft\services\Elements;
 use craft\services\Utilities;
 use craft\web\twig\variables\CraftVariable;
 use Exception;
-use Illuminate\Support\Collection;
 use rias\scout\behaviors\SearchableBehavior;
+use rias\scout\jobs\IndexElement;
+use rias\scout\jobs\DeindexElement;
 use rias\scout\models\Settings;
 use rias\scout\utilities\ScoutUtility;
 use rias\scout\variables\ScoutVariable;
@@ -153,7 +154,14 @@ class Scout extends Plugin
                 function (ElementEvent $event) {
                     /** @var SearchableBehavior $element */
                     $element = $event->element;
-                    $element->searchable();
+
+                    if (! $element->shouldBeSearchable()) {
+                        return;
+                    }
+
+                    Craft::$app->getQueue()->push(
+                        new IndexElement([ 'id' => $element->id ])
+                    );
                 }
             );
         }
@@ -163,31 +171,19 @@ class Scout extends Plugin
             Elements::EVENT_BEFORE_DELETE_ELEMENT,
             function (ElementEvent $event) {
                 if (!Scout::$plugin->getSettings()->indexRelations) {
-                    $this->beforeDeleteRelated = new Collection();
-
                     return;
                 }
 
                 /** @var SearchableBehavior $element */
                 $element = $event->element;
-                $this->beforeDeleteRelated = $element->getRelatedElements();
-            }
-        );
 
-        Event::on(
-            Elements::class,
-            Elements::EVENT_AFTER_DELETE_ELEMENT,
-            function (ElementEvent $event) {
-                /** @var SearchableBehavior $element */
-                $element = $event->element;
-                $element->unsearchable();
-
-                if ($this->beforeDeleteRelated) {
-                    $this->beforeDeleteRelated->each(function (Element $relatedElement) {
-                        /* @var SearchableBehavior $relatedElement */
-                        $relatedElement->searchable(false);
-                    });
+                if (! $element->shouldBeSearchable()) {
+                    return;
                 }
+
+                Craft::$app->getQueue()->push(
+                    new DeindexElement([ 'id' => $element->id ])
+                );
             }
         );
     }
