@@ -21,7 +21,10 @@ class Settings extends Model
     /** @var bool */
     public $indexRelations = true;
 
-    /** @var bool */
+    /**
+     * @var bool
+     * @deprecated 4.0.0 Disabling the `queue` option will no longer be supported in the next version of Scout
+     */
     public $queue = true;
 
     /** @var int */
@@ -82,6 +85,15 @@ class Settings extends Model
         ];
     }
 
+    public function getQueue()
+    {
+        if (!$this->queue) {
+            Craft::$app->getDeprecator()->log(__CLASS__ . 'queue', "Disabling the `queue` option will no longer be supported in the next version of Scout");
+        }
+
+        return $this->queue;
+    }
+
     public function getIndices(): Collection
     {
         return new Collection($this->indices);
@@ -99,7 +111,7 @@ class Settings extends Model
         $engine = Craft::$container->get($this->engine, [$scoutIndex]);
 
         if (!$engine instanceof Engine) {
-            throw new Exception("Invalid engine {$this->engine}, must implement ".Engine::class);
+            throw new Exception("Invalid engine {$this->engine}, must implement " . Engine::class);
         }
 
         return $engine;
