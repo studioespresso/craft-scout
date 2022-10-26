@@ -160,7 +160,6 @@ class Scout extends Plugin
                     }
 
                     if (Scout::$plugin->getSettings()->getQueue()) {
-
                         Craft::$app->getQueue()->push(
                             new IndexElement(['id' => $element->id])
                         );
