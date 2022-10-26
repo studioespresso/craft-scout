@@ -88,7 +88,7 @@ class Scout extends Plugin
         $overrides = Craft::$app->getConfig()->getConfigFromFile(strtolower($this->handle));
 
         return Craft::$app->getView()->renderTemplate('scout/settings', [
-            'settings' => $this->getSettings(),
+            'settings'  => $this->getSettings(),
             'overrides' => array_keys($overrides),
         ]);
     }
@@ -172,6 +172,7 @@ class Scout extends Plugin
             function (ElementEvent $event) {
                 if (!Scout::$plugin->getSettings()->indexRelations) {
                     $this->beforeDeleteRelated = new Collection();
+
                     return;
                 }
 
@@ -188,7 +189,6 @@ class Scout extends Plugin
                         new DeindexElement(['id' => $element->id])
                     );
                 }
-
             }
         );
 
@@ -197,8 +197,8 @@ class Scout extends Plugin
             Elements::EVENT_AFTER_DELETE_ELEMENT,
             function (ElementEvent $event) {
                 //Skip this step if we already ran the DeIndex function earlier
-                if(Scout::$plugin->getSettings()->getQueue()) {
-                   return;
+                if (Scout::$plugin->getSettings()->getQueue()) {
+                    return;
                 }
                 /** @var SearchableBehavior $element */
                 $element = $event->element;
