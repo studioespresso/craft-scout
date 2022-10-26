@@ -31,7 +31,7 @@ class IndexController extends Controller
 
         $engine = $this->getEngine();
 
-        if (Scout::$plugin->getSettings()->queue) {
+        if (Scout::$plugin->getSettings()->getQueue()) {
             Craft::$app->getQueue()
                 ->ttr(Scout::$plugin->getSettings()->ttr)
                 ->priority(Scout::$plugin->getSettings()->priority)

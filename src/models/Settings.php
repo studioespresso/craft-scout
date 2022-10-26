@@ -86,6 +86,12 @@ class Settings extends Model
         ];
     }
 
+
+    /**
+     * @var bool
+     *
+     * @deprecated 4.0.0 Disabling the `queue` option will no longer be supported in the next version of Scout
+     */
     public function getQueue()
     {
         if (!$this->queue) {
