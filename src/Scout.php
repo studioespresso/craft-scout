@@ -88,7 +88,7 @@ class Scout extends Plugin
         $overrides = Craft::$app->getConfig()->getConfigFromFile(strtolower($this->handle));
 
         return Craft::$app->getView()->renderTemplate('scout/settings', [
-            'settings'  => $this->getSettings(),
+            'settings' => $this->getSettings(),
             'overrides' => array_keys($overrides),
         ]);
     }
@@ -171,6 +171,7 @@ class Scout extends Plugin
             Elements::EVENT_BEFORE_DELETE_ELEMENT,
             function (ElementEvent $event) {
                 if (!Scout::$plugin->getSettings()->indexRelations) {
+                    $this->beforeDeleteRelated = new Collection();
                     return;
                 }
 
@@ -181,9 +182,34 @@ class Scout extends Plugin
                     return;
                 }
 
-                Craft::$app->getQueue()->push(
-                    new DeindexElement(['id' => $element->id])
-                );
+                // Only run this through the queue if the user has that enabled
+                if (Scout::$plugin->getSettings()->getQueue()) {
+                    Craft::$app->getQueue()->push(
+                        new DeindexElement(['id' => $element->id])
+                    );
+                }
+
+            }
+        );
+
+        Event::on(
+            Elements::class,
+            Elements::EVENT_AFTER_DELETE_ELEMENT,
+            function (ElementEvent $event) {
+                //Skip this step if we already ran the DeIndex function earlier
+                if(Scout::$plugin->getSettings()->getQueue()) {
+                   return;
+                }
+                /** @var SearchableBehavior $element */
+                $element = $event->element;
+                $element->unsearchable();
+
+                if ($this->beforeDeleteRelated) {
+                    $this->beforeDeleteRelated->each(function (Element $relatedElement) {
+                        /* @var SearchableBehavior $relatedElement */
+                        $relatedElement->searchable(false);
+                    });
+                }
             }
         );
     }
