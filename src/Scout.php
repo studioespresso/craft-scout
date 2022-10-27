@@ -15,6 +15,8 @@ use craft\services\Utilities;
 use craft\web\twig\variables\CraftVariable;
 use Exception;
 use rias\scout\behaviors\SearchableBehavior;
+use rias\scout\jobs\DeindexElement;
+use rias\scout\jobs\IndexElement;
 use rias\scout\models\Settings;
 use rias\scout\utilities\ScoutUtility;
 use rias\scout\variables\ScoutVariable;
@@ -138,7 +140,7 @@ class Scout extends Plugin
         }
     }
 
-    private function registerEventHandlers()
+    private function registerEventHandlers(): void
     {
         $events = [
             [Elements::class, Elements::EVENT_AFTER_SAVE_ELEMENT],
@@ -153,7 +155,19 @@ class Scout extends Plugin
                 function (ElementEvent $event) {
                     /** @var SearchableBehavior $element */
                     $element = $event->element;
-                    $element->searchable();
+
+                    if (!$element->shouldBeSearchable()) {
+                        return;
+                    }
+
+                    if (Scout::$plugin->getSettings()->queue) {
+
+                        Craft::$app->getQueue()->push(
+                            new IndexElement(['id' => $element->id])
+                        );
+                    } else {
+                        $element->searchable();
+                    }
                 }
             );
         }
@@ -170,7 +184,17 @@ class Scout extends Plugin
 
                 /** @var SearchableBehavior $element */
                 $element = $event->element;
-                $this->beforeDeleteRelated = $element->getRelatedElements();
+
+                if (!$element->shouldBeSearchable()) {
+                    return;
+                }
+
+                // Only run this through the queue if the user has that enabled
+                if (Scout::$plugin->getSettings()->queue) {
+                    Craft::$app->getQueue()->push(
+                        new DeindexElement(['id' => $element->id])
+                    );
+                }
             }
         );
 
@@ -178,6 +202,10 @@ class Scout extends Plugin
             Elements::class,
             Elements::EVENT_AFTER_DELETE_ELEMENT,
             function (ElementEvent $event) {
+                //Skip this step if we already ran the DeIndex function earlier
+                if (Scout::$plugin->getSettings()->queue) {
+                    return;
+                }
                 /** @var SearchableBehavior $element */
                 $element = $event->element;
                 $element->unsearchable();
