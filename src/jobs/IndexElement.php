@@ -19,7 +19,7 @@ class IndexElement extends BaseJob
         }
 
         $element->searchable();
-        
+
         // Only process the related elements if Scout is directed to
         if (!Scout::$plugin->getSettings()->indexRelations) {
             return;
