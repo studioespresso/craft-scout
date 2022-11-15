@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## 2.8.0-beta.2- 2022-11-15
+## Added
+- Make sure related elements are indexed when that is enabled. 
+
+
 ## 2.8.0-beta.1 - 2022-10-27
 ## Added
 This release includes a bunch of performance improvements from PR's by @EpocSquadron ([#171](https://github.com/studioespresso/craft-scout/pull/171)) and @aaronbushnell ([#248](https://github.com/studioespresso/craft-scout/pull/248))
