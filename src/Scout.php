@@ -44,31 +44,33 @@ class Scout extends Plugin
 
     public function init()
     {
-        parent::init();
+        Craft::$app->onInit(function () {
+            parent::init();
 
-        self::$plugin = $this;
+            self::$plugin = $this;
 
-        Craft::$container->setSingleton(SearchClient::class, function () {
-            $config = SearchConfig::create(
-                self::$plugin->getSettings()->getApplicationId(),
-                self::$plugin->getSettings()->getAdminApiKey()
-            );
+            Craft::$container->setSingleton(SearchClient::class, function () {
+                $config = SearchConfig::create(
+                    self::$plugin->getSettings()->getApplicationId(),
+                    self::$plugin->getSettings()->getAdminApiKey()
+                );
 
-            $config->setConnectTimeout($this->getSettings()->connect_timeout);
+                $config->setConnectTimeout($this->getSettings()->connect_timeout);
 
-            return SearchClient::createWithConfig($config);
+                return SearchClient::createWithConfig($config);
+            });
+
+            $request = Craft::$app->getRequest();
+            if ($request->getIsConsoleRequest()) {
+                $this->controllerNamespace = 'rias\scout\console\controllers\scout';
+            }
+
+            $this->validateConfig();
+            $this->registerBehaviors();
+            $this->registerVariables();
+            $this->registerEventHandlers();
+            $this->registerUtility();
         });
-
-        $request = Craft::$app->getRequest();
-        if ($request->getIsConsoleRequest()) {
-            $this->controllerNamespace = 'rias\scout\console\controllers\scout';
-        }
-
-        $this->validateConfig();
-        $this->registerBehaviors();
-        $this->registerVariables();
-        $this->registerEventHandlers();
-        $this->registerUtility();
     }
 
     protected function createSettingsModel(): Settings
@@ -87,7 +89,7 @@ class Scout extends Plugin
         $overrides = Craft::$app->getConfig()->getConfigFromFile(strtolower($this->handle));
 
         return Craft::$app->getView()->renderTemplate('scout/settings', [
-            'settings'  => $this->getSettings(),
+            'settings' => $this->getSettings(),
             'overrides' => array_keys($overrides),
         ]);
     }
