@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.1.0 - 2023-02-15
+### Added
+- Scout now requires craft 4.3.5 (see [#249](https://github.com/studioespresso/craft-scout/issues/249))
+
+### Fixed
+- Fixed an issue where Element querries would fire before Scout was loaded ([#249](https://github.com/studioespresso/craft-scout/issues/249))
+- Fixed a UI issue with button spacing on the utility screen ([#245](https://github.com/studioespresso/craft-scout/issues/245))
+
 ## 3.0.0 - 2022-05-03
 ### Added
 - Craft 4 🚀

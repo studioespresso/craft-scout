@@ -38,8 +38,13 @@ return [
     'sync' => true,
 
     /*
+     * 
+     * @depcretio
      * By default Scout handles all indexing in a queued job, you can disable
      * this so the indices are updated as soon as the elements are updated
+     * 
+     * Disabling the `queue` option will no longer be supported in the next version of Scout
+     * 
      */
     'queue' => true,
 

@@ -80,7 +80,7 @@ class SearchableBehavior extends Behavior
                 return $engine->delete($this->owner);
             }
 
-            if (Scout::$plugin->getSettings()->queue) {
+            if (Scout::$plugin->getSettings()->getQueue()) {
                 return Craft::$app->getQueue()
                     ->ttr(Scout::$plugin->getSettings()->ttr)
                     ->priority(Scout::$plugin->getSettings()->priority)

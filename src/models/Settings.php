@@ -21,7 +21,11 @@ class Settings extends Model
     /** @var bool */
     public $indexRelations = true;
 
-    /** @var bool */
+    /**
+     * @var bool
+     *
+     * @deprecated 4.0.0 Disabling the `queue` option will no longer be supported in the next version of Scout
+     */
     public $queue = true;
 
     /** @var int */
@@ -80,6 +84,15 @@ class Settings extends Model
             [['application_id', 'admin_api_key', 'search_api_key'], 'string'],
             [['application_id', 'admin_api_key', 'connect_timeout'], 'required'],
         ];
+    }
+
+    public function getQueue()
+    {
+        if (!$this->queue) {
+            Craft::$app->getDeprecator()->log(__CLASS__.'queue', 'Disabling the `queue` option will no longer be supported in the next version of Scout');
+        }
+
+        return $this->queue;
     }
 
     public function getIndices(): Collection
