@@ -6,7 +6,7 @@ use Codeception\Test\Unit;
 use FractalMockTransformers;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
-use rias\scout\serializer\AlgoliaSerializer;
+use rias\scout\serializer\Serializer;
 
 class FractalArraySerializerTest extends Unit
 {
@@ -21,7 +21,7 @@ class FractalArraySerializerTest extends Unit
     /** @test **/
     public function collection_should_be_index_array()
     {
-        $dataSet = (new Manager())->setSerializer(new AlgoliaSerializer())
+        $dataSet = (new Manager())->setSerializer(new Serializer())
             ->createData(new Collection($this->entries, new FractalMockTransformers()))
             ->toArray();
 
@@ -32,7 +32,7 @@ class FractalArraySerializerTest extends Unit
     public function collection_should_be_multidimensional_array()
     {
         $dataSet = (new Manager())
-            ->setSerializer(new AlgoliaSerializer())
+            ->setSerializer(new Serializer())
             ->createData(new Collection($this->entries, new FractalMockTransformers(), 'entries'))
             ->toArray();
 
