@@ -7,6 +7,7 @@ use craft\base\Model;
 use Exception;
 use Illuminate\Support\Collection;
 use rias\scout\engines\AlgoliaEngine;
+use rias\scout\engines\TypesenseEngine;
 use rias\scout\engines\Engine;
 use rias\scout\ScoutIndex;
 
@@ -35,7 +36,7 @@ class Settings extends Model
     public $priority = 1024;
 
     /** @var string */
-    public $engine = AlgoliaEngine::class;
+    public $engine = TypesenseEngine::class;
 
     /** @var ScoutIndex[] */
     public $indices = [];
