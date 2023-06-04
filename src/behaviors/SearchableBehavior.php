@@ -14,6 +14,8 @@ use craft\elements\MatrixBlock;
 use craft\elements\Tag;
 use craft\elements\User;
 use craft\helpers\ElementHelper;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use rias\scout\engines\Engine;
@@ -22,8 +24,6 @@ use rias\scout\jobs\MakeSearchable;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
 use rias\scout\serializer\AlgoliaSerializer;
-use Tightenco\Collect\Support\Arr;
-use Tightenco\Collect\Support\Collection;
 use yii\base\Behavior;
 use yii\base\Event;
 
@@ -35,7 +35,7 @@ use yii\base\Event;
  */
 class SearchableBehavior extends Behavior
 {
-    const EVENT_SHOULD_BE_SEARCHABLE = 'shouldBeSearchableEvent';
+    public const  EVENT_SHOULD_BE_SEARCHABLE = 'shouldBeSearchableEvent';
 
     public function validatesCriteria(ScoutIndex $scoutIndex): bool
     {
@@ -80,7 +80,7 @@ class SearchableBehavior extends Behavior
                 return $engine->delete($this->owner);
             }
 
-            if (Scout::$plugin->getSettings()->queue) {
+            if (Scout::$plugin->getSettings()->getQueue()) {
                 return Craft::$app->getQueue()
                     ->ttr(Scout::$plugin->getSettings()->ttr)
                     ->priority(Scout::$plugin->getSettings()->priority)
@@ -100,7 +100,7 @@ class SearchableBehavior extends Behavior
         });
     }
 
-    public function unsearchable()
+    public function unsearchable(): void
     {
         if (!Scout::$plugin->getSettings()->sync) {
             return;
@@ -117,7 +117,7 @@ class SearchableBehavior extends Behavior
             ->toArray();
     }
 
-    public function searchableRelations()
+    public function searchableRelations(): void
     {
         if (!Scout::$plugin->getSettings()->indexRelations) {
             return;

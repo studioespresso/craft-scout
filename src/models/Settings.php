@@ -5,10 +5,10 @@ namespace rias\scout\models;
 use Craft;
 use craft\base\Model;
 use Exception;
+use Illuminate\Support\Collection;
 use rias\scout\engines\AlgoliaEngine;
 use rias\scout\engines\Engine;
 use rias\scout\ScoutIndex;
-use Tightenco\Collect\Support\Collection;
 
 class Settings extends Model
 {
@@ -21,7 +21,11 @@ class Settings extends Model
     /** @var bool */
     public $indexRelations = true;
 
-    /** @var bool */
+    /**
+     * @var bool
+     *
+     * @deprecated 4.0.0 Disabling the `queue` option will no longer be supported in the next version of Scout
+     */
     public $queue = true;
 
     /** @var int */
@@ -54,7 +58,7 @@ class Settings extends Model
     /** @var bool */
     public $useOriginalRecordIfSplitValueIsArrayOfOne = true;
 
-    public function fields()
+    public function fields(): array
     {
         $fields = parent::fields();
 
@@ -64,7 +68,7 @@ class Settings extends Model
         return $fields;
     }
 
-    public function extraFields()
+    public function extraFields(): array
     {
         return [
             'indices',
@@ -72,7 +76,7 @@ class Settings extends Model
         ];
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['connect_timeout', 'batch_size', 'ttr', 'priority'], 'integer'],
@@ -80,6 +84,15 @@ class Settings extends Model
             [['application_id', 'admin_api_key', 'search_api_key'], 'string'],
             [['application_id', 'admin_api_key', 'connect_timeout'], 'required'],
         ];
+    }
+
+    public function getQueue()
+    {
+        if (!$this->queue) {
+            Craft::$app->getDeprecator()->log(__CLASS__.'queue', 'Disabling the `queue` option will no longer be supported in the next version of Scout');
+        }
+
+        return $this->queue;
     }
 
     public function getIndices(): Collection

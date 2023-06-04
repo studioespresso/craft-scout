@@ -4,10 +4,10 @@ namespace rias\scout\engines;
 
 use Algolia\AlgoliaSearch\SearchClient as Algolia;
 use craft\base\Element;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use rias\scout\IndexSettings;
 use rias\scout\ScoutIndex;
-use Tightenco\Collect\Support\Arr;
-use Tightenco\Collect\Support\Collection;
 
 class AlgoliaEngine extends Engine
 {

@@ -2,16 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.1.0 - 2023-02-15
+### Added
+- Scout now requires craft 4.3.5 (see [#249](https://github.com/studioespresso/craft-scout/issues/249))
 
-## 2.8.0-beta.2- 2022-11-15
-## Added
-- Make sure related elements are indexed when that is enabled. 
+### Fixed
+- Fixed an issue where Element querries would fire before Scout was loaded ([#249](https://github.com/studioespresso/craft-scout/issues/249))
+- Fixed a UI issue with button spacing on the utility screen ([#245](https://github.com/studioespresso/craft-scout/issues/245))
 
+## 3.0.0 - 2022-05-03
+### Added
+- Craft 4 🚀
 
-## 2.8.0-beta.1 - 2022-10-27
-## Added
-This release includes a bunch of performance improvements from PR's by @EpocSquadron ([#171](https://github.com/studioespresso/craft-scout/pull/171)) and @aaronbushnell ([#248](https://github.com/studioespresso/craft-scout/pull/248))
-
+## 3.0.0-beta.1 - 2022-03-02
+### Added
+- Craft CMS 4 compatibility
 
 ## 2.7.2 - 2022-03-22
 ## Added
@@ -25,6 +30,7 @@ This release includes a bunch of performance improvements from PR's by @EpocSqua
 ## 2.7.0 - 2022-03-13
 ### Added
 - Added a config setting to keep using the orginal object in case ``splittedObjects`` only contains 1 item. ([#193](https://github.com/studioespresso/craft-scout/issues/193) & [#219](https://github.com/studioespresso/craft-scout/pull/219), thanks [@gregkohn](https://github.com/gregkohn)) 
+
 
 ## 2.6.1 - 2021-12-21
 ### Fixed
