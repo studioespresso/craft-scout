@@ -1,26 +1,25 @@
-![Icon](./src/icon.svg)
-
-# Scout plugin for Craft CMS 3
+# Scout for Craft CMS
 
 Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indices in sync with your entries.
 
 ## Requirements
 
-This plugin requires Craft CMS 3.2 or later and PHP 7.1 or later.
+This plugin requires Craft CMS 4.x or later and PHP 8.0.2 or later.
 
 ## Installation
 
-Go to the Plugin Store in your project’s Control Panel and search for “Scout”. Then click on the “Install” button in its modal window.
+Open your terminal and go to your Craft project:
 
-## Upgrading
+```bash
+# go to the project directory
+cd /path/to/my-craft-project.dev
 
-The configuration has changed from how Scout v1 did its configuration. Please see the [setup](#setup) section below on how to configure Scout.
+# tell Composer to install the plugin
+composer require studioespresso/craft-scout
 
-The following changes are the most notable:
-- The `mappings` configuration key has been changed to `indices` and there is a new way to configure the indices
-- The `criteria` is now a callable that returns an `ElementQuery`. Every Index should define a `siteId` in the criteria, otherwise the primary site is chosen.
-- New `queue` and `batch` options added to the settings
-- Old confuguration keys on the mappings have been replaced by functions on the `rias\scout\ScoutIndex` object.
+# tell Craft to install the plugin
+php craft install/plugin scout
+```
 
 ## Setup
 
@@ -305,5 +304,19 @@ The event has a properties:
 - $shouldBeSearchable (wether or not the element should be searchable, defaults to `true`)
 
 An example use-case for this would be to check the type of the element that's beind saved and settings `shouldBeSearchable` to `false` when it's a Matrix block.
+
+---
+
+## Upgrading from 1.x
+
+The configuration has changed from how Scout v1 did its configuration. Please see the [setup](#setup) section below on how to configure Scout.
+
+The following changes are the most notable:
+- The `mappings` configuration key has been changed to `indices` and there is a new way to configure the indices
+- The `criteria` is now a callable that returns an `ElementQuery`. Every Index should define a `siteId` in the criteria, otherwise the primary site is chosen.
+- New `queue` and `batch` options added to the settings
+- Old confuguration keys on the mappings have been replaced by functions on the `rias\scout\ScoutIndex` object.
+
+----
 
 Brought to you by [Studio Espresso](https://www.studioespresso.dev/) and [Rias](https://rias.be)

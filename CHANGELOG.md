@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## 3.1.1 - 2023-06-08
+### Added
+- Futher improvements to prevent scout from being initialized before Craft is ready ([#262](https://github.com/studioespresso/craft-scout/pull/262))
+
+
 ## 3.1.0 - 2023-02-15
 ### Added
 - Scout now requires craft 4.3.5 (see [#249](https://github.com/studioespresso/craft-scout/issues/249))
