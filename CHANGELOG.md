@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 
+## 3.1.2 - 2023-06-09
+### Fixed
+- Fixed missing return types in IndexElement & DeIndexElement jobs
+
 ## 3.1.1 - 2023-06-08
 ### Added
 - Futher improvements to prevent scout from being initialized before Craft is ready ([#262](https://github.com/studioespresso/craft-scout/pull/262))
