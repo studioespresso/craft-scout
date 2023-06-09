@@ -13,7 +13,7 @@ class IndexElement extends BaseJob
     /** @var int */
     public $id;
 
-    public function execute($queue)
+    public function execute($queue): void
     {
         $element = Craft::$app->getElements()->getElementById($this->id);
 
@@ -34,7 +34,7 @@ class IndexElement extends BaseJob
         });
     }
 
-    protected function defaultDescription()
+    protected function defaultDescription(): string
     {
         return 'Indexing element';
     }
