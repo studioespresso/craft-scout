@@ -11,7 +11,7 @@ class DeindexElement extends BaseJob
     /** @var int */
     public $id;
 
-    public function execute($queue)
+    public function execute($queue): void
     {
         $element = Craft::$app->getElements()->getElementById($this->id, null, null, [
             'trashed' => null,
@@ -31,7 +31,7 @@ class DeindexElement extends BaseJob
         });
     }
 
-    protected function defaultDescription()
+    protected function defaultDescription(): string
     {
         return 'Deindexing element';
     }
