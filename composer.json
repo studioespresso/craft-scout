@@ -59,5 +59,11 @@
         "hasCpSection": false,
         "changelogUrl": "https://raw.githubusercontent.com/studioespresso/craft-scout/master/CHANGELOG.md",
         "class": "rias\\scout\\Scout"
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "craftcms/plugin-installer": true
+        }
     }
 }
