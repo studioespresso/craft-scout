@@ -26,7 +26,7 @@ jobs:
         id: cache-env
         uses: shivammathur/cache-extensions@v1
         with:
-          php-version: 7.1
+          php-version: 8.0
           extensions: mbstring,dom,fileinfo,mysql,imagick,bcmath,pcntl,zip,soap,intl,gd,exif,iconv
           key: extensions
 
@@ -39,7 +39,7 @@ jobs:
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.1'
+          php-version: 8.0
           extensions: mbstring,dom,fileinfo,mysql,imagick,bcmath,pcntl,zip,soap,intl,gd,exif,iconv
           coverage: xdebug
 
