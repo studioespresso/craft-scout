@@ -28,7 +28,7 @@ class SearchableBehaviorTest extends Unit
     /** @var \craft\models\Section */
     private $section;
 
-    /** @var \rias\scout\behaviors\SearchableBehavior */
+    /** @var Entry */
     private $element;
 
     /** @var Scout */
@@ -129,6 +129,7 @@ class SearchableBehaviorTest extends Unit
         $relationField = new Entries([
             'name'   => 'Entry field',
             'handle' => 'entryField',
+            'groupId' => Craft::$app->getFields()->getAllGroups()[0]->id,
         ]);
         Craft::$app->getFields()->saveField($relationField);
 
