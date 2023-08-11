@@ -18,7 +18,7 @@ cd /path/to/my-craft-project.dev
 composer require studioespresso/craft-scout
 
 # tell Craft to install the plugin
-php craft install/plugin scout
+php craft plugin/install scout
 ```
 
 ## Setup
