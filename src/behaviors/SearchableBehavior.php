@@ -39,23 +39,23 @@ class SearchableBehavior extends Behavior
 
     public function validatesCriteria(ScoutIndex $scoutIndex): bool
     {
-	      if (is_iterable($scoutIndex->criteria)) {
-		      foreach($scoutIndex->criteria as $query) {
-			      $criteria = clone $query;
-			
-			      if (!$criteria->id($this->owner->id)->exists()) {
-				      return false;
-			      }
-		      }
-	        return true;
-					
-		    } else {
-		      $criteria = clone $scoutIndex->criteria;
-		
-		      return $criteria
-			      ->id($this->owner->id)
-			      ->exists();
-	      }
+        if (is_iterable($scoutIndex->criteria)) {
+            foreach($scoutIndex->criteria as $query) {
+                $criteria = clone $query;
+        
+                if (!$criteria->id($this->owner->id)->exists()) {
+                    return false;
+                }
+            }
+        return true;
+                
+        } else {
+            $criteria = clone $scoutIndex->criteria;
+    
+            return $criteria
+                ->id($this->owner->id)
+                ->exists();
+        }
     }
 
     public function getIndices(): Collection
@@ -64,13 +64,13 @@ class SearchableBehavior extends Behavior
             ->getSettings()
             ->getIndices()
             ->filter(function (ScoutIndex $scoutIndex) {
-								if(is_iterable($scoutIndex->criteria)){
-									$criteriaSiteIds = collect($scoutIndex->criteria)->map(function($criteria){
-										return Arr::wrap($criteria->siteId);
-									})->flatten()->unique()->values()->toArray();
-								} else {
-									$criteriaSiteIds = Arr::wrap($scoutIndex->criteria->siteId);
-								}
+                if(is_iterable($scoutIndex->criteria)){
+                    $criteriaSiteIds = collect($scoutIndex->criteria)->map(function($criteria){
+                        return Arr::wrap($criteria->siteId);
+                    })->flatten()->unique()->values()->toArray();
+                } else {
+                    $criteriaSiteIds = Arr::wrap($scoutIndex->criteria->siteId);
+                }
                 $siteIds = array_map(function ($siteId) {
                     return (int) $siteId;
                 }, $criteriaSiteIds);

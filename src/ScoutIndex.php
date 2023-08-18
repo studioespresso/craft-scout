@@ -17,8 +17,8 @@ class ScoutIndex
     /** @var IndexSettings */
     public $indexSettings;
 	
-		/** @var bool */
-		public $enforceElementType = true;
+    /** @var bool */
+    public $enforceElementType = true;
 
     /** @var string */
     public $elementType = Entry::class;
@@ -45,15 +45,17 @@ class ScoutIndex
 
     public function elementType(string $class): self
     {
+			
         if (!is_subclass_of($class, Element::class)) {
-            throw new Exception("Invalid Element Type {$class}");
+            throw new Exception("Invalid Element Type {$class}.");
         }
 
         $this->elementType = $class;
 
         return $this;
     }
-
+		
+		
     public function criteria(callable $criteria): self
     {
         $elementQuery = $criteria($this->elementType::find());
@@ -75,29 +77,29 @@ class ScoutIndex
 	 * @throws Exception
 	 */
 	public function getElements(callable $getElements): self
-		{
-			$elementQueries = $getElements();
-			
-			if ($elementQueries instanceof ElementQuery) {
-				$elementQueries = [$elementQueries];
-			}
-			
-			// loop through $elementQueries and check that they are all ElementQuery objects
-			foreach ($elementQueries as $elementQuery) {
-				if (!$elementQuery instanceof ElementQuery) {
-					throw new Exception('You must return a valid ElementQuery or array of ElementQuery objects from the getElements function.');
-				}
+    {
+        $elementQueries = $getElements();
+        
+        if ($elementQueries instanceof ElementQuery) {
+            $elementQueries = [$elementQueries];
+        }
+        
+        // loop through $elementQueries and check that they are all ElementQuery objects
+        foreach ($elementQueries as $elementQuery) {
+            if (!$elementQuery instanceof ElementQuery) {
+                throw new Exception('You must return a valid ElementQuery or array of ElementQuery objects from the getElements function.');
+            }
 
-				if (is_null($elementQuery->siteId)) {
-					$elementQuery->siteId = Craft::$app->getSites()->getPrimarySite()->id;
-				}
-			}
-			
-			$this->enforceElementType = false;
-			$this->criteria = $elementQueries;
-			
-			return $this;
-		}
+            if (is_null($elementQuery->siteId)) {
+                $elementQuery->siteId = Craft::$app->getSites()->getPrimarySite()->id;
+            }
+        }
+        
+        $this->enforceElementType = false;
+        $this->criteria = $elementQueries;
+        
+        return $this;
+    }
 
     /*
      * @param $transformer callable|string|array|TransformerAbstract

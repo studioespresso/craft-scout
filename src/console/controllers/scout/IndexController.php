@@ -67,9 +67,7 @@ class IndexController extends BaseController
 		            $totalElements = array_reduce($engine->scoutIndex->criteria, function ($carry, $query) {
 			            return $carry + $query->count();
 		            }, 0);
-		
-		            
-		
+                    
 		            foreach($engine->scoutIndex->criteria as $query) {
 			            $elementsUpdated = 0;
 			            $batch = $query->batch(
@@ -98,8 +96,6 @@ class IndexController extends BaseController
 		            }
 	            }
             }
-	
-	        
         });
 
         return ExitCode::OK;

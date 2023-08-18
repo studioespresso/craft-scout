@@ -34,11 +34,11 @@ class AlgoliaEngine extends Engine
     {
         $elements = new Collection(Arr::wrap($elements));
 				
-				if($this->scoutIndex->enforceElementType) {
-					$elements = $elements->filter(function (Element $element) {
-						return get_class($element) === $this->scoutIndex->elementType;
-					});
-				}
+        if($this->scoutIndex->enforceElementType) {
+            $elements = $elements->filter(function (Element $element) {
+                return get_class($element) === $this->scoutIndex->elementType;
+            });
+        }
 
         if ($elements->isEmpty()) {
             return;
