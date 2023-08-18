@@ -45,17 +45,15 @@ class ScoutIndex
 
     public function elementType(string $class): self
     {
-			
         if (!is_subclass_of($class, Element::class)) {
-            throw new Exception("Invalid Element Type {$class}.");
+            throw new Exception("Invalid Element Type {$class}");
         }
 
         $this->elementType = $class;
 
         return $this;
     }
-		
-		
+
     public function criteria(callable $criteria): self
     {
         $elementQuery = $criteria($this->elementType::find());
