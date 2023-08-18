@@ -61,18 +61,45 @@ class IndexController extends BaseController
                     ]));
                 $this->stdout("Added ImportIndex job for '{$engine->scoutIndex->indexName}' to the queue".PHP_EOL, Console::FG_GREEN);
             } else {
-                $totalElements = $engine->scoutIndex->criteria->count();
-                $elementsUpdated = 0;
-                $batch = $engine->scoutIndex->criteria->batch(
-                    Scout::$plugin->getSettings()->batch_size
-                );
-
-                foreach ($batch as $elements) {
-                    $engine->update($elements);
-                    $elementsUpdated += count($elements);
-                    $this->stdout("Updated {$elementsUpdated}/{$totalElements} element(s) in {$engine->scoutIndex->indexName}\n", Console::FG_GREEN);
-                }
+	            // check if $engine->scoutIndex->criteria is iterable
+	            if (is_iterable($engine->scoutIndex->criteria)) {
+		            // use array_reduce to get the count of elements
+		            $totalElements = array_reduce($engine->scoutIndex->criteria, function ($carry, $query) {
+			            return $carry + $query->count();
+		            }, 0);
+		
+		            
+		
+		            foreach($engine->scoutIndex->criteria as $query) {
+			            $elementsUpdated = 0;
+			            $batch = $query->batch(
+				            Scout::$plugin->getSettings()->batch_size
+			            );
+			
+			            foreach ($batch as $elements) {
+				            $engine->update($elements);
+				            $elementsUpdated += count($elements);
+				            $this->stdout("Updated {$elementsUpdated}/{$totalElements} element(s) in {$engine->scoutIndex->indexName} via " . get_class($query) . "\n", Console::FG_GREEN);
+			            }
+		            }
+		
+	            } else {
+		            $totalElements = $engine->scoutIndex->criteria->count();
+		
+		            $elementsUpdated = 0;
+		            $batch = $engine->scoutIndex->criteria->batch(
+			            Scout::$plugin->getSettings()->batch_size
+		            );
+		
+		            foreach ($batch as $elements) {
+			            $engine->update($elements);
+			            $elementsUpdated += count($elements);
+			            $this->stdout("Updated {$elementsUpdated}/{$totalElements} element(s) in {$engine->scoutIndex->indexName}\n", Console::FG_GREEN);
+		            }
+	            }
             }
+	
+	        
         });
 
         return ExitCode::OK;

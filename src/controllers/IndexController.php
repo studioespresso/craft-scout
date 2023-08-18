@@ -43,15 +43,38 @@ class IndexController extends Controller
 
             return $this->redirect(UrlHelper::url('utilities/'.ScoutUtility::id()));
         }
-
-        $elementsCount = $engine->scoutIndex->criteria->count();
-        $batch = $engine->scoutIndex->criteria->batch(
-            Scout::$plugin->getSettings()->batch_size
-        );
-
-        foreach ($batch as $elements) {
-            $engine->update($elements);
-        }
+	
+		    // check if $engine->scoutIndex->criteria is iterable
+		    if (is_iterable($engine->scoutIndex->criteria)) {
+			    // use array_reduce to get the count of elements
+			    $elementsCount = array_reduce($engine->scoutIndex->criteria, function ($carry, $query) {
+				    return $carry + $query->count();
+			    }, 0);
+			
+			    $elementsUpdated = 0;
+			
+			    foreach($engine->scoutIndex->criteria as $query) {
+				    $batch = $query->batch(
+					    Scout::$plugin->getSettings()->batch_size
+				    );
+				
+				    foreach ($batch as $elements) {
+					    $engine->update($elements);
+				    }
+			    }
+			
+		    } else {
+			    $elementsCount = $engine->scoutIndex->criteria->count();
+			
+			    $elementsUpdated = 0;
+			    $batch = $engine->scoutIndex->criteria->batch(
+				    Scout::$plugin->getSettings()->batch_size
+			    );
+			
+			    foreach ($batch as $elements) {
+				    $engine->update($elements);
+			    }
+		    }
 
         Craft::$app->getSession()->setNotice("Updated {$elementsCount} element(s) in {$engine->scoutIndex->indexName}");
 

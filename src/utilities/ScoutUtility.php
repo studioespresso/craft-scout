@@ -4,6 +4,7 @@ namespace rias\scout\utilities;
 
 use Craft;
 use craft\base\Utility;
+use Illuminate\Support\Arr;
 use rias\scout\engines\Engine;
 use rias\scout\Scout;
 
@@ -31,12 +32,33 @@ class ScoutUtility extends Utility
         $engines = Scout::$plugin->getSettings()->getEngines();
 
         $stats = $engines->map(function (Engine $engine) {
+						// loop through criteria to get siteId from each criteria
+	          $engineCriteria = collect(Arr::wrap($engine->scoutIndex->criteria));
+						
+						$criteriaSites = $engineCriteria->map(function($criteria){
+							return $criteria->siteId;
+						})->flatten()->unique()->values()->toArray();
+						
+						if (count($criteriaSites) === 1 && $criteriaSites[0] === '*') {
+							$sites = 'all';
+						} else {
+							$sites = collect($criteriaSites)->map(function($siteId){
+								return Craft::$app->getSites()->getSiteById($siteId);
+							})->implode('name', ', ');
+						}
+						
+						$totalElements = $engineCriteria->reduce(function($carry, $criteria){
+							return $carry + $criteria->count();
+						}, 0);
+						
+						$elementType = $engine->scoutIndex->enforceElementType ? $engine->scoutIndex->elementType : 'Mixed Element Types';
+				
             return [
                 'name'        => $engine->scoutIndex->indexName,
-                'elementType' => $engine->scoutIndex->elementType,
-                'site'        => $engine->scoutIndex->criteria->siteId === '*' ? 'all' : Craft::$app->getSites()->getSiteById($engine->scoutIndex->criteria->siteId),
+                'elementType' => $elementType,
+                'sites'        => $sites,
                 'indexed'     => $engine->getTotalRecords(),
-                'elements'    => $engine->scoutIndex->criteria->count(),
+                'elements'    => $totalElements,
                 'hasSettings' => $engine->scoutIndex->indexSettings ?? null,
             ];
         });
