@@ -39,7 +39,7 @@ class SearchableBehavior extends Behavior
 
     public function validatesCriteria(ScoutIndex $scoutIndex): bool
     {
-        if (is_iterable($scoutIndex->criteria)) {
+        if (is_array($scoutIndex->criteria)) {
             foreach($scoutIndex->criteria as $query) {
                 $criteria = clone $query;
         
@@ -48,7 +48,7 @@ class SearchableBehavior extends Behavior
                 }
             }
         return true;
-                
+        
         } else {
             $criteria = clone $scoutIndex->criteria;
     
@@ -64,7 +64,7 @@ class SearchableBehavior extends Behavior
             ->getSettings()
             ->getIndices()
             ->filter(function (ScoutIndex $scoutIndex) {
-                if(is_iterable($scoutIndex->criteria)){
+                if(is_array($scoutIndex->criteria)){
                     $criteriaSiteIds = collect($scoutIndex->criteria)->map(function($criteria){
                         return Arr::wrap($criteria->siteId);
                     })->flatten()->unique()->values()->toArray();
