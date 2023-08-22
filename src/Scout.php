@@ -163,11 +163,22 @@ class Scout extends Plugin
                     }
 
                     if (Scout::$plugin->getSettings()->queue) {
-                        Craft::$app->getQueue()->push(
-                            new IndexElement(['id' => $element->id])
-                        );
+                        if(!$element->enabled) {
+                            Craft::$app->getQueue()->push(
+                                new DeindexElement(['id' => $element->id])
+                            );
+                        } else {
+                            Craft::$app->getQueue()->push(
+                                new IndexElement(['id' => $element->id])
+                            );
+                        }
+
                     } else {
-                        $element->searchable();
+                        if(!$element->enabled) {
+                            $element->unsearchable();
+                        } else {
+                            $element->searchable();
+                        }
                     }
                 }
             );
