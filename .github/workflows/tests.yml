@@ -47,7 +47,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+                  composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
             - name: Run eventHandlersTest
               run: ./vendor/bin/codecept run unit EventHandlersTest
