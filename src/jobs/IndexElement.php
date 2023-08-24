@@ -15,7 +15,7 @@ class IndexElement extends BaseJob
 
     public function execute($queue): void
     {
-        $element = Craft::$app->getElements()->getElementById($this->id);
+        $element = Craft::$app->getElements()->getElementById($this->id, null, '*');
 
         if (!$element) {
             return;
