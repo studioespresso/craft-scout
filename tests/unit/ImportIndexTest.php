@@ -80,7 +80,7 @@ class ImportIndexTest extends Unit
             'indexName' => 'Blog',
         ]);
 
-        $job->execute(new Queue());
+        $job->execute(Craft::$app->getQueue());
 
         $this->assertEquals(1, Craft::$app->getCache()->get('scout-Blog-updateCalled'));
     }
