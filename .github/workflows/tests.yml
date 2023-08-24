@@ -20,14 +20,17 @@ jobs:
           DB_PASSWORD: root
           DB_PORT: 3306
           DB_DRIVER: mysql
+          APP_ENV: testing
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
 
             - name: Set up MySQL
+              # PHP 7.3 doesn't support the caching_sha2_password method, which is default in the default MySQL that comes with Ubuntu since 20.04, and this step uses the Ubuntu default MySQL server (and not a defined Docker service). So manually change the auth method to allow running tests on PHP 7.3 as well.
               run: |
                 sudo /etc/init.d/mysql start
                 mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+                mysql -e 'ALTER USER '\'${{ env.DB_USER }}\''@'\'localhost\'' IDENTIFIED WITH mysql_native_password BY '\'${{ env.DB_PASSWORD }}\'';' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
             - name: Setup cache environment
               id: cache-env
@@ -45,9 +48,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+                  composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
             - name: Run tests
               run: ./vendor/bin/codecept run unit
-              env:
-                  APP_ENV: testing
