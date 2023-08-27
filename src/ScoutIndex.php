@@ -8,8 +8,12 @@ use craft\elements\db\ElementQuery;
 use craft\elements\Entry;
 use Exception;
 use League\Fractal\TransformerAbstract;
+use yii\base\BaseObject;
 
-class ScoutIndex
+/**
+ * @property-read ElementQuery $criteria
+ */
+class ScoutIndex extends BaseObject
 {
     /** @var string */
     public $indexName;
@@ -20,19 +24,21 @@ class ScoutIndex
     /** @var string */
     public $elementType = Entry::class;
 
-    /** @var ElementQuery */
-    public $criteria;
-
     /** @var callable|string|array|\League\Fractal\TransformerAbstract */
     public $transformer;
 
     /** @var array */
     public $splitElementsOn = [];
 
-    public function __construct(string $indexName)
+    /** @var callable|ElementQuery */
+    private $_criteria;
+
+    public function __construct(string $indexName, $config = [])
     {
+        parent::__construct($config);
+
         $this->indexName = $indexName;
-        $this->criteria = $this->elementType::find();
+        $this->_criteria = $this->elementType::find();
     }
 
     public static function create(string $indexName): self
@@ -53,19 +59,38 @@ class ScoutIndex
 
     public function criteria(callable $criteria): self
     {
-        $elementQuery = $criteria($this->elementType::find());
-
-        if (!$elementQuery instanceof ElementQuery) {
-            throw new Exception('You must return a valid ElementQuery from the criteria function.');
-        }
-
-        if (is_null($elementQuery->siteId)) {
-            $elementQuery->siteId = Craft::$app->getSites()->getPrimarySite()->id;
-        }
-
-        $this->criteria = $elementQuery;
+        $this->_criteria = $criteria;
 
         return $this;
+    }
+
+    /**
+     * Leverage magic method calling to get the $criteria property, allowing
+     * lazy calling the Criteria callable.
+     *
+     * @return \craft\elements\db\ElementQuery
+     * @throws \craft\errors\SiteNotFoundException
+     */
+    public function getCriteria(): ElementQuery
+    {
+        if (is_callable($this->_criteria)) {
+            $elementQuery = call_user_func(
+                $this->_criteria,
+                $this->elementType::find()
+            );
+
+            if (!$elementQuery instanceof ElementQuery) {
+                throw new Exception('You must return a valid ElementQuery from the criteria function.');
+            }
+
+            if (is_null($elementQuery->siteId)) {
+                $elementQuery->siteId = Craft::$app->getSites()->getPrimarySite()->id;
+            }
+
+            $this->_criteria = $elementQuery;
+        }
+
+        return $this->_criteria;
     }
 
     /*
