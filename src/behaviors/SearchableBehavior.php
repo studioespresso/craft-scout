@@ -125,7 +125,9 @@ class SearchableBehavior extends Behavior
 
         $this->getRelatedElements()->each(function (Element $relatedElement) {
             /* @var SearchableBehavior $relatedElement */
-            $relatedElement->searchable(false);
+            if($relatedElement->hasMethod('searchable')) {
+                $relatedElement->searchable(false);
+            }
         });
     }
 

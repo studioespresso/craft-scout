@@ -21,7 +21,9 @@ class IndexElement extends BaseJob
             return;
         }
 
-        $element->searchable();
+        if ($element->hasMethod('searchable')) {
+            $element->searchable();
+        }
 
         // Only process the related elements if Scout is directed to
         if (!Scout::$plugin->getSettings()->indexRelations) {
@@ -30,7 +32,9 @@ class IndexElement extends BaseJob
 
         $element->getRelatedElements()->each(function (Element $relatedElement) {
             /* @var SearchableBehavior $relatedElement */
-            $relatedElement->searchable(false);
+            if ($relatedElement->hasMethod('searchable')) {
+                $relatedElement->searchable(false);
+            }
         });
     }
 
