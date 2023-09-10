@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.1.3 - 2023-09-10
+### Fixed
+- Indexing jobs now run for every site ([#266](https://github.com/studioespresso/craft-scout/issues/266)) 
+- Use priority & ttr settings for all queue jobs ([#271](https://github.com/studioespresso/craft-scout/issues/271))
+- Updated license to be MIT everywhere ([#272](https://github.com/studioespresso/craft-scout/issues/272))
+- Fixed tests ([#263](https://github.com/studioespresso/craft-scout/issues/263))
 
 ## 3.1.2 - 2023-06-09
 ### Fixed
