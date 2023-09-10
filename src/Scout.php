@@ -163,7 +163,11 @@ class Scout extends Plugin
                     }
 
                     if (Scout::$plugin->getSettings()->queue) {
-                        Craft::$app->getQueue()->push(
+                        Craft::$app->getQueue()
+                            ->ttr(Scout::$plugin->getSettings()->ttr)
+                            ->priority(Scout::$plugin->getSettings()->priority)
+                            ->push(
+
                             new IndexElement(['id' => $element->id])
                         );
                     } else {
@@ -192,7 +196,10 @@ class Scout extends Plugin
 
                 // Only run this through the queue if the user has that enabled
                 if (Scout::$plugin->getSettings()->queue) {
-                    Craft::$app->getQueue()->push(
+                    Craft::$app->getQueue()
+                        ->ttr(Scout::$plugin->getSettings()->ttr)
+                        ->priority(Scout::$plugin->getSettings()->priority)
+                        ->push(
                         new DeindexElement(['id' => $element->id])
                     );
                 }

@@ -24,7 +24,7 @@ jobs:
           APP_ENV: testing
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
 
             - name: Set up MySQL
               run: |
@@ -47,7 +47,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+                  composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
             - name: Run eventHandlersTest
               run: ./vendor/bin/codecept run unit EventHandlersTest
