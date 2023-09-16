@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.2.0 - 2023-09-16
+### Added
+- This release adds lazy loading of the index's criteria function, to try and migigate "behaviour not found" errors ([#268](https://github.com/studioespresso/craft-scout/pull/268))
+
 ## 3.1.3 - 2023-09-10
 ### Fixed
 - Indexing jobs now run for every site ([#266](https://github.com/studioespresso/craft-scout/issues/266)) 
