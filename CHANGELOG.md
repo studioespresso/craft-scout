@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.8.0 - 2023-09-16
+- This release includes a bunch of performance improvements from PR's by @EpocSquadron ([#171](https://github.com/studioespresso/craft-scout/pull/171)) and @aaronbushnell ([#248](https://github.com/studioespresso/craft-scout/pull/248))
+- - Better checks to prevent crashes when "searchable" isn't defined ([#262](https://github.com/studioespresso/craft-scout/pull/262))
+- "lazy load" the index criteria  ([#269](https://github.com/studioespresso/craft-scout/pull/269))
+
 ## 2.8.0-beta.3 - 2023-08-27
 ## Added
 - Better checks to prevent crashes when "searchable" isn't defined ([#262](https://github.com/studioespresso/craft-scout/pull/262))
