@@ -84,7 +84,7 @@ class ScoutIndex extends BaseObject
             }
 
             if (is_null($elementQuery->siteId)) {
-                $elementQuery->siteId = Craft::$app->getSites()->getPrimarySite()->id;
+                $elementQuery->siteId = "*";
             }
 
             $this->_criteria = $elementQuery;
