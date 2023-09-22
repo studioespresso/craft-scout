@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.2.1 - 2023-09-22
+### Fixed
+- This fixes an issue where we default to the primary site when no site id is supplied through index settings.
+
+
 ## 3.2.0 - 2023-09-16
 ### Added
 - This release adds lazy loading of the index's criteria function, to try and migigate "behaviour not found" errors ([#268](https://github.com/studioespresso/craft-scout/pull/268))
