@@ -51,8 +51,8 @@ class SearchableBehavior extends Behavior
         return Scout::$plugin
             ->getSettings()
             ->getIndices()
-            ->filter(function (ScoutIndex $scoutIndex) {
-                $siteIds = array_map(function ($siteId) {
+            ->filter(function(ScoutIndex $scoutIndex) {
+                $siteIds = array_map(function($siteId) {
                     return (int) $siteId;
                 }, Arr::wrap($scoutIndex->criteria->siteId));
 
@@ -64,7 +64,7 @@ class SearchableBehavior extends Behavior
 
     public function searchableUsing(): Collection
     {
-        return $this->getIndices()->map(function (ScoutIndex $scoutIndex) {
+        return $this->getIndices()->map(function(ScoutIndex $scoutIndex) {
             return Scout::$plugin->getSettings()->getEngine($scoutIndex);
         });
     }
@@ -75,7 +75,7 @@ class SearchableBehavior extends Behavior
             return;
         }
 
-        $this->searchableUsing()->each(function (Engine $engine) use ($propagate) {
+        $this->searchableUsing()->each(function(Engine $engine) use ($propagate) {
             if (!$this->validatesCriteria($engine->scoutIndex)) {
                 return $engine->delete($this->owner);
             }
@@ -86,8 +86,8 @@ class SearchableBehavior extends Behavior
                     ->priority(Scout::$plugin->getSettings()->priority)
                     ->push(
                         new MakeSearchable([
-                            'id'        => $this->owner->id,
-                            'siteId'    => $this->owner->siteId,
+                            'id' => $this->owner->id,
+                            'siteId' => $this->owner->siteId,
                             'indexName' => $engine->scoutIndex->indexName,
                             'propagate' => $propagate,
                         ])
@@ -123,7 +123,7 @@ class SearchableBehavior extends Behavior
             return;
         }
 
-        $this->getRelatedElements()->each(function (Element $relatedElement) {
+        $this->getRelatedElements()->each(function(Element $relatedElement) {
             /* @var SearchableBehavior $relatedElement */
             $relatedElement->searchable(false);
         });
@@ -183,7 +183,7 @@ class SearchableBehavior extends Behavior
 
         if (Event::hasHandlers(SearchableBehavior::class, self::EVENT_SHOULD_BE_SEARCHABLE)) {
             $event = new ShouldBeSearchableEvent([
-                'element'            => $this->owner,
+                'element' => $this->owner,
                 'shouldBeSearchable' => true,
             ]);
             Event::trigger(SearchableBehavior::class, self::EVENT_SHOULD_BE_SEARCHABLE, $event);

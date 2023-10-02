@@ -57,7 +57,7 @@ abstract class Engine
         }
 
         return [
-            'save'   => $objectsToSave,
+            'save' => $objectsToSave,
             'delete' => $objectsToDelete,
         ];
     }
@@ -83,7 +83,7 @@ abstract class Engine
             $objects = $temp;
         }
 
-        return array_map(function ($object) use ($data) {
+        return array_map(function($object) use ($data) {
             return array_merge($data, $object);
         }, $objects);
     }

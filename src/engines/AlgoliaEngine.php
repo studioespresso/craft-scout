@@ -34,7 +34,7 @@ class AlgoliaEngine extends Engine
     {
         $elements = new Collection(Arr::wrap($elements));
 
-        $elements = $elements->filter(function (Element $element) {
+        $elements = $elements->filter(function(Element $element) {
             return get_class($element) === $this->scoutIndex->elementType;
         });
 
@@ -55,7 +55,7 @@ class AlgoliaEngine extends Engine
 
         $index = $this->algolia->initIndex($this->scoutIndex->indexName);
 
-        $objectIds = $elements->map(function ($object) {
+        $objectIds = $elements->map(function($object) {
             if ($object instanceof Element) {
                 return $object->id;
             }
@@ -72,7 +72,7 @@ class AlgoliaEngine extends Engine
         }
 
         return $index->deleteBy([
-            'filters' => 'distinctID:'.implode(' OR distinctID:', $objectIds),
+            'filters' => 'distinctID:' . implode(' OR distinctID:', $objectIds),
         ]);
     }
 
@@ -109,7 +109,7 @@ class AlgoliaEngine extends Engine
 
     private function transformElements(Collection $elements): array
     {
-        $objects = $elements->map(function (Element $element) {
+        $objects = $elements->map(function(Element $element) {
             /** @var \rias\scout\behaviors\SearchableBehavior $element */
             if (empty($searchableData = $element->toSearchableArray($this->scoutIndex))) {
                 return;

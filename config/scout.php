@@ -59,7 +59,7 @@ return [
      * The Algolia Admin API key, this key can be found in your Algolia Account
      * https://www.algolia.com/api-keys. This key is used to update records.
      */
-    'admin_api_key'  => '$ALGOLIA_ADMIN_API_KEY',
+    'admin_api_key' => '$ALGOLIA_ADMIN_API_KEY',
 
     /*
      * The Algolia search API key, this key can be found in your Algolia Account
@@ -73,7 +73,7 @@ return [
      * by using the \rias\scout\ScoutIndex::create('IndexName') command. Each
      * index should define an ElementType, criteria and a transformer.
      */
-    'indices'       => [],
+    'indices' => [],
 
     /**
      * Elements can create multiple records by using `splitElementsOn()`,

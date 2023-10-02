@@ -37,16 +37,16 @@ class EventHandlersTest extends Unit
         parent::_before();
 
         $section = new Section([
-            'name'         => 'News',
-            'handle'       => 'news',
-            'type'         => Section::TYPE_CHANNEL,
+            'name' => 'News',
+            'handle' => 'news',
+            'type' => Section::TYPE_CHANNEL,
             'siteSettings' => [
                 new Section_SiteSettings([
-                    'siteId'           => Craft::$app->getSites()->getPrimarySite()->id,
+                    'siteId' => Craft::$app->getSites()->getPrimarySite()->id,
                     'enabledByDefault' => true,
-                    'hasUrls'          => true,
-                    'uriFormat'        => 'foo/{slug}',
-                    'template'         => 'foo/_entry',
+                    'hasUrls' => true,
+                    'uriFormat' => 'foo/{slug}',
+                    'template' => 'foo/_entry',
                 ]),
             ],
         ]);
@@ -57,10 +57,10 @@ class EventHandlersTest extends Unit
 
         $scoutIndex = new ScoutIndex('Blog');
         $scoutIndex->elementType(Entry::class);
-        $scoutIndex->criteria(function ($query) {
+        $scoutIndex->criteria(function($query) {
             return $query;
         });
-        $scoutIndex->transformer = function ($entry) {
+        $scoutIndex->transformer = function($entry) {
             return [
                 'title' => $entry->title,
             ];
@@ -68,8 +68,8 @@ class EventHandlersTest extends Unit
         $scout = Scout::getInstance();
         $scout->setSettings([
             'indices' => [$scoutIndex],
-            'engine'  => FakeEngine::class,
-            'queue'   => false,
+            'engine' => FakeEngine::class,
+            'queue' => false,
         ]);
 
         $this->scout = $scout;
@@ -125,7 +125,7 @@ class EventHandlersTest extends Unit
     public function it_also_updates_related_elements()
     {
         $relationField = new Entries([
-            'name'   => 'Entry field',
+            'name' => 'Entry field',
             'handle' => 'entryField',
             'groupId' => Craft::$app->getFields()->getAllGroups()[0]->id,
         ]);
@@ -151,7 +151,7 @@ class EventHandlersTest extends Unit
         $this->scout->setSettings(['indexRelations' => false]);
 
         $relationField = new Entries([
-            'name'   => 'Entry field',
+            'name' => 'Entry field',
             'handle' => 'entryField',
             'groupId' => Craft::$app->getFields()->getAllGroups()[0]->id,
         ]);
@@ -231,7 +231,7 @@ class EventHandlersTest extends Unit
     public function it_also_updates_related_elements_before_delete()
     {
         $relationField = new Entries([
-            'name'   => 'Entry field',
+            'name' => 'Entry field',
             'handle' => 'entryField',
             'groupId' => Craft::$app->getFields()->getAllGroups()[0]->id,
         ]);

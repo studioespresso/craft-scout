@@ -12,10 +12,10 @@ class FractalArraySerializerTest extends Unit
 {
     protected $entries = [[
         'title' => 'The Great Scout',
-        'id'    => 123,
+        'id' => 123,
     ], [
         'title' => 'The Great Scout Vol 2',
-        'id'    => 124,
+        'id' => 124,
     ]];
 
     /** @test **/

@@ -22,7 +22,7 @@ class IndexController extends Controller
 
         Craft::$app->getSession()->setNotice("Flushed index {$engine->scoutIndex->indexName}");
 
-        return $this->redirect(UrlHelper::url('utilities/'.ScoutUtility::id()));
+        return $this->redirect(UrlHelper::url('utilities/' . ScoutUtility::id()));
     }
 
     public function actionImport()
@@ -41,7 +41,7 @@ class IndexController extends Controller
 
             Craft::$app->getSession()->setNotice("Queued job to update element(s) in {$engine->scoutIndex->indexName}");
 
-            return $this->redirect(UrlHelper::url('utilities/'.ScoutUtility::id()));
+            return $this->redirect(UrlHelper::url('utilities/' . ScoutUtility::id()));
         }
 
         $elementsCount = $engine->scoutIndex->criteria->count();
@@ -55,7 +55,7 @@ class IndexController extends Controller
 
         Craft::$app->getSession()->setNotice("Updated {$elementsCount} element(s) in {$engine->scoutIndex->indexName}");
 
-        return $this->redirect(UrlHelper::url('utilities/'.ScoutUtility::id()));
+        return $this->redirect(UrlHelper::url('utilities/' . ScoutUtility::id()));
     }
 
     public function actionRefresh()
@@ -65,7 +65,7 @@ class IndexController extends Controller
         $this->actionFlush();
         $this->actionImport();
 
-        return $this->redirect(UrlHelper::url('utilities/'.ScoutUtility::id()));
+        return $this->redirect(UrlHelper::url('utilities/' . ScoutUtility::id()));
     }
 
     public function actionUpdateSettings()
@@ -77,7 +77,7 @@ class IndexController extends Controller
 
         Craft::$app->getSession()->setNotice("Updated settings for index {$engine->scoutIndex->indexName}");
 
-        return $this->redirect(UrlHelper::url('utilities/'.ScoutUtility::id()));
+        return $this->redirect(UrlHelper::url('utilities/' . ScoutUtility::id()));
     }
 
     public function actionDumpSettings()
@@ -98,7 +98,7 @@ class IndexController extends Controller
         $engines = Scout::$plugin->getSettings()->getEngines();
 
         /* @var \rias\scout\engines\Engine $engine */
-        return $engines->first(function (Engine $engine) use ($index) {
+        return $engines->first(function(Engine $engine) use ($index) {
             return $engine->scoutIndex->indexName === $index;
         });
     }

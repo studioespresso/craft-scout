@@ -25,7 +25,7 @@ class DeindexElement extends BaseJob
 
         $element->unsearchable();
 
-        $relatedElements->each(function (Element $relatedElement) {
+        $relatedElements->each(function(Element $relatedElement) {
             /* @var SearchableBehavior $relatedElement */
             $relatedElement->searchable(false);
         });

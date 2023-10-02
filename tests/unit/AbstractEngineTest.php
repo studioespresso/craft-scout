@@ -15,7 +15,7 @@ class AbstractEngineTest extends Unit
 
         $scout = new Scout('scout');
         $scout->setSettings([
-            'engine'  => FakeEngine::class,
+            'engine' => FakeEngine::class,
             'indices' => [
                 ScoutIndex::create('blog')
                     ->splitElementsOn([
@@ -36,8 +36,8 @@ class AbstractEngineTest extends Unit
         $objects = [
             [
                 'objectID' => 1,
-                'title'    => 'One',
-                'body'     => [
+                'title' => 'One',
+                'body' => [
                     'Paragraph 1',
                     'Paragraph 2',
                     'Paragraph 3',
@@ -54,8 +54,8 @@ class AbstractEngineTest extends Unit
             'delete' => [
                 [
                     'objectID' => 1,
-                    'title'    => 'One',
-                    'body'     => [
+                    'title' => 'One',
+                    'body' => [
                         'Paragraph 1',
                         'Paragraph 2',
                         'Paragraph 3',
@@ -74,8 +74,8 @@ class AbstractEngineTest extends Unit
         $objects = [
             [
                 'objectID' => 1,
-                'title'    => 'One',
-                'body'     => 'Paragraph 1',
+                'title' => 'One',
+                'body' => 'Paragraph 1',
             ],
         ];
 
@@ -96,8 +96,8 @@ class AbstractEngineTest extends Unit
         $objects = [
             [
                 'objectID' => 1,
-                'title'    => 'One',
-                'body'     => [
+                'title' => 'One',
+                'body' => [
                     'Paragraph 1',
                     'Paragraph 2',
                     'Paragraph 3',
@@ -125,8 +125,8 @@ class AbstractEngineTest extends Unit
             'delete' => [
                 [
                     'objectID' => 1,
-                    'title'    => 'One',
-                    'body'     => [
+                    'title' => 'One',
+                    'body' => [
                         'Paragraph 1',
                         'Paragraph 2',
                         'Paragraph 3',
