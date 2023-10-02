@@ -148,6 +148,8 @@ class SearchableBehavior extends Behavior
         // @codeCoverageIgnoreStart
         if (class_exists(Product::class)) {
             $products = Product::find()->relatedTo($this->owner)->site('*')->all();
+        }
+        if (class_exists(Variant::class)) {
             $variants = Variant::find()->relatedTo($this->owner)->site('*')->all();
         }
         // @codeCoverageIgnoreEnd
