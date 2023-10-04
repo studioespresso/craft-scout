@@ -30,6 +30,9 @@ class ScoutIndex extends BaseObject
     /** @var array */
     public $splitElementsOn = [];
 
+    /** @var bool */
+    public $replicaIndex = false;
+
     /** @var callable|ElementQuery */
     private $_criteria;
 
@@ -131,6 +134,17 @@ class ScoutIndex extends BaseObject
     public function indexSettings(IndexSettings $indexSettings): self
     {
         $this->indexSettings = $indexSettings;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $replicaIndex Whether to mark this index as a replica index and skip syncing.
+     * @return $this
+     */
+    public function replicaIndex(bool $replicaIndex): self
+    {
+        $this->replicaIndex = $replicaIndex;
 
         return $this;
     }
