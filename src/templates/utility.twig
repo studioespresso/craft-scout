@@ -2,10 +2,10 @@
     {% for index in stats %}
         <h2 style="width: 100%;">
             {{ index.name }}
-            {% if index.site == "all" %}
+            {% if index.sites == "all" %}
                 <span class="light">&ndash; {{ "All sites"|t('scout') }}</span>&nbsp;
             {% else %}
-                <span class="light">&ndash; {{ index.site.name }}</span>&nbsp;
+                <span class="light">&ndash; {% for site in index.sites  %}{{ site.name }}{% if not loop.last %}, {% endif %}{% endfor %}</span>&nbsp;
             {% endif %}
             <span class="light">&ndash; </span><small class="light">{{ index.elementType }}</small>
         </h2>
