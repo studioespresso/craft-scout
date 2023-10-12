@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## 3.3.0 - 2023-10-12
 ### Added
-
+- Added support for creating and configuring replica indexes ([#275](https://github.com/studioespresso/craft-scout/pull/275), thanks [@johnnynotsolucky](https://github.com/johnnynotsolucky)!)
 ### Fixed
 - Fixed an error on the utility page when an index included multiple sites ([#276](https://github.com/studioespresso/craft-scout/issues/276))
 
