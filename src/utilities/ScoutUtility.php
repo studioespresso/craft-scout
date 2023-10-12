@@ -31,22 +31,20 @@ class ScoutUtility extends Utility
         $engines = Scout::$plugin->getSettings()->getEngines();
 
         $stats = $engines->map(function (Engine $engine) {
-            $sites = 'all';
-            if ($engine->scoutIndex->criteria->siteId != '*') {
-                $sites = [];
-                foreach ($engine->scoutIndex->criteria->siteId as $id) {
-                    $sites[] = Craft::$app->getSites()->getSiteById($id);
-                }
-            }
-
-            return [
-                'name' => $engine->scoutIndex->indexName,
-                'elementType' => $engine->scoutIndex->elementType,
-                'sites' => $sites,
-                'indexed' => $engine->getTotalRecords(),
-                'elements' => $engine->scoutIndex->criteria->count(),
-                'hasSettings' => $engine->scoutIndex->indexSettings ?? null,
+            $stats = [
+                'name'         => $engine->scoutIndex->indexName,
+                'replicaIndex' => $engine->scoutIndex->replicaIndex,
+                'hasSettings'  => $engine->scoutIndex->indexSettings ?? null,
             ];
+            if (!$engine->scoutIndex->replicaIndex) {
+                $stats = array_merge($stats, [
+                    'elementType'  => $engine->scoutIndex->elementType,
+                    'site'         => $engine->scoutIndex->criteria->siteId === '*' ? 'all' : Craft::$app->getSites()->getSiteById($engine->scoutIndex->criteria->siteId),
+                    'indexed'      => $engine->getTotalRecords(),
+                    'elements'     => $engine->scoutIndex->criteria->count(),
+                ]);
+            }
+            return $stats;
         });
 
         return $view->renderTemplate('scout/utility', [

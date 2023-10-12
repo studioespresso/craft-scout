@@ -32,6 +32,10 @@ class AlgoliaEngine extends Engine
      */
     public function update($elements)
     {
+        if ($this->scoutIndex->replicaIndex) {
+            return;
+        }
+
         $elements = new Collection(Arr::wrap($elements));
 
         $elements = $elements->filter(function(Element $element) {
@@ -51,6 +55,10 @@ class AlgoliaEngine extends Engine
 
     public function delete($elements)
     {
+        if ($this->scoutIndex->replicaIndex) {
+            return;
+        }
+
         $elements = new Collection(Arr::wrap($elements));
 
         $index = $this->algolia->initIndex($this->scoutIndex->indexName);
@@ -78,6 +86,10 @@ class AlgoliaEngine extends Engine
 
     public function flush()
     {
+        if ($this->scoutIndex->replicaIndex) {
+            return;
+        }
+
         $index = $this->algolia->initIndex($this->scoutIndex->indexName);
         $index->clearObjects();
     }
