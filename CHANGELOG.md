@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.3.0 - 2023-10-12
+### Added
+
+### Fixed
+- Fixed an error on the utility page when an index included multiple sites ([#276](https://github.com/studioespresso/craft-scout/issues/276))
+
 ## 3.2.1 - 2023-09-22
 ### Fixed
 - This fixes an issue where we default to the primary site when no site id is supplied through index settings.
