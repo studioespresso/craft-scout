@@ -11,11 +11,14 @@ use rias\scout\Scout;
 class IndexElement extends BaseJob
 {
     /** @var int */
-    public $id;
+    public int $id;
+
+    /** @var int */
+    public int $siteId;
 
     public function execute($queue): void
     {
-        $element = Craft::$app->getElements()->getElementById($this->id, null, '*');
+        $element = Craft::$app->getElements()->getElementById($this->id, null, $this->siteId);
 
         if (!$element) {
             return;
