@@ -14,7 +14,7 @@ class ImportIndex extends BaseJob
     public function execute($queue): void
     {
         /** @var Engine $engine */
-        $engine = Scout::$plugin->getSettings()->getEngines()->first(function (Engine $engine) {
+        $engine = Scout::$plugin->getSettings()->getEngines()->first(function(Engine $engine) {
             return $engine->scoutIndex->indexName === $this->indexName;
         });
 

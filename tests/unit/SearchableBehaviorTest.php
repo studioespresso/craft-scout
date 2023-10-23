@@ -43,16 +43,16 @@ class SearchableBehaviorTest extends Unit
         }
 
         $section = new Section([
-            'name'         => 'News',
-            'handle'       => 'news',
-            'type'         => Section::TYPE_CHANNEL,
+            'name' => 'News',
+            'handle' => 'news',
+            'type' => Section::TYPE_CHANNEL,
             'siteSettings' => [
                 new Section_SiteSettings([
-                    'siteId'           => Craft::$app->getSites()->getPrimarySite()->id,
+                    'siteId' => Craft::$app->getSites()->getPrimarySite()->id,
                     'enabledByDefault' => true,
-                    'hasUrls'          => true,
-                    'uriFormat'        => 'foo/{slug}',
-                    'template'         => 'foo/_entry',
+                    'hasUrls' => true,
+                    'uriFormat' => 'foo/{slug}',
+                    'template' => 'foo/_entry',
                 ]),
             ],
         ]);
@@ -63,33 +63,33 @@ class SearchableBehaviorTest extends Unit
 
         $scout = new Scout('scout');
         $scout->setSettings([
-            'engine'  => FakeEngine::class,
-            'sync'    => true,
-            'queue'   => false,
+            'engine' => FakeEngine::class,
+            'sync' => true,
+            'queue' => false,
             'indices' => [
                 ScoutIndex::create('Blog')
                     ->elementType(Entry::class)
-                    ->criteria(function (EntryQuery $query) {
+                    ->criteria(function(EntryQuery $query) {
                         return $query->sectionId($this->section->id);
                     }),
                 ScoutIndex::create('no-blog')
                     ->elementType(Entry::class)
-                    ->criteria(function (EntryQuery $query) {
+                    ->criteria(function(EntryQuery $query) {
                         return $query->sectionId(100);
                     }),
                 ScoutIndex::create('all-sites')
                     ->elementType(Entry::class)
-                    ->criteria(function (EntryQuery $query) {
+                    ->criteria(function(EntryQuery $query) {
                         return $query->site('*');
                     }),
                 ScoutIndex::create('many-sites')
                     ->elementType(Entry::class)
-                    ->criteria(function (EntryQuery $query) {
+                    ->criteria(function(EntryQuery $query) {
                         return $query->siteId([1, 2, 3]);
                     }),
                 ScoutIndex::create('categories')
                     ->elementType(Category::class)
-                    ->criteria(function (CategoryQuery $query) {
+                    ->criteria(function(CategoryQuery $query) {
                         return $query->siteId(2);
                     }),
             ],
@@ -127,7 +127,7 @@ class SearchableBehaviorTest extends Unit
     public function it_can_get_related_elements()
     {
         $relationField = new Entries([
-            'name'   => 'Entry field',
+            'name' => 'Entry field',
             'handle' => 'entryField',
             'groupId' => Craft::$app->getFields()->getAllGroups()[0]->id,
         ]);
@@ -153,7 +153,7 @@ class SearchableBehaviorTest extends Unit
     {
         $indices = $this->element->getIndices();
 
-        $indices = $indices->filter(function (ScoutIndex $scoutIndex) {
+        $indices = $indices->filter(function(ScoutIndex $scoutIndex) {
             return $this->element->validatesCriteria($scoutIndex);
         });
 
@@ -236,9 +236,9 @@ class SearchableBehaviorTest extends Unit
     /** @test * */
     public function it_is_searchable_when_using_multiple_sites()
     {
-        $indexNames = $this->element->getIndices()->filter(function (ScoutIndex $scoutIndex) {
+        $indexNames = $this->element->getIndices()->filter(function(ScoutIndex $scoutIndex) {
             return $this->element->validatesCriteria($scoutIndex);
-        })->map(function (ScoutIndex $scoutIndex) {
+        })->map(function(ScoutIndex $scoutIndex) {
             return $scoutIndex->indexName;
         });
 

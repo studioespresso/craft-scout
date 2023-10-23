@@ -24,10 +24,10 @@ class ScoutUtilityTest extends Unit
         $scout = new Scout('scout');
         $scout->edition = Scout::EDITION_PRO;
         $scout->setSettings([
-            'engine'  => FakeEngine::class,
+            'engine' => FakeEngine::class,
             'indices' => [
                 ScoutIndex::create('Blog')
-                    ->criteria(function ($query) {
+                    ->criteria(function($query) {
                         return $query;
                     }),
             ],

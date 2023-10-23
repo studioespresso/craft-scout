@@ -22,11 +22,11 @@ class MakeSearchableTest extends Unit
 
         $scout = new Scout('scout');
         $scout->setSettings([
-            'queue'   => false,
-            'engine'  => FakeEngine::class,
+            'queue' => false,
+            'engine' => FakeEngine::class,
             'indices' => [
                 ScoutIndex::create('Blog')
-                    ->criteria(function ($query) {
+                    ->criteria(function($query) {
                         return $query;
                     }),
             ],
@@ -38,9 +38,9 @@ class MakeSearchableTest extends Unit
     public function it_doesnt_crash_when_it_cant_find_the_element_anymore()
     {
         $job = new MakeSearchable([
-            'id'        => 100,
+            'id' => 100,
             'indexName' => 'Blog',
-            'siteId'    => 1,
+            'siteId' => 1,
         ]);
 
         $job->execute(new Queue());

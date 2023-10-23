@@ -32,30 +32,30 @@ class ConsoleIndexTest extends ConsoleTest
 
         $scout = Craft::$app->getPlugins()->getPlugin('scout');
         $scout->setSettings([
-            'engine'  => FakeEngine::class,
+            'engine' => FakeEngine::class,
             'indices' => [
-                ScoutIndex::create('blog_nl')->criteria(function (EntryQuery $query) {
+                ScoutIndex::create('blog_nl')->criteria(function(EntryQuery $query) {
                     return $query->anyStatus()->site('*')->title('NL');
-                })->transformer(function (Entry $entry) {
+                })->transformer(function(Entry $entry) {
                     return ['title' => $entry->title];
                 }),
-                ScoutIndex::create('blog_fr')->criteria(function (EntryQuery $query) {
+                ScoutIndex::create('blog_fr')->criteria(function(EntryQuery $query) {
                     return $query->anyStatus()->site('*')->title('FR');
-                })->transformer(function (Entry $entry) {
+                })->transformer(function(Entry $entry) {
                     return ['title' => $entry->title];
                 }),
             ],
         ]);
 
         $section = new Section([
-            'name'         => 'News',
-            'handle'       => 'news',
-            'type'         => Section::TYPE_CHANNEL,
+            'name' => 'News',
+            'handle' => 'news',
+            'type' => Section::TYPE_CHANNEL,
             'siteSettings' => [
                 new Section_SiteSettings([
-                    'siteId'           => Craft::$app->getSites()->getPrimarySite()->id,
+                    'siteId' => Craft::$app->getSites()->getPrimarySite()->id,
                     'enabledByDefault' => true,
-                    'hasUrls'          => false,
+                    'hasUrls' => false,
                 ]),
             ],
         ]);

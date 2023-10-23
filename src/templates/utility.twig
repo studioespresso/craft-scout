@@ -2,54 +2,62 @@
     {% for index in stats %}
         <h2 style="width: 100%;">
             {{ index.name }}
-            {% if index.site == "all" %}
-                <span class="light">&ndash; {{ "All sites"|t('scout') }}</span>&nbsp;
+            {% if index.replicaIndex == false %}
+                {% if index.sites == "all" %}
+                    <span class="light">&ndash; {{ "All sites"|t('scout') }}</span>&nbsp;
+                {% else %}
+                    <span class="light">&ndash; {% for site in index.sites  %}{{ site.name }}{% if not loop.last %}, {% endif %}{% endfor %}</span>
+                {% endif %}
+                <span class="light">&ndash; </span><small class="light">{{ index.elementType }}</small>
             {% else %}
-                <span class="light">&ndash; {{ index.site.name }}</span>&nbsp;
+                <span class="light">&ndash; {{ "Replica index"|t('scout') }}</span>&nbsp;
             {% endif %}
-            <span class="light">&ndash; </span><small class="light">{{ index.elementType }}</small>
         </h2>
         <table class="data fullwidth fixed-layout">
             <tbody>
-            <tr>
-                <th class="light">{{ "Elements in Craft"|t("scout") }}</th>
-                <td>{{ index.elements }}</td>
-            </tr>
-            <tr>
-                <th class="light">{{ "Records in Index"|t("scout") }}</th>
-                <td>{{ index.indexed }}</td>
-            </tr>
+            {% if index.replicaIndex == false %}
+                <tr>
+                    <th class="light">{{ "Elements in Craft"|t("scout") }}</th>
+                    <td>{{ index.elements }}</td>
+                </tr>
+                <tr>
+                    <th class="light">{{ "Records in Index"|t("scout") }}</th>
+                    <td>{{ index.indexed }}</td>
+                </tr>
+            {% endif %}
             <tr>
                 <th class="light">
                     {{ "Actions"|t("scout") }}<br>
                     <small style="font-weight: normal;">{{ "These can take a while to process."|t("scout") }}</small>
                 </th>
                 <td>
-                    <div style="display: flex; justify-content: left; flex-wrap: wrap;">
-                        {% include 'scout/_partials/action' with {
-                            action: {
-                                name: 'Refresh' | t('scout'),
-                                slug: 'refresh',
-                                index: index.name
-                            }
-                        } %}
-                        &nbsp;
-                        {% include 'scout/_partials/action' with {
-                            action: {
-                                name: 'Import' | t('scout'),
-                                slug: 'import',
-                                index: index.name
-                            }
-                        } %}
-                        &nbsp;
-                        {% include 'scout/_partials/action' with {
-                            action: {
-                                name: 'Flush' | t('scout'),
-                                slug: 'flush',
-                                index: index.name
-                            }
-                        } %}
-                    </div>
+                    {% if index.replicaIndex == false %}
+                        <div style="display: flex; justify-content: left; flex-wrap: wrap;">
+                            {% include 'scout/_partials/action' with {
+                                action: {
+                                    name: 'Refresh' | t('scout'),
+                                    slug: 'refresh',
+                                    index: index.name
+                                }
+                            } %}
+                            &nbsp;
+                            {% include 'scout/_partials/action' with {
+                                action: {
+                                    name: 'Import' | t('scout'),
+                                    slug: 'import',
+                                    index: index.name
+                                }
+                            } %}
+                            &nbsp;
+                            {% include 'scout/_partials/action' with {
+                                action: {
+                                    name: 'Flush' | t('scout'),
+                                    slug: 'flush',
+                                    index: index.name
+                                }
+                            } %}
+                        </div>
+                    {% endif %}
                     <div style="display: flex; justify-content: left; flex-wrap: wrap;">
                         {% if index.hasSettings %}
                             {% include 'scout/_partials/action' with {

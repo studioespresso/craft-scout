@@ -11,11 +11,14 @@ use rias\scout\Scout;
 class IndexElement extends BaseJob
 {
     /** @var int */
-    public $id;
+    public int $id;
+
+    /** @var int */
+    public int $siteId;
 
     public function execute($queue): void
     {
-        $element = Craft::$app->getElements()->getElementById($this->id, null, '*');
+        $element = Craft::$app->getElements()->getElementById($this->id, null, $this->siteId);
 
         if (!$element) {
             return;
@@ -28,7 +31,7 @@ class IndexElement extends BaseJob
             return;
         }
 
-        $element->getRelatedElements()->each(function (Element $relatedElement) {
+        $element->getRelatedElements()->each(function(Element $relatedElement) {
             /* @var SearchableBehavior $relatedElement */
             $relatedElement->searchable(false);
         });

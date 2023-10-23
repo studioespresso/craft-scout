@@ -16,9 +16,9 @@ class SettingsController extends BaseController
     public function actionUpdate($index = '')
     {
         $engines = Scout::$plugin->getSettings()->getEngines();
-        $engines->filter(function (Engine $engine) use ($index) {
+        $engines->filter(function(Engine $engine) use ($index) {
             return $index === '' || $engine->scoutIndex->indexName === $index;
-        })->each(function (Engine $engine) {
+        })->each(function(Engine $engine) {
             $engine->updateSettings($engine->scoutIndex->indexSettings);
             $this->stdout("Updated index settings for {$engine->scoutIndex->indexName}\n", Console::FG_GREEN);
         });
@@ -31,9 +31,9 @@ class SettingsController extends BaseController
         $dump = [];
 
         $engines = Scout::$plugin->getSettings()->getEngines();
-        $engines->filter(function (Engine $engine) use ($index) {
+        $engines->filter(function(Engine $engine) use ($index) {
             return $index === '' || $engine->scoutIndex->indexName === $index;
-        })->each(function (Engine $engine) use (&$dump) {
+        })->each(function(Engine $engine) use (&$dump) {
             $dump[$engine->scoutIndex->indexName] = $engine->getSettings();
         });
 

@@ -25,8 +25,8 @@ use yii\base\Event;
 
 class Scout extends Plugin
 {
-    const EDITION_STANDARD = 'standard';
-    const EDITION_PRO = 'pro';
+    public const EDITION_STANDARD = 'standard';
+    public const EDITION_PRO = 'pro';
 
     public static function editions(): array
     {
@@ -157,7 +157,6 @@ class Scout extends Plugin
                 function (ElementEvent $event) {
                     /** @var SearchableBehavior $element */
                     $element = $event->element;
-
                     if (!$element->hasMethod('searchable') || !$element->shouldBeSearchable()) {
                         return;
                     }
@@ -167,9 +166,11 @@ class Scout extends Plugin
                             ->ttr(Scout::$plugin->getSettings()->ttr)
                             ->priority(Scout::$plugin->getSettings()->priority)
                             ->push(
-
-                            new IndexElement(['id' => $element->id])
-                        );
+                                new IndexElement([
+                                    'id' => $element->id,
+                                    'siteId' => $element->site->id
+                                ])
+                            );
                     } else {
                         $element->searchable();
                     }
@@ -200,8 +201,8 @@ class Scout extends Plugin
                         ->ttr(Scout::$plugin->getSettings()->ttr)
                         ->priority(Scout::$plugin->getSettings()->priority)
                         ->push(
-                        new DeindexElement(['id' => $element->id])
-                    );
+                            new DeindexElement(['id' => $element->id])
+                        );
                 }
             }
         );

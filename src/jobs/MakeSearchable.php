@@ -70,7 +70,7 @@ class MakeSearchable extends BaseJob
 
     protected function getIndex()
     {
-        return Scout::$plugin->getSettings()->getIndices()->first(function (ScoutIndex $scoutindex) {
+        return Scout::$plugin->getSettings()->getIndices()->first(function(ScoutIndex $scoutindex) {
             return $scoutindex->indexName === $this->indexName;
         });
     }

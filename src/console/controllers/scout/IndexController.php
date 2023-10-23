@@ -36,7 +36,7 @@ class IndexController extends BaseController
 
         $engines = Scout::$plugin->getSettings()->getEngines();
         $engines->filter(function (Engine $engine) use ($index) {
-            return $index === '' || $engine->scoutIndex->indexName === $index;
+            return !$engine->scoutIndex->replicaIndex && ($index === '' || $engine->scoutIndex->indexName === $index);
         })->each(function (Engine $engine) {
             $engine->flush();
             $this->stdout("Flushed index {$engine->scoutIndex->indexName}\n", Console::FG_GREEN);
@@ -50,7 +50,7 @@ class IndexController extends BaseController
         $engines = Scout::$plugin->getSettings()->getEngines();
 
         $engines->filter(function (Engine $engine) use ($index) {
-            return $index === '' || $engine->scoutIndex->indexName === $index;
+            return !$engine->scoutIndex->replicaIndex && ($index === '' || $engine->scoutIndex->indexName === $index);
         })->each(function (Engine $engine) {
             if ($this->queue) {
                 Craft::$app->getQueue()
