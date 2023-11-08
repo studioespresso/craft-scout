@@ -2,8 +2,10 @@
 
 namespace rias\scout\jobs;
 
+use craft\base\Event;
 use craft\queue\BaseJob;
 use rias\scout\engines\Engine;
+use rias\scout\events\AfterIndexImport;
 use rias\scout\Scout;
 
 class ImportIndex extends BaseJob
@@ -11,10 +13,12 @@ class ImportIndex extends BaseJob
     /** @var string */
     public $indexName;
 
+    public const EVENT_AFTER_INDEX_IMPORT = "afterIndexImport";
+
     public function execute($queue): void
     {
         /** @var Engine $engine */
-        $engine = Scout::$plugin->getSettings()->getEngines()->first(function(Engine $engine) {
+        $engine = Scout::$plugin->getSettings()->getEngines()->first(function (Engine $engine) {
             return $engine->scoutIndex->indexName === $this->indexName;
         });
 
@@ -33,6 +37,12 @@ class ImportIndex extends BaseJob
             $elementsUpdated += count($elements);
             $this->setProgress($queue, $elementsUpdated / $elementsCount);
         }
+
+        $event = new AfterIndexImport([
+            'indexName' => $this->indexName
+        ]);
+
+        Event::trigger(self::class, self::EVENT_AFTER_INDEX_IMPORT, $event);
     }
 
     protected function defaultDescription(): string
