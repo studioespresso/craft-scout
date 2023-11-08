@@ -201,7 +201,10 @@ class Scout extends Plugin
                         ->ttr(Scout::$plugin->getSettings()->ttr)
                         ->priority(Scout::$plugin->getSettings()->priority)
                         ->push(
-                            new DeindexElement(['id' => $element->id])
+                            new DeindexElement([
+                                'id' => $element->id,
+                                'siteId' => $element->site->id
+                            ])
                         );
                 }
             }
