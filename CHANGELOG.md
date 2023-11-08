@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.3.1 - 2023-11-08
+
+### Added
+- Added `AfterIndexImport` event, which fires after the ImportIndex job has finished. ([#283](https://github.com/studioespresso/craft-scout/issues/283))
+### Fixed
+- Deindexing now also takes the correct siteId into account ([#281](https://github.com/studioespresso/craft-scout/issues/281))
+
 ## 3.3.0 - 2023-10-23
 ### Added
 - Added support for creating and configuring replica indexes ([#275](https://github.com/studioespresso/craft-scout/pull/275), thanks [@johnnynotsolucky](https://github.com/johnnynotsolucky)!)

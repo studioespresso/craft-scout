@@ -332,6 +332,29 @@ The event has a properties:
 
 An example use-case for this would be to check the type of the element that's beind saved and settings `shouldBeSearchable` to `false` when it's a Matrix block.
 
+### AfterIndexImport
+
+This event runs at the end of the `ImportIndex` job, when every item has been processed.
+
+```php 
+
+use rias\scout\events\AfterIndexImport;
+use rias\scout\jobs\ImportIndex;
+
+Event::on(
+    ImportIndex::class,
+    ImportIndex::EVENT_AFTER_INDEX_IMPORT,
+    function (AfterIndexImport $event) {
+        // Your code here
+    });
+```
+
+The event has one property:
+- $indexName (the name of the index that just finished importing
+
+An example use-case for this would be to keep a log or dateLastImported if you're running imports on a schedule.
+
+
 ---
 
 ## Upgrading from 1.x
