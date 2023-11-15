@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'password' => 'db',
-    'user' => 'db',
-    'database' => 'scout_testing',
+    'server' => getenv('DB_SERVER') ?? 'db',
+    'database' => getenv('DB_NAME') ?? 'scout_testing',
+    'user' => getenv('DB_USER') ?? 'db',
+    'password' => getenv('DB_PASSWORD') ?? 'db',
+    'schema' => getenv('DB_SCHEMA'),
     'tablePrefix' => '',
     'driver' => 'mysql',
-    'port' => 3306,
-    'schema' => getenv('DB_SCHEMA'),
-    'server' => 'db',
+    'port' => getenv('DB_PORT') ?? 3306,
 ];
