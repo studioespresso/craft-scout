@@ -41,8 +41,12 @@ class ScoutUtility extends Utility
                 $sites = 'all';
                 if ($engine->scoutIndex->criteria->siteId != '*') {
                     $sites = [];
-                    foreach ($engine->scoutIndex->criteria->siteId as $id) {
-                        $sites[] = Craft::$app->getSites()->getSiteById($id);
+                    if (is_array($engine->scoutIndex->criteria->siteId)) {
+                        foreach ($engine->scoutIndex->criteria->siteId as $id) {
+                            $sites[] = Craft::$app->getSites()->getSiteById($id);
+                        }
+                    } else {
+                        $sites = $engine->scoutIndex->criteria->siteId;
                     }
                 }
                 $stats = array_merge($stats, [

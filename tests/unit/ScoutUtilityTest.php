@@ -27,9 +27,13 @@ class ScoutUtilityTest extends Unit
             'engine' => FakeEngine::class,
             'indices' => [
                 ScoutIndex::create('Blog')
-                    ->criteria(function($query) {
+                    ->criteria(function ($query) {
                         return $query;
                     }),
+                ScoutIndex::create('Blog_with_one_site')
+                ->criteria(function ($query) {
+                    return $query->siteId(1);
+                }),
             ],
         ]);
         $scout->init();
