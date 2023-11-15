@@ -11,8 +11,8 @@ class DeindexElement extends BaseJob
     /** @var int */
     public $id;
 
-    /** @var int */
-    public int $siteId;
+    /** @var int|null */
+    public int|null $siteId;
 
     public function execute($queue): void
     {

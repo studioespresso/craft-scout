@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.3.2 - 2023-11-15
+### Fixed
+- Fixed an error on the Control Panel Utility page ([#284](https://github.com/studioespresso/craft-scout/issues/284))
+- Fixed an error when saving elements without a site property ([#285](https://github.com/studioespresso/craft-scout/issues/285****))
+
 ## 3.3.1 - 2023-11-08
 
 ### Added
