@@ -168,7 +168,7 @@ class Scout extends Plugin
                             ->push(
                                 new IndexElement([
                                     'id' => $element->id,
-                                    'siteId' => $element->site->id
+                                    'siteId' => $element->site ? $element->site->id : null
                                 ])
                             );
                     } else {
@@ -203,7 +203,7 @@ class Scout extends Plugin
                         ->push(
                             new DeindexElement([
                                 'id' => $element->id,
-                                'siteId' => $element->site->id
+                                'siteId' => $element->site ? $element->site->id : null
                             ])
                         );
                 }

@@ -20,7 +20,11 @@ require_once CRAFT_VENDOR_PATH . '/autoload.php';
 
 // Load dotenv?
 if (file_exists(CRAFT_BASE_PATH . '/.env')) {
-    (new Dotenv\Dotenv(CRAFT_BASE_PATH))->load();
+    if (class_exists(Dotenv\Dotenv::class)) {
+        // By default, this will allow .env file values to override environment variables
+        // with matching names. Use `createUnsafeImmutable` to disable this.
+        Dotenv\Dotenv::createUnsafeMutable(CRAFT_BASE_PATH)->safeLoad();
+    }
 }
 
 // Load and run Craft
