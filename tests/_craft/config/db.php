@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'server' => getenv('DB_SERVER') ?? 'db',
+    'server' => getenv('DB_SERVER') ?? '127.0.0.1',
     'database' => getenv('DB_NAME') ?? 'scout_testing',
-    'user' => getenv('DB_USER') ?? 'db',
-    'password' => getenv('DB_PASSWORD') ?? 'db',
+    'user' => getenv('DB_USER') ?? 'root',
+    'password' => getenv('DB_PASSWORD') ?? 'root',
     'schema' => getenv('DB_SCHEMA'),
     'tablePrefix' => '',
     'driver' => 'mysql',
