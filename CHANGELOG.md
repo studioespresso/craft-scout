@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.3.3-beta.1 - 2023-12-06
+### Fixed
+- This beta release is a first try at resolving an issue with deindexing of element not working properly. ([#281](https://github.com/studioespresso/craft-scout/issues/281))
+
 ## 3.3.2 - 2023-11-15
 ### Fixed
 - Fixed an error on the Control Panel Utility page ([#284](https://github.com/studioespresso/craft-scout/issues/284))
