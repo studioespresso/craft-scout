@@ -208,6 +208,9 @@ You can use this to define index settings that get synced when you call the `./c
 This way you can keep your index settings in source control. 
 The IndexSettings object provides autocompletion for all Algolia's settings
 
+> [!NOTE]  
+> Note that settings are not synced automatically, but only when the `./craft scout/settings/update` console command is run.
+
 ```php
 ->indexSettings(
     \rias\scout\IndexSettings::create()
