@@ -46,7 +46,7 @@ class AlgoliaEngineTest extends Unit
         $scout = new Scout('scout');
         $scout->init();
 
-        Craft::$container->setSingleton(SearchClient::class, function () {
+        Craft::$container->setSingleton(SearchClient::class, function() {
             $config = SearchConfig::create(
                 getenv('ALGOLIA_APP_ID'),
                 getenv('ALGOLIA_API_KEY')
@@ -59,10 +59,10 @@ class AlgoliaEngineTest extends Unit
 
         $scoutIndex = new ScoutIndex('Blog');
         $scoutIndex->elementType = Entry::class;
-        $scoutIndex->transformer = function ($entry) {
+        $scoutIndex->transformer = function($entry) {
             if ($entry->title === 'split') {
                 return [
-                    'title'   => $entry->title,
+                    'title' => $entry->title,
                     'article' => [
                         'Paragraph 1',
                         'Paragraph 2',
@@ -137,7 +137,7 @@ class AlgoliaEngineTest extends Unit
     public function it_wont_index_an_element_if_it_returns_an_empty_array_from_the_transformer()
     {
         $index = $this->scoutIndex;
-        $index->transformer = function () {
+        $index->transformer = function() {
             return [];
         };
 

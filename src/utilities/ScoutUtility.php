@@ -31,14 +31,32 @@ class ScoutUtility extends Utility
         $engines = Scout::$plugin->getSettings()->getEngines();
 
         $stats = $engines->map(function (Engine $engine) {
-            return [
-                'name'        => $engine->scoutIndex->indexName,
-                'elementType' => $engine->scoutIndex->elementType,
-                'site'        => $engine->scoutIndex->criteria->siteId === '*' ? 'all' : Craft::$app->getSites()->getSiteById($engine->scoutIndex->criteria->siteId),
-                'indexed'     => $engine->getTotalRecords(),
-                'elements'    => $engine->scoutIndex->criteria->count(),
+            $stats = [
+                'name' => $engine->scoutIndex->indexName,
+                'replicaIndex' => $engine->scoutIndex->replicaIndex,
                 'hasSettings' => $engine->scoutIndex->indexSettings ?? null,
             ];
+
+            if (!$engine->scoutIndex->replicaIndex) {
+                $sites = 'all';
+                if ($engine->scoutIndex->criteria->siteId != '*') {
+                    $sites = [];
+                    if (is_array($engine->scoutIndex->criteria->siteId)) {
+                        foreach ($engine->scoutIndex->criteria->siteId as $id) {
+                            $sites[] = Craft::$app->getSites()->getSiteById($id);
+                        }
+                    } else {
+                        $sites = $engine->scoutIndex->criteria->siteId;
+                    }
+                }
+                $stats = array_merge($stats, [
+                    'elementType' => $engine->scoutIndex->elementType,
+                    'sites' => $sites,
+                    'indexed' => $engine->getTotalRecords(),
+                    'elements' => $engine->scoutIndex->criteria->count(),
+                ]);
+            }
+            return $stats;
         });
 
         return $view->renderTemplate('scout/utility', [

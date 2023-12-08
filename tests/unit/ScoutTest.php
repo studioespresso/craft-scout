@@ -29,16 +29,16 @@ class ScoutTest extends Unit
         parent::_before();
 
         $section = new Section([
-            'name'         => 'News',
-            'handle'       => 'news',
-            'type'         => Section::TYPE_CHANNEL,
+            'name' => 'News',
+            'handle' => 'news',
+            'type' => Section::TYPE_CHANNEL,
             'siteSettings' => [
                 new Section_SiteSettings([
-                    'siteId'           => Craft::$app->getSites()->getPrimarySite()->id,
+                    'siteId' => Craft::$app->getSites()->getPrimarySite()->id,
                     'enabledByDefault' => true,
-                    'hasUrls'          => true,
-                    'uriFormat'        => 'foo/{slug}',
-                    'template'         => 'foo/_entry',
+                    'hasUrls' => true,
+                    'uriFormat' => 'foo/{slug}',
+                    'template' => 'foo/_entry',
                 ]),
             ],
         ]);
@@ -86,7 +86,7 @@ class ScoutTest extends Unit
         ]);
         $scoutIndex = new ScoutIndex('Blog');
 
-        $this->expectExceptionMessage('Invalid engine '.InvalidEngine::class.', must implement '.Engine::class);
+        $this->expectExceptionMessage('Invalid engine ' . InvalidEngine::class . ', must implement ' . Engine::class);
 
         $scout->getSettings()->getEngine($scoutIndex);
     }

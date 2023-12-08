@@ -2,10 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.3.3-beta.1 - 2023-12-06
+### Fixed
+- This beta release is a first try at resolving an issue with deindexing of element not working properly. ([#281](https://github.com/studioespresso/craft-scout/issues/281))
+
+## 3.3.2 - 2023-11-15
+### Fixed
+- Fixed an error on the Control Panel Utility page ([#284](https://github.com/studioespresso/craft-scout/issues/284))
+- Fixed an error when saving elements without a site property ([#285](https://github.com/studioespresso/craft-scout/issues/285****))
+
+## 3.3.1 - 2023-11-08
+
+### Added
+- Added `AfterIndexImport` event, which fires after the ImportIndex job has finished. ([#283](https://github.com/studioespresso/craft-scout/issues/283))
+### Fixed
+- Deindexing now also takes the correct siteId into account ([#281](https://github.com/studioespresso/craft-scout/issues/281))
+
+## 3.3.0 - 2023-10-23
+### Added
+- Added support for creating and configuring replica indexes ([#275](https://github.com/studioespresso/craft-scout/pull/275), thanks [@johnnynotsolucky](https://github.com/johnnynotsolucky)!)
+### Fixed
+- Fixed an error on the utility page when an index included multiple sites ([#276](https://github.com/studioespresso/craft-scout/issues/276))
+- Fixed an issue where saving an element would not update it from the correct site ([#266](https://github.com/studioespresso/craft-scout/issues/266))
+
 ## 3.2.1 - 2023-09-22
 ### Fixed
 - This fixes an issue where we default to the primary site when no site id is supplied through index settings.
-
 
 ## 3.2.0 - 2023-09-16
 ### Added

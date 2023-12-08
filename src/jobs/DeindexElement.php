@@ -11,9 +11,12 @@ class DeindexElement extends BaseJob
     /** @var int */
     public $id;
 
+    /** @var int|null */
+    public int|null $siteId;
+
     public function execute($queue): void
     {
-        $element = Craft::$app->getElements()->getElementById($this->id, null, null, [
+        $element = Craft::$app->getElements()->getElementById($this->id, null, $this->siteId, [
             'trashed' => null,
         ]);
 
@@ -25,7 +28,7 @@ class DeindexElement extends BaseJob
 
         $element->unsearchable();
 
-        $relatedElements->each(function (Element $relatedElement) {
+        $relatedElements->each(function(Element $relatedElement) {
             /* @var SearchableBehavior $relatedElement */
             $relatedElement->searchable(false);
         });

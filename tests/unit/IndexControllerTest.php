@@ -33,15 +33,15 @@ class IndexControllerTest extends Unit
 
         $scout = new Scout('scout');
         $scout->setSettings([
-            'queue'   => false,
-            'engine'  => FakeEngine::class,
+            'queue' => false,
+            'engine' => FakeEngine::class,
             'indices' => [
                 ScoutIndex::create('blog_nl')
-                    ->criteria(function ($query) {
+                    ->criteria(function($query) {
                         return $query;
                     }),
                 ScoutIndex::create('blog_en')
-                    ->criteria(function ($query) {
+                    ->criteria(function($query) {
                         return $query;
                     }),
             ],
@@ -49,16 +49,16 @@ class IndexControllerTest extends Unit
         $scout->init();
 
         $section = new Section([
-            'name'         => 'News',
-            'handle'       => 'news',
-            'type'         => Section::TYPE_CHANNEL,
+            'name' => 'News',
+            'handle' => 'news',
+            'type' => Section::TYPE_CHANNEL,
             'siteSettings' => [
                 new Section_SiteSettings([
-                    'siteId'           => Craft::$app->getSites()->getPrimarySite()->id,
+                    'siteId' => Craft::$app->getSites()->getPrimarySite()->id,
                     'enabledByDefault' => true,
-                    'hasUrls'          => true,
-                    'uriFormat'        => 'foo/{slug}',
-                    'template'         => 'foo/_entry',
+                    'hasUrls' => true,
+                    'uriFormat' => 'foo/{slug}',
+                    'template' => 'foo/_entry',
                 ]),
             ],
         ]);
@@ -90,7 +90,7 @@ class IndexControllerTest extends Unit
     public function it_can_flush_an_index()
     {
         $this->tester->mockCraftMethods('request', [
-            'getIsPost'            => true,
+            'getIsPost' => true,
             'getRequiredBodyParam' => 'blog_nl',
         ]);
 
@@ -106,7 +106,7 @@ class IndexControllerTest extends Unit
     public function it_can_import_an_index()
     {
         $this->tester->mockCraftMethods('request', [
-            'getIsPost'            => true,
+            'getIsPost' => true,
             'getRequiredBodyParam' => 'blog_nl',
         ]);
 
@@ -124,7 +124,7 @@ class IndexControllerTest extends Unit
         $this->scout->setSettings(['queue' => true]);
 
         $this->tester->mockCraftMethods('request', [
-            'getIsPost'            => true,
+            'getIsPost' => true,
             'getRequiredBodyParam' => 'blog_nl',
         ]);
 
@@ -146,7 +146,7 @@ class IndexControllerTest extends Unit
     public function it_can_refresh_an_index()
     {
         $this->tester->mockCraftMethods('request', [
-            'getIsPost'            => true,
+            'getIsPost' => true,
             'getRequiredBodyParam' => 'blog_nl',
         ]);
 

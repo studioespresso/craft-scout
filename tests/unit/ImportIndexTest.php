@@ -43,7 +43,7 @@ class ImportIndexTest extends Unit
     {
         $scout = new Scout('scout');
         $scout->setSettings([
-            'engine'  => FakeEngine::class,
+            'engine' => FakeEngine::class,
             'indices' => [
                 ScoutIndex::create('Blog'),
             ],
@@ -51,16 +51,16 @@ class ImportIndexTest extends Unit
         $scout->init();
 
         $section = new Section([
-            'name'         => 'News',
-            'handle'       => 'news',
-            'type'         => Section::TYPE_CHANNEL,
+            'name' => 'News',
+            'handle' => 'news',
+            'type' => Section::TYPE_CHANNEL,
             'siteSettings' => [
                 new Section_SiteSettings([
-                    'siteId'           => Craft::$app->getSites()->getPrimarySite()->id,
+                    'siteId' => Craft::$app->getSites()->getPrimarySite()->id,
                     'enabledByDefault' => true,
-                    'hasUrls'          => true,
-                    'uriFormat'        => 'foo/{slug}',
-                    'template'         => 'foo/_entry',
+                    'hasUrls' => true,
+                    'uriFormat' => 'foo/{slug}',
+                    'template' => 'foo/_entry',
                 ]),
             ],
         ]);

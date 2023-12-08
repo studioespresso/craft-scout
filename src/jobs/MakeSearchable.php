@@ -23,20 +23,31 @@ class MakeSearchable extends BaseJob
 
     public function execute($queue): void
     {
-        if (!$element = $this->getElement()) {
-            return;
+
+        $element = $this->getElement();
+        if ($element) {
+            // Enabled element found
+            $this->getEngine()->update($element);
+
+            if ($this->propagate) {
+                $element->searchableRelations();
+            }
+        } else {
+            // Element not found, checking if it was disabled and needs to be de-indexed.
+            $element = $this->getAnyElement();
+            if($element){
+                if(!$element->shouldBeSearchable()) {
+                    $element->unsearchable();
+                }
+            }
         }
 
-        $this->getEngine()->update($element);
 
-        if ($this->propagate) {
-            $element->searchableRelations();
-        }
     }
 
     protected function defaultDescription(): string
     {
-        if (!$element = $this->getElement()) {
+        if (!$element = $this->getAnyElement()) {
             return '';
         }
 
@@ -59,6 +70,16 @@ class MakeSearchable extends BaseJob
         return $this->getIndex()
             ->criteria
             ->id($this->id)
+            ->siteId($this->siteId)
+            ->one();
+    }
+
+    private function getAnyElement()
+    {
+        return $this->getIndex()
+            ->criteria
+            ->id($this->id)
+            ->status(null)
             ->siteId($this->siteId)
             ->one();
     }

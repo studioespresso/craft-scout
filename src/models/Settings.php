@@ -89,7 +89,7 @@ class Settings extends Model
     public function getQueue()
     {
         if (!$this->queue) {
-            Craft::$app->getDeprecator()->log(__CLASS__.'queue', 'Disabling the `queue` option will no longer be supported in the next version of Scout');
+            Craft::$app->getDeprecator()->log(__CLASS__ . 'queue', 'Disabling the `queue` option will no longer be supported in the next version of Scout');
         }
 
         return $this->queue;
@@ -102,7 +102,7 @@ class Settings extends Model
 
     public function getEngines(): Collection
     {
-        return $this->getIndices()->map(function (ScoutIndex $scoutIndex) {
+        return $this->getIndices()->map(function(ScoutIndex $scoutIndex) {
             return $this->getEngine($scoutIndex);
         });
     }
@@ -112,7 +112,7 @@ class Settings extends Model
         $engine = Craft::$container->get($this->engine, [$scoutIndex]);
 
         if (!$engine instanceof Engine) {
-            throw new Exception("Invalid engine {$this->engine}, must implement ".Engine::class);
+            throw new Exception("Invalid engine {$this->engine}, must implement " . Engine::class);
         }
 
         return $engine;
