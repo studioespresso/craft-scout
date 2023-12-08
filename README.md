@@ -135,11 +135,7 @@ The element type that this index contains, by default Scout uses `craft\elements
 Craft's default element type classes are:
 
 - `craft\elements\Asset`
-- `craft\elements\Category`
 - `craft\elements\Entry`
-- `craft\elements\GlobalSet`
-- `craft\elements\MatrixBlock`
-- `craft\elements\Tag`
 - `craft\elements\User`
 
 #### `->criteria(callable $query)`
@@ -196,7 +192,7 @@ class MyTransformerClassName extends TransformerAbstract
 ```php
 ->splitElementsOn([
     'summary',
-    'matrixElement'
+    'matrixFieldHandle'
 ])
 ```
 
@@ -333,7 +329,7 @@ The event has a properties:
 - $element (the element being saved)
 - $shouldBeSearchable (wether or not the element should be searchable, defaults to `true`)
 
-An example use-case for this would be to check the type of the element that's beind saved and settings `shouldBeSearchable` to `false` when it's a Matrix block.
+An example use-case for this would be to check the type of the element that's being saved and settings `shouldBeSearchable` to `false` when it's a Matrix block.
 
 ### AfterIndexImport
 

@@ -10,7 +10,6 @@ use craft\elements\Asset;
 use craft\elements\Category;
 use craft\elements\Entry;
 use craft\elements\GlobalSet;
-use craft\elements\MatrixBlock;
 use craft\elements\Tag;
 use craft\elements\User;
 use craft\helpers\ElementHelper;
@@ -141,7 +140,6 @@ class SearchableBehavior extends Behavior
         $tags = Tag::find()->relatedTo($this->owner)->site('*')->all();
         $users = User::find()->relatedTo($this->owner)->site('*')->all();
         $globalSets = GlobalSet::find()->relatedTo($this->owner)->site('*')->all();
-        $matrixBlocks = MatrixBlock::find()->relatedTo($this->owner)->site('*')->all();
 
         $products = [];
         $variants = [];
@@ -161,7 +159,6 @@ class SearchableBehavior extends Behavior
             $tags,
             $users,
             $globalSets,
-            $matrixBlocks,
             $products,
             $variants
         ));

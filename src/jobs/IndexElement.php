@@ -11,10 +11,10 @@ use rias\scout\Scout;
 class IndexElement extends BaseJob
 {
     /** @var int */
-    public int $id;
+    public int $id = 0;
 
     /** @var int|null */
-    public int|null $siteId;
+    public int|null $siteId = null;
 
     public function execute($queue): void
     {
