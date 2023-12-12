@@ -162,7 +162,10 @@ class Scout extends Plugin
 
                     if (Scout::$plugin->getSettings()->queue) {
                         Craft::$app->getQueue()->push(
-                            new IndexElement(['id' => $element->id])
+                            new IndexElement([
+                                'id' => $element->id,
+                                'siteId' => $element->site->id,
+                            ])
                         );
                     } else {
                         $element->searchable();
