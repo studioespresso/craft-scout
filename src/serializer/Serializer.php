@@ -2,7 +2,7 @@
 
 namespace rias\scout\serializer;
 
-class AlgoliaSerializer extends \League\Fractal\Serializer\ArraySerializer
+class Serializer extends \League\Fractal\Serializer\ArraySerializer
 {
     /**
      * Serialize a collection.

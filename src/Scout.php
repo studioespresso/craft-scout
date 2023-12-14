@@ -2,8 +2,9 @@
 
 namespace rias\scout;
 
-use Algolia\AlgoliaSearch\Config\SearchConfig;
-use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\Config\SearchConfig as AlgoliaSearchConfig;
+use Algolia\AlgoliaSearch\SearchClient as AlgoliaClient;
+use Typesense\Client as TypesenseClient;
 use Craft;
 use craft\base\Element;
 use craft\base\Plugin;
@@ -21,6 +22,7 @@ use rias\scout\jobs\IndexElement;
 use rias\scout\models\Settings;
 use rias\scout\utilities\ScoutUtility;
 use rias\scout\variables\ScoutVariable;
+use Symfony\Component\HttpClient\HttplugClient;
 use yii\base\Event;
 
 class Scout extends Plugin
@@ -51,15 +53,29 @@ class Scout extends Plugin
 
             self::$plugin = $this;
 
-            Craft::$container->setSingleton(SearchClient::class, function () {
-                $config = SearchConfig::create(
+            Craft::$container->setSingleton(AlgoliaClient::class, function () {
+                $config = AlgoliaSearchConfig::create(
                     self::$plugin->getSettings()->getApplicationId(),
                     self::$plugin->getSettings()->getAdminApiKey()
                 );
 
                 $config->setConnectTimeout($this->getSettings()->connect_timeout);
 
-                return SearchClient::createWithConfig($config);
+                return AlgoliaClient::createWithConfig($config);
+            });
+
+            Craft::$container->setSingleton(TypesenseClient::class, function () {
+                return new TypesenseClient([
+                    'api_key' => Craft::parseEnv('$TYPESENSE_API_KEY'),
+                    'nodes' => [
+                        [
+                            'host' => Craft::parseEnv('$TYPESENSE_HOST'),
+                            'port' => Craft::parseEnv('$TYPESENSE_PORT'),
+                            'protocol' => Craft::parseEnv('$TYPESENSE_PROTOCOL'),
+                        ],
+                    ],
+                    'client' => new HttplugClient(),
+                ]);
             });
 
             $request = Craft::$app->getRequest();

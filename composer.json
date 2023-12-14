@@ -29,7 +29,8 @@
         "php": "^8.0.2",
         "craftcms/cms": "^4.3.5",
         "algolia/algoliasearch-client-php": "^2.3|^3.0",
-        "league/fractal": "^0.18|^0.19"
+        "league/fractal": "^0.18|^0.19",
+        "typesense/typesense-php": "^4.8"
     },
     "repositories": [
         {
@@ -62,7 +63,8 @@
     "config": {
         "allow-plugins": {
             "yiisoft/yii2-composer": true,
-            "craftcms/plugin-installer": true
+            "craftcms/plugin-installer": true,
+            "php-http/discovery": true
         }
     }
 }
