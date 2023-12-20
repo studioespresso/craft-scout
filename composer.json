@@ -2,7 +2,7 @@
     "name": "studioespresso/craft-scout",
     "description": "Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indexes in sync with your entries.",
     "type": "craft-plugin",
-    "version": "3.3.3-beta.1",
+    "version": "5.0.0-alpha.1",
     "keywords": [
         "craft",
         "cms",
@@ -18,7 +18,7 @@
     "authors": [
         {
             "name": "Studio Espresso",
-            "homepage": "https://studioespresso.co"
+            "homepage": "https://www.studioespresso.co"
         },
         {
             "name": "Rias",
@@ -26,8 +26,8 @@
         }
     ],
     "require": {
-        "php": "^8.0.2",
-        "craftcms/cms": "^4.3.5",
+        "php": "^8.2.0",
+        "craftcms/cms": "^5.0.0-alpha",
         "algolia/algoliasearch-client-php": "^2.3|^3.0",
         "league/fractal": "^0.18|^0.19"
     },

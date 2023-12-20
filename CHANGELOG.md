@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.0-alpha.1 - 2023-12-20
+### Added
+- Initial Craft 5 support
+
+
 ## 3.3.3-beta.1 - 2023-12-06
 ### Fixed
 - This beta release is a first try at resolving an issue with deindexing of element not working properly. ([#281](https://github.com/studioespresso/craft-scout/issues/281))
