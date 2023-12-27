@@ -13,9 +13,12 @@ class IndexElement extends BaseJob
     /** @var int */
     public $id;
 
+    /** @var int */
+    public $siteId;
+
     public function execute($queue)
     {
-        $element = Craft::$app->getElements()->getElementById($this->id);
+        $element = Craft::$app->getElements()->getElementById($this->id, null, $this->siteId);
 
         if (!$element) {
             return;
