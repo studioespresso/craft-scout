@@ -11,9 +11,12 @@ class DeindexElement extends BaseJob
     /** @var int */
     public $id;
 
+    /** @var int|null */
+    public $siteId;
+
     public function execute($queue)
     {
-        $element = Craft::$app->getElements()->getElementById($this->id, null, null, [
+        $element = Craft::$app->getElements()->getElementById($this->id, null, $this->siteId, [
             'trashed' => null,
         ]);
 

@@ -180,7 +180,6 @@ class Scout extends Plugin
             function (ElementEvent $event) {
                 if (!Scout::$plugin->getSettings()->indexRelations) {
                     $this->beforeDeleteRelated = new Collection();
-
                     return;
                 }
 
@@ -194,7 +193,10 @@ class Scout extends Plugin
                 // Only run this through the queue if the user has that enabled
                 if (Scout::$plugin->getSettings()->queue) {
                     Craft::$app->getQueue()->push(
-                        new DeindexElement(['id' => $element->id])
+                        new DeindexElement([
+                            'id' => $element->id,
+                            'siteId' => $element->site ? $element->site->id : null
+                        ])
                     );
                 }
             }
