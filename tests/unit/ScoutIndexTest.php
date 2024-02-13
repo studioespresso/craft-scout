@@ -112,7 +112,7 @@ class ScoutIndexTest extends Unit
     }
 
     /** @test * */
-    public function it_sets_the_primary_site_id_if_the_criteria_has_no_site_id()
+    public function it_checks_any_site_if_the_criteria_has_no_site_id()
     {
         $index = new ScoutIndex('Blog');
 
@@ -120,6 +120,6 @@ class ScoutIndexTest extends Unit
             return $query;
         });
 
-        $this->assertEquals(Craft::$app->getSites()->getPrimarySite()->id, $index->criteria->siteId);
+        $this->assertEquals('*', $index->criteria->siteId);
     }
 }
