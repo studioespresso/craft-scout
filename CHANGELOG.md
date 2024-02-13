@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 3.3.3-beta.2 - 2024-02-13
 ### Fixed
 - Fixed missing deletion of orphans of split elements ([#259](https://github.com/studioespresso/craft-scout/issues/259))
 
