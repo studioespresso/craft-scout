@@ -43,16 +43,13 @@ abstract class Engine
                     $objectToSave['distinctID'] = $objectToSave['objectID'];
                     $objectsToSave[] = $objectToSave;
                 }
-
-                continue;
+            } else {
+                foreach ($splittedObjects as $part => $splittedObject) {
+                    $splittedObject['distinctID'] = $splittedObject['objectID'];
+                    $splittedObject['objectID'] = "{$splittedObject['objectID']}_{$part}";
+                    $objectsToSave[] = $splittedObject;
+                }
             }
-
-            foreach ($splittedObjects as $part => $splittedObject) {
-                $splittedObject['distinctID'] = $splittedObject['objectID'];
-                $splittedObject['objectID'] = "{$splittedObject['objectID']}_{$part}";
-                $objectsToSave[] = $splittedObject;
-            }
-
             $objectsToDelete[] = $object;
         }
 
