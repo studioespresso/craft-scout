@@ -1,0 +1,22 @@
+name: Code Quality
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - develop
+      - develop-v5
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  ci:
+    name: ci
+    uses: studioespresso/.github/.github/workflows/ci.yml@main
+    with:
+      craft_version: '5'
+      jobs: '["ecs", "phpstan"]'
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
