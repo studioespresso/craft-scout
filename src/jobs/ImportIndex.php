@@ -18,7 +18,7 @@ class ImportIndex extends BaseJob
     public function execute($queue): void
     {
         /** @var Engine $engine */
-        $engine = Scout::$plugin->getSettings()->getEngines()->first(function (Engine $engine) {
+        $engine = Scout::$plugin->getSettings()->getEngines()->first(function(Engine $engine) {
             return $engine->scoutIndex->indexName === $this->indexName;
         });
 
@@ -39,7 +39,7 @@ class ImportIndex extends BaseJob
         }
 
         $event = new AfterIndexImport([
-            'indexName' => $this->indexName
+            'indexName' => $this->indexName,
         ]);
 
         Event::trigger(self::class, self::EVENT_AFTER_INDEX_IMPORT, $event);

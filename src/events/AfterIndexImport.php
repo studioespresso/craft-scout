@@ -3,7 +3,6 @@
 namespace rias\scout\events;
 
 use craft\base\Element;
-use rias\scout\ScoutIndex;
 use yii\base\Event;
 
 /**
@@ -17,6 +16,4 @@ class AfterIndexImport extends Event
      * @var string
      */
     public string $indexName;
-
-
 }

@@ -30,7 +30,7 @@ class ScoutUtility extends Utility
 
         $engines = Scout::$plugin->getSettings()->getEngines();
 
-        $stats = $engines->map(function (Engine $engine) {
+        $stats = $engines->map(function(Engine $engine) {
             $stats = [
                 'name' => $engine->scoutIndex->indexName,
                 'replicaIndex' => $engine->scoutIndex->replicaIndex,

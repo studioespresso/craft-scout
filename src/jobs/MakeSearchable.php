@@ -23,7 +23,6 @@ class MakeSearchable extends BaseJob
 
     public function execute($queue): void
     {
-
         $element = $this->getElement();
         if ($element) {
             // Enabled element found
@@ -35,14 +34,12 @@ class MakeSearchable extends BaseJob
         } else {
             // Element not found, checking if it was disabled and needs to be de-indexed.
             $element = $this->getAnyElement();
-            if($element){
-                if(!$element->shouldBeSearchable()) {
+            if ($element) {
+                if (!$element->shouldBeSearchable()) {
                     $element->unsearchable();
                 }
             }
         }
-
-
     }
 
     protected function defaultDescription(): string
@@ -91,7 +88,7 @@ class MakeSearchable extends BaseJob
 
     protected function getIndex()
     {
-        return Scout::$plugin->getSettings()->getIndices()->first(function (ScoutIndex $scoutindex) {
+        return Scout::$plugin->getSettings()->getIndices()->first(function(ScoutIndex $scoutindex) {
             return $scoutindex->indexName === $this->indexName;
         });
     }
