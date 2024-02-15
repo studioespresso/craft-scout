@@ -39,11 +39,18 @@
     ],
     "require-dev": {
         "vlucas/phpdotenv": "^5.3.0",
-        "codeception/codeception": "^4.1.1",
-        "codeception/module-asserts": "^1.1.1",
-        "codeception/lib-asserts": "^1.1.0",
-        "codeception/module-yii2": "^1.1.0",
-        "phpunit/phpunit": "^9.3.3"
+        "codeception/codeception": "^5.0.0",
+        "codeception/module-asserts": "^3.0",
+        "codeception/lib-asserts": "^2.1.0",
+        "codeception/module-yii2": "^1.1.10",
+        "phpunit/phpunit": "^9.3.3",
+        "craftcms/ecs": "dev-main",
+        "craftcms/phpstan": "dev-main"
+    },
+    "scripts": {
+        "check-cs": "ecs check --ansi",
+        "fix-cs": "ecs check --ansi --fix",
+        "phpstan": "phpstan --memory-limit=1G"
     },
     "autoload": {
         "psr-4": {
