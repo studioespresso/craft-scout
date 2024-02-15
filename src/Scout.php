@@ -10,6 +10,7 @@ use craft\base\Plugin;
 use craft\events\DefineBehaviorsEvent;
 use craft\events\ElementEvent;
 use craft\events\RegisterComponentTypesEvent;
+use craft\helpers\ElementHelper;
 use craft\services\Elements;
 use craft\services\Utilities;
 use craft\web\twig\variables\CraftVariable;
@@ -157,22 +158,25 @@ class Scout extends Plugin
                 function(ElementEvent $event) {
                     /** @var SearchableBehavior $element */
                     $element = $event->element;
-                    if (!$element->hasMethod('searchable') || !$element->shouldBeSearchable()) {
-                        return;
-                    }
+                    $baseElement = ElementHelper::rootElementIfCanonical($element);
+                    if ($baseElement) {
+                        if (!$baseElement->hasMethod('searchable') || !$baseElement->shouldBeSearchable()) {
+                            return;
+                        }
 
-                    if (Scout::$plugin->getSettings()->queue) {
-                        Craft::$app->getQueue()
-                            ->ttr(Scout::$plugin->getSettings()->ttr)
-                            ->priority(Scout::$plugin->getSettings()->priority)
-                            ->push(
-                                new IndexElement([
-                                    'id' => $element->id,
-                                    'siteId' => $element->site ? $element->site->id : null,
-                                ])
-                            );
-                    } else {
-                        $element->searchable();
+                        if (Scout::$plugin->getSettings()->queue) {
+                            Craft::$app->getQueue()
+                                ->ttr(Scout::$plugin->getSettings()->ttr)
+                                ->priority(Scout::$plugin->getSettings()->priority)
+                                ->push(
+                                    new IndexElement([
+                                        'id' => $baseElement->id,
+                                        'siteId' => $baseElement->site ? $baseElement->site->id : null
+                                    ])
+                                );
+                        } else {
+                            $baseElement->searchable();
+                        }
                     }
                 }
             );
