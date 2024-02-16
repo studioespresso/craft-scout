@@ -160,6 +160,7 @@ class Scout extends Plugin
                     $element = $event->element;
                     $baseElement = ElementHelper::rootElementIfCanonical($element);
                     if ($baseElement) {
+                        /** @phpstan-var UrlManager $urlManager */
                         if (!$baseElement->hasMethod('searchable') || !$baseElement->shouldBeSearchable()) {
                             return;
                         }
@@ -171,7 +172,7 @@ class Scout extends Plugin
                                 ->push(
                                     new IndexElement([
                                         'id' => $baseElement->id,
-                                        'siteId' => $baseElement->site ? $baseElement->site->id : null
+                                        'siteId' => $baseElement->site ? $baseElement->site->id : null,
                                     ])
                                 );
                         } else {

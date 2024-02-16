@@ -1,7 +1,10 @@
 includes:
     - vendor/craftcms/phpstan/phpstan.neon
-
 parameters:
     level: 1
     paths:
         - src
+    scanFiles:
+        - lib/craft/behaviors/CustomFieldBehavior.php
+    bootstrapFiles:
+        - lib/craft/bootstrap.php
