@@ -1,0 +1,27 @@
+:root {
+    --vp-c-bg: rgb(251, 245, 240);
+    --vp-c-bg-alt: rgba(231, 231, 231);
+    --vp-c-bg-elv: #ffffff;
+    --vp-c-bg-soft: #f6f6f7;
+    --vp-c-brand-1: #598380;
+}
+
+.dark {
+    --vp-c-bg: #1b1b1f;
+    --vp-c-bg-alt: #161618;
+    --vp-c-bg-elv: #202127;
+    --vp-c-bg-soft: #202127;
+    --vp-c-brand-1: #fff;
+}
+
+.custom-block.tip {
+    border-color: var(--c-brand);
+}
+
+.DocSearch {
+    --docsearch-primary-color: var(--c-brand) !important;
+}
+
+a > img {
+    display: inline-block;
+}

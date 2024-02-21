@@ -1,0 +1,27 @@
+{
+  "name": "seo-fields",
+  "version": "1.0.0",
+  "description": "Fields for your SEO & OG data",
+  "private": true,
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janhenckens/craft3-seo-fields.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/janhenckens/craft3-seo-fields/issues"
+  },
+
+  "homepage": "https://github.com/janhenckens/craft3-seo-fields#readme",
+  "devDependencies": {
+    "codemirror": "^5.44.0",
+    "vitepress": "^1.0.0-rc.25",
+    "vue": "^3.2.40"
+  }
+}

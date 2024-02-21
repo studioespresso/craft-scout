@@ -2,6 +2,8 @@
 
 Craft Scout provides a simple solution for adding full-text search to your entries. Scout will automatically keep your search indices in sync with your entries.
 
+![Scout](https://www.studioespresso.co/assets/Scout-Github-Banner.png)
+
 ## Requirements
 
 This plugin requires Craft CMS 4.x or later and PHP 8.0.2 or later.

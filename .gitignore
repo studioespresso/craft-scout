@@ -33,3 +33,6 @@ config.codekit3
 prepros-6.config
 composer.lock
 /tests/.env
+/docs/.vitepress/dist
+/docs/.vitepress/cache
+
