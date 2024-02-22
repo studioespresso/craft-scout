@@ -20,11 +20,21 @@ module.exports = {
                 text: 'General',
                 items:
                     [
-                        {text: 'Usage', link: '/general'},
-                        {text: 'Field & settings', link: '/field'},
+                        {text: 'Getting started', link: '/getting-started'},
+                        {text: 'Indices', link: '/indices'},
                         {text: 'Templating', link: '/templating'},
-                        {text: 'Settings', link: '/settings'},
+                        {text: 'Configuration', link: '/configuration'},
+                        {text: 'Console commands', link: '/console'},
 
+                    ]
+            },
+            {
+                text: 'Extending Scout',
+                items:
+                    [
+                        {text: 'Events', link: '/events'},
+                        {text: 'Splitting elements', link: '/splitting-elements'},
+                        {text: 'Replicas', link: '/replicas'},
                     ]
             },
         ],
