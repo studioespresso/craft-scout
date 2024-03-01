@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.3.3 - 2024-03-01
+### Fixed
+- Fixed an issues with updating and deleting split elements ([#259](https://github.com/studioespresso/craft-scout/issues/259) & [#281](https://github.com/studioespresso/craft-scout/issues/281))
+- Fixed an error in DeindexElementJob
+
 ## 3.3.3-beta.2 - 2024-02-13
 ### Fixed
 - Fixed missing deletion of orphans of split elements ([#259](https://github.com/studioespresso/craft-scout/issues/259))
