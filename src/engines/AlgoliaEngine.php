@@ -145,4 +145,9 @@ class AlgoliaEngine extends Engine
 
         return $objects;
     }
+
+    public function __call(string $method, array $parameters)
+    {
+        return $this->algolia->$method(...$parameters);
+    }
 }
