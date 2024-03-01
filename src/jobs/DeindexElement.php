@@ -12,7 +12,7 @@ class DeindexElement extends BaseJob
     public $id;
 
     /** @var int|null */
-    public int|null $siteId;
+    public int|null $siteId = null;
 
     public function execute($queue): void
     {
