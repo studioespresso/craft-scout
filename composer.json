@@ -29,7 +29,7 @@
         "php": "^8.0.2",
         "craftcms/cms": "^4.3.5",
         "algolia/algoliasearch-client-php": "^2.3|^3.0",
-        "league/fractal": "^0.18|^0.19"
+        "league/fractal": "^0.20"
     },
     "repositories": [
         {
