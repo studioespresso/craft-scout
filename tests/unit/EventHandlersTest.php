@@ -5,6 +5,7 @@ namespace rias\scout\tests;
 use Codeception\Test\Unit;
 use Craft;
 use craft\elements\Entry;
+use craft\fieldlayoutelements\CustomField;
 use craft\fields\Entries;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
@@ -124,6 +125,10 @@ class EventHandlersTest extends Unit
     /** @test * */
     public function it_also_updates_related_elements()
     {
+        // (very) Verbose adding the new field to the entry type field layout
+        // so that the relation can be saved through the Element.
+
+        // Define a Relation field and persist to DB
         $relationField = new Entries([
             'name' => 'Entry field',
             'handle' => 'entryField',
@@ -131,7 +136,27 @@ class EventHandlersTest extends Unit
         ]);
         Craft::$app->getFields()->saveField($relationField);
 
-        Craft::$app->getRelations()->saveRelations($relationField, $this->element, [$this->element2->id]);
+        // Get the field layout...
+        $field_layout = $this->element->getType()
+                                      ->getFieldLayout();
+        $current_tabs = $field_layout->getTabs();
+        // ... and get the current fields on the first tab...
+        $elements = $current_tabs[0]->getElements();
+        // ... and add the previously created Relation field to the layout ...
+        $elements[] = new CustomField(
+            $relationField,
+        );
+        $current_tabs[0]->setElements($elements);
+        $field_layout->setTabs($current_tabs);
+
+        // ... and persist the updated layout to the DB.
+        Craft::$app->getFields()->saveLayout($field_layout);
+
+        // Now can define the relationship through attribute on Element
+        // and persist the relation to the DB whilst also having the
+        // relation defined on the current Element instance.
+        $this->element->entryField = [$this->element2->id];
+        Craft::$app->getElements()->saveElement($this->element);
 
         Craft::$app->getCache()->set("scout-Blog-{$this->element->id}-updateCalled", 0);
         Craft::$app->getCache()->set("scout-Blog-{$this->element2->id}-updateCalled", 0);
