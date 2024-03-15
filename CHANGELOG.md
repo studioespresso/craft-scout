@@ -2,10 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-
 ## 5.0.0-alpha.1 - 2023-12-20
 ### Added
 - Initial Craft 5 support
+
+
+## 3.4.0 - 2024-03-15
+## Added
+- Related element types are now configurable ([#273](https://github.com/studioespresso/craft-scout/pull/273))
 
 ## 3.3.3 - 2024-03-01
 ### Fixed
