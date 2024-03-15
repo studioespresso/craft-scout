@@ -62,6 +62,15 @@ return [
      * Disabling this can improve performance on larger sites that have lots of relations.
      */
     'indexRelations' => true,
+    
+    /**
+     * The element types to look for when indexRelations is enabled.
+     * By default, all Craft elements are checked for relations.
+     * Use this to avoid unnecessary queries to Elements that aren't
+     * used by your indices or to check custom Elements that may be
+     * related to your indices
+     */
+    'relatedElementTypes' => [],
 
     /*
      * The Algolia Application ID, this id can be found in your Algolia Account

@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.4.0 - 2024-03-15
+## Added
+- Related element types are now configurable ([#273](https://github.com/studioespresso/craft-scout/pull/273))
+
 ## 3.3.3 - 2024-03-01
 ### Fixed
 - Fixed an issues with updating and deleting split elements ([#259](https://github.com/studioespresso/craft-scout/issues/259) & [#281](https://github.com/studioespresso/craft-scout/issues/281))

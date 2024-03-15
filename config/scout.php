@@ -83,4 +83,13 @@ return [
      * Make this false to use the single item itself.
      */
     'useOriginalRecordIfSplitValueIsArrayOfOne' => true,
+
+    /**
+     * The element types to look for when indexRelations is enabled.
+     * By default, all Craft elements are checked for relations.
+     * Use this to avoid unnecessary queries to Elements that aren't
+     * used by your indices or to check custom Elements that may be
+     * related to your indices
+     */
+    'relatedElementTypes' => [],
 ];
