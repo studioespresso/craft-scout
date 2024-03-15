@@ -79,12 +79,113 @@ class AbstractEngineTest extends Unit
             ],
         ];
 
-        $this->assertEqualsCanonicalizing([
-            'save' => [
-                ['objectID' => 1, 'title' => 'One', 'body' => 'Paragraph 1', 'distinctID' => 1],
+        $this->assertEqualsCanonicalizing(
+            [
+                'save'   => [
+                    [
+                        'objectID'   => 1,
+                        'title'      => 'One',
+                        'body'       => 'Paragraph 1',
+                        'distinctID' => 1,
+                    ],
+                ],
+                'delete' => [
+                    [
+                        'objectID'   => 1,
+                         'title'      => 'One',
+                         'body'       => 'Paragraph 1',
+                         'distinctID' => 1,
+                    ],
+                ],
             ],
-            'delete' => [],
-        ], $engine->splitObjects($objects));
+            $engine->splitObjects($objects)
+        );
+    }
+
+    /** @test * */
+    public function it_handles_a_single_split_value()
+    {
+        $settings = Scout::$plugin->getSettings();
+        $settings->useOriginalRecordIfSplitValueIsArrayOfOne = false;
+
+        /** @var FakeEngine $engine */
+        $engine = $settings->getEngines()[0];
+
+        $objects = [
+            [
+                'objectID' => 1,
+                'title' => 'One',
+                'body' => [
+                    'Paragraph 1'
+                ],
+            ],
+        ];
+
+        $this->assertEqualsCanonicalizing(
+            [
+                'save'   => [
+                    [
+                        'objectID'   => 1,
+                        'title'      => 'One',
+                        'body'       => 'Paragraph 1',
+                        'distinctID' => 1,
+                    ],
+                ],
+                'delete' => [
+                    [
+                        'objectID'   => 1,
+                         'title'      => 'One',
+                         'body'       => [
+                             'Paragraph 1',
+                         ],
+                    ],
+                ],
+            ],
+            $engine->splitObjects($objects)
+        );
+    }
+
+    /** @test * */
+    public function it_handles_a_single_split_value_and_dont_use_original_value()
+    {
+        $settings = Scout::$plugin->getSettings();
+        $settings->useOriginalRecordIfSplitValueIsArrayOfOne = false;
+
+        /** @var FakeEngine $engine */
+        $engine = $settings->getEngines()[0];
+
+        $objects = [
+            [
+                'objectID' => 1,
+                'title' => 'One',
+                'body' => [
+                    'Paragraph 1'
+                ],
+            ],
+        ];
+
+        $this->assertEqualsCanonicalizing(
+            [
+                'save'   => [
+                    [
+                        'objectID'   => 1,
+                        'title'      => 'One',
+                        'body'       => 'Paragraph 1',
+                        'distinctID' => 1,
+                    ],
+                ],
+                'delete' => [
+                    [
+                        'objectID'   => 1,
+                         'title'      => 'One',
+                         'body'       => [
+                             'Paragraph 1',
+                         ],
+                    ],
+                ],
+            ],
+            $engine->splitObjects($objects)
+        );
     }
 
     /** @test * */

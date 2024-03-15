@@ -130,8 +130,17 @@ class SearchableBehavior extends Behavior
 
     public function getRelatedElements(): Collection
     {
-        if (!Scout::$plugin->getSettings()->sync) {
+        $settings = Scout::$plugin->getSettings();
+
+        if (!$settings->sync) {
             return new Collection();
+        }
+
+        if (!empty($settings->relatedElementTypes)) {
+            return Collection::make($settings->relatedElementTypes)
+                ->flatMap(function($className) {
+                    return $className::find()->relatedTo($this->owner)->site('*')->all();
+                });
         }
 
         $assets = Asset::find()->relatedTo($this->owner)->site('*')->all();
