@@ -21,7 +21,7 @@ class ScoutIndex extends BaseObject
     /** @var IndexSettings */
     public $indexSettings;
 
-    /** @var string */
+    /** @var <class-string> */
     public $elementType = Entry::class;
 
     /** @var callable|string|array|\League\Fractal\TransformerAbstract */
