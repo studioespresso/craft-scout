@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## 4.0.0 - 2024-03-18
+- Updated Fractal to 0.20. ([#292](https://github.com/studioespresso/craft-scout/pull/292))
+
 ## 3.4.1 - 2024-03-18
 ### Added
 - Added version constraint to prevent installation with craftcms/element-api
