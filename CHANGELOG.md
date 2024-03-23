@@ -2,13 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.0-beta.1 - 2024-03-23
+- Updated Fractal to 0.20. ([#292](https://github.com/studioespresso/craft-scout/pull/292))
+
 ## 5.0.0-alpha.1 - 2023-12-20
 ### Added
 - Initial Craft 5 support
 
 
+## 4.0.0 - 2024-03-18
+- Updated Fractal to 0.20. ([#292](https://github.com/studioespresso/craft-scout/pull/292))
+
+## 3.4.1 - 2024-03-18
+### Added
+- Added version constraint to prevent installation with craftcms/element-api
+
+
 ## 3.4.0 - 2024-03-15
-## Added
+### Added
 - Related element types are now configurable ([#273](https://github.com/studioespresso/craft-scout/pull/273))
 
 ## 3.3.3 - 2024-03-01
