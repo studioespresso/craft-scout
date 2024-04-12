@@ -151,6 +151,20 @@ This function accepts an `ElementQuery` and should also return an `ElementQuery`
 });
 ```
 
+#### `->getElements(callable $queries)`
+This function can be used to query multiple different Element types. It should return an array of ElementQuery objects.
+
+```php
+->getElements(function () {
+    return [
+        Entry::find()->section('blog'),
+        Category::find()->group('blogCategories'),
+    ];
+});
+```
+
+*Note:* When `->getElements()` is used, `->criteria()` and `->elementType()` are ignored.
+
 #### `->transformer(callable|string|array|TransformerAbstract $transformer)`
 The [transformer](http://fractal.thephpleague.com/transformers/) that should be used to define the data that should be sent to Algolia for each element. If you don’t set this, the default transformer will be used, which includes all of the element’s direct attribute values, but no custom field values.
 

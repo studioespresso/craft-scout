@@ -21,17 +21,41 @@ class ImportIndex extends BaseJob
         if (!$engine) {
             return;
         }
-
-        $elementsCount = $engine->scoutIndex->criteria->count();
-        $elementsUpdated = 0;
-        $batch = $engine->scoutIndex->criteria->batch(
-            Scout::$plugin->getSettings()->batch_size
-        );
-
-        foreach ($batch as $elements) {
-            $engine->update($elements);
-            $elementsUpdated += count($elements);
-            $this->setProgress($queue, $elementsUpdated / $elementsCount);
+				
+				// check if $engine->scoutIndex->criteria is iterable
+        if (is_array($engine->scoutIndex->criteria)) {
+					// use array_reduce to get the count of elements
+          $elementsCount = array_reduce($engine->scoutIndex->criteria, function ($carry, $query) {
+            return $carry + $query->count();
+          }, 0);
+	
+	        $elementsUpdated = 0;
+					
+					foreach($engine->scoutIndex->criteria as $query) {
+						$batch = $query->batch(
+							Scout::$plugin->getSettings()->batch_size
+						);
+						
+						foreach ($batch as $elements) {
+							$engine->update($elements);
+							$elementsUpdated += count($elements);
+							$this->setProgress($queue, $elementsUpdated / $elementsCount);
+						}
+					}
+					
+        } else {
+					$elementsCount = $engine->scoutIndex->criteria->count();
+	
+	        $elementsUpdated = 0;
+	        $batch = $engine->scoutIndex->criteria->batch(
+		        Scout::$plugin->getSettings()->batch_size
+	        );
+	
+	        foreach ($batch as $elements) {
+		        $engine->update($elements);
+		        $elementsUpdated += count($elements);
+		        $this->setProgress($queue, $elementsUpdated / $elementsCount);
+	        }
         }
     }
 
