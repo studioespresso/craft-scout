@@ -39,6 +39,18 @@ class SearchableBehavior extends Behavior
 
     public function validatesCriteria(ScoutIndex $scoutIndex): bool
     {
+        if (is_iterable($scoutIndex->criteria)) {
+            foreach($scoutIndex->criteria as $query) {
+                $criteria = clone $query;
+
+                if (!$criteria->id($this->owner->id)->exists()) {
+                    return false;
+                }
+            }
+            return true;
+
+        }
+
         $criteria = clone $scoutIndex->criteria;
 
         return $criteria
@@ -52,12 +64,20 @@ class SearchableBehavior extends Behavior
             ->getSettings()
             ->getIndices()
             ->filter(function(ScoutIndex $scoutIndex) {
+                if(is_iterable($scoutIndex->criteria)){
+                    $criteriaSiteIds = collect($scoutIndex->criteria)->map(function($criteria){
+                        return Arr::wrap($criteria->siteId);
+                    })->flatten()->unique()->values()->toArray();
+                } else {
+                    $criteriaSiteIds = Arr::wrap($scoutIndex->criteria->siteId);
+                }
+
                 $siteIds = array_map(function($siteId) {
                     return (int) $siteId;
-                }, Arr::wrap($scoutIndex->criteria->siteId));
+                }, $criteriaSiteIds);
 
                 return $scoutIndex->elementType === get_class($this->owner)
-                    && ($scoutIndex->criteria->siteId === '*'
+                    && ($criteriaSiteIds === '*'
                         || in_array((int) $this->owner->siteId, $siteIds));
             });
     }

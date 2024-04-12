@@ -11,7 +11,7 @@ use League\Fractal\TransformerAbstract;
 use yii\base\BaseObject;
 
 /**
- * @property-read ElementQuery $criteria
+ * @property-read array|ElementQuery $criteria
  */
 class ScoutIndex extends BaseObject
 {
@@ -24,6 +24,9 @@ class ScoutIndex extends BaseObject
     /** @var <class-string> */
     public $elementType = Entry::class;
 
+    /** @var bool */
+    public $enforceElementType = true;
+
     /** @var callable|string|array|\League\Fractal\TransformerAbstract */
     public $transformer;
 
@@ -33,7 +36,7 @@ class ScoutIndex extends BaseObject
     /** @var bool */
     public $replicaIndex = false;
 
-    /** @var callable|ElementQuery */
+    /** @var callable|ElementQuery|ElementQuery[] */
     private $_criteria;
 
     public function __construct(string $indexName, $config = [])
@@ -63,6 +66,35 @@ class ScoutIndex extends BaseObject
     public function criteria(callable $criteria): self
     {
         $this->_criteria = $criteria;
+
+        return $this;
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    public function getElements(callable $getElements): self
+    {
+        $elementQueries = $getElements();
+
+        if ($elementQueries instanceof ElementQuery) {
+            $elementQueries = [$elementQueries];
+        }
+
+        // loop through $elementQueries and check that they are all ElementQuery objects
+        foreach ($elementQueries as $elementQuery) {
+            if (!$elementQuery instanceof ElementQuery) {
+                throw new Exception('You must return a valid ElementQuery or array of ElementQuery objects from the getElements function.');
+            }
+
+            if (is_null($elementQuery->siteId)) {
+                $elementQuery->siteId = Craft::$app->getSites()->getPrimarySite()->id;
+            }
+        }
+
+        $this->enforceElementType = false;
+        $this->criteria = $elementQueries;
 
         return $this;
     }
