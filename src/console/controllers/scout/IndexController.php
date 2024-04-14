@@ -62,7 +62,7 @@ class IndexController extends BaseController
                 $this->stdout("Added ImportIndex job for '{$engine->scoutIndex->indexName}' to the queue".PHP_EOL, Console::FG_GREEN);
             } else {
                 // check if $engine->scoutIndex->criteria is iterable
-                if (is_iterable($engine->scoutIndex->criteria)) {
+                if (is_array($engine->scoutIndex->criteria)) {
                     // use array_reduce to get the count of elements
                     $totalElements = array_reduce($engine->scoutIndex->criteria, function ($carry, $query) {
                         return $carry + $query->count();
