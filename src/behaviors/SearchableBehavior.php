@@ -77,8 +77,7 @@ class SearchableBehavior extends Behavior
                 }, $criteriaSiteIds);
 
                 return $scoutIndex->elementType === get_class($this->owner)
-                    && ($criteriaSiteIds === '*'
-                        || in_array((int) $this->owner->siteId, $siteIds));
+                    && ($criteriaSiteIds[0] === '*'  || in_array((int) $this->owner->siteId, $siteIds));
             });
     }
 
