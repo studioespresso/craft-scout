@@ -160,7 +160,6 @@ class Scout extends Plugin
                     if (!$element->hasMethod('searchable') || !$element->shouldBeSearchable()) {
                         return;
                     }
-
                     if (Scout::$plugin->getSettings()->queue) {
                         Craft::$app->getQueue()
                             ->ttr(Scout::$plugin->getSettings()->ttr)

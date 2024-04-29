@@ -7,6 +7,7 @@ use craft\base\Element;
 use craft\elements\db\ElementQuery;
 use craft\elements\Entry;
 use Exception;
+use Illuminate\Support\Arr;
 use League\Fractal\TransformerAbstract;
 use yii\base\BaseObject;
 
@@ -37,14 +38,15 @@ class ScoutIndex extends BaseObject
     public $replicaIndex = false;
 
     /** @var callable|ElementQuery|ElementQuery[] */
-    private $_criteria;
+    private $criteria;
+
 
     public function __construct(string $indexName, $config = [])
     {
         parent::__construct($config);
 
         $this->indexName = $indexName;
-        $this->_criteria = $this->elementType::find();
+        $this->criteria = $this->elementType::find();
     }
 
     public static function create(string $indexName): self
@@ -65,7 +67,7 @@ class ScoutIndex extends BaseObject
 
     public function criteria(callable $criteria): self
     {
-        $this->_criteria = $criteria;
+        $this->criteria = $criteria;
 
         return $this;
     }
@@ -99,6 +101,21 @@ class ScoutIndex extends BaseObject
         return $this;
     }
 
+    public function getElementType(): string|array
+    {
+        if ($this->enforceElementType) {
+            return $this->elementType;
+        }
+
+        if(is_array($this->criteria)) {
+            $types = collect($this->criteria)->map(function($criteria){
+                return Arr::wrap($criteria->elementType);
+            })->flatten()->unique()->values()->toArray();
+            return $types;
+        }
+    }
+
+
     /**
      * Leverage magic method calling to get the $criteria property, allowing
      * lazy calling the Criteria callable.
@@ -106,11 +123,11 @@ class ScoutIndex extends BaseObject
      * @return \craft\elements\db\ElementQuery
      * @throws \craft\errors\SiteNotFoundException
      */
-    public function getCriteria(): ElementQuery
+    public function getCriteria(): ElementQuery|array
     {
-        if (is_callable($this->_criteria)) {
+        if (is_callable($this->criteria)) {
             $elementQuery = call_user_func(
-                $this->_criteria,
+                $this->criteria,
                 $this->elementType::find()
             );
 
@@ -122,10 +139,10 @@ class ScoutIndex extends BaseObject
                 $elementQuery->siteId = "*";
             }
 
-            $this->_criteria = $elementQuery;
+            $this->criteria = $elementQuery;
         }
 
-        return $this->_criteria;
+        return $this->criteria;
     }
 
     /*
@@ -146,9 +163,9 @@ class ScoutIndex extends BaseObject
     }
 
     /**
+     * @return callable|\League\Fractal\TransformerAbstract|object
      * @throws \yii\base\InvalidConfigException
      *
-     * @return callable|\League\Fractal\TransformerAbstract|object
      */
     public function getTransformer()
     {
