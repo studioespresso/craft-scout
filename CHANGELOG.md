@@ -2,8 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 4.1.0-beta.1 - unreleased
+### Added
+- This release adds support for combining multiple element types into 1 index. Thanks to @andrewmenich for the PR! ([#267](https://github.com/studioespresso/craft-scout/pull/267) && [#69](https://github.com/studioespresso/craft-scout/issues/69))
 
 ## 4.0.0 - 2024-03-18
+### Changed
 - Updated Fractal to 0.20. ([#292](https://github.com/studioespresso/craft-scout/pull/292))
 
 ## 3.4.1 - 2024-03-18
