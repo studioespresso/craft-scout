@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 4.1.0 - 2024-05-26
+### Added
+- This release adds support for combining multiple element types into 1 index. Thanks to @andrewmenich for the PR! ([#267](https://github.com/studioespresso/craft-scout/pull/267) && [#69](https://github.com/studioespresso/craft-scout/issues/69), [docs](https://github.com/studioespresso/craft-scout/tree/develop?tab=readme-ov-file#-getelementscallable-queries)) 
+
+### Fixed
+- Don't create an element query right away from ScoutIndex ([#300](https://github.com/studioespresso/craft-scout/pull/300))
+
 ## 4.1.0-beta.2 - 2024-05-04
 ### Fixed
 - Added checks for when criteria is an array of element querries ([#297](https://github.com/studioespresso/craft-scout/issues/297))
