@@ -58,6 +58,7 @@ class AlgoliaEngineTest extends Unit
         });
 
         $scoutIndex = new ScoutIndex('Blog');
+        $scoutIndex->enforceElementType = true;
         $scoutIndex->elementType = Entry::class;
         $scoutIndex->transformer = function($entry) {
             if ($entry->title === 'split') {
