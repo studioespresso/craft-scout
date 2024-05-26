@@ -31,7 +31,7 @@ use yii\base\Event;
  * @mixin Element
  *
  * @property Element $owner
- * @property int     $id
+ * @property int $id
  */
 class SearchableBehavior extends Behavior
 {
@@ -39,6 +39,19 @@ class SearchableBehavior extends Behavior
 
     public function validatesCriteria(ScoutIndex $scoutIndex): bool
     {
+        if (is_array($scoutIndex->criteria)) {
+            foreach ($scoutIndex->criteria as $query) {
+
+                $criteria = clone $query;
+                if ($criteria->id($this->owner->id)->exists()) {
+                    return true;
+                }
+                continue;
+            }
+            return false;
+
+        }
+
         $criteria = clone $scoutIndex->criteria;
 
         return $criteria
@@ -51,20 +64,34 @@ class SearchableBehavior extends Behavior
         return Scout::$plugin
             ->getSettings()
             ->getIndices()
-            ->filter(function(ScoutIndex $scoutIndex) {
-                $siteIds = array_map(function($siteId) {
-                    return (int) $siteId;
-                }, Arr::wrap($scoutIndex->criteria->siteId));
+            ->filter(function (ScoutIndex $scoutIndex) {
+                if (is_array($scoutIndex->criteria)) {
+                    $criteriaSiteIds = collect($scoutIndex->criteria)->map(function ($criteria) {
+                        return Arr::wrap($criteria->siteId);
+                    })->flatten()->unique()->values()->toArray();
 
-                return $scoutIndex->elementType === get_class($this->owner)
-                    && ($scoutIndex->criteria->siteId === '*'
-                        || in_array((int) $this->owner->siteId, $siteIds));
+
+                } else {
+                    $criteriaSiteIds = Arr::wrap($scoutIndex->criteria->siteId);
+                }
+
+                $siteIds = array_map(function ($siteId) {
+                    return (int)$siteId;
+                }, $criteriaSiteIds);
+
+                if (is_array($scoutIndex->criteria)) {
+                    return in_array(get_class($this->owner), $scoutIndex->getElementType())
+                        && ($criteriaSiteIds[0] === '*' || in_array((int)$this->owner->siteId, $siteIds));
+                }
+
+                return $scoutIndex->getElementType() === get_class($this->owner)
+                    && ($criteriaSiteIds[0] === '*' || in_array((int)$this->owner->siteId, $siteIds));
             });
     }
 
     public function searchableUsing(): Collection
     {
-        return $this->getIndices()->map(function(ScoutIndex $scoutIndex) {
+        return $this->getIndices()->map(function (ScoutIndex $scoutIndex) {
             return Scout::$plugin->getSettings()->getEngine($scoutIndex);
         });
     }
@@ -75,7 +102,7 @@ class SearchableBehavior extends Behavior
             return;
         }
 
-        $this->searchableUsing()->each(function(Engine $engine) use ($propagate) {
+        $this->searchableUsing()->each(function (Engine $engine) use ($propagate) {
             if (!$this->validatesCriteria($engine->scoutIndex)) {
                 return $engine->delete($this->owner);
             }
@@ -95,7 +122,6 @@ class SearchableBehavior extends Behavior
             } elseif ($propagate) {
                 $this->searchableRelations();
             }
-
             return $engine->update($this->owner);
         });
     }
@@ -123,7 +149,7 @@ class SearchableBehavior extends Behavior
             return;
         }
 
-        $this->getRelatedElements()->each(function(Element $relatedElement) {
+        $this->getRelatedElements()->each(function (Element $relatedElement) {
             /* @var SearchableBehavior $relatedElement */
             $relatedElement->searchable(false);
         });
@@ -139,7 +165,7 @@ class SearchableBehavior extends Behavior
 
         if (!empty($settings->relatedElementTypes)) {
             return Collection::make($settings->relatedElementTypes)
-                ->flatMap(function($className) {
+                ->flatMap(function ($className) {
                     return $className::find()->relatedTo($this->owner)->site('*')->all();
                 });
         }
@@ -199,7 +225,6 @@ class SearchableBehavior extends Behavior
 
             return $event->shouldBeSearchable;
         }
-
         return true;
     }
 }
