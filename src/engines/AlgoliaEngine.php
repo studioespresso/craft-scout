@@ -38,13 +38,17 @@ class AlgoliaEngine extends Engine
 
         $elements = new Collection(Arr::wrap($elements));
 
-        $elements = $elements->filter(function(Element $element) {
-            return get_class($element) === $this->scoutIndex->elementType;
-        });
+        if ($this->scoutIndex->enforceElementType) {
+            $elements = $elements->filter(function (Element $element) {
+                return get_class($element) === $this->scoutIndex->elementType;
+            });
+        }
 
         if ($elements->isEmpty()) {
             return;
         }
+
+
         $objects = $this->transformElements($elements);
 
         if (!empty($objects)) {
@@ -63,7 +67,7 @@ class AlgoliaEngine extends Engine
 
         $index = $this->algolia->initIndex($this->scoutIndex->indexName);
 
-        $objectIds = $elements->map(function($object) {
+        $objectIds = $elements->map(function ($object) {
             if ($object instanceof Element) {
                 return $object->id;
             }
@@ -116,12 +120,12 @@ class AlgoliaEngine extends Engine
             'attributesToRetrieve' => null,
         ]);
 
-        return (int) $response['nbHits'];
+        return (int)$response['nbHits'];
     }
 
     private function transformElements(Collection $elements): array
     {
-        $objects = $elements->map(function(Element $element) {
+        $objects = $elements->map(function (Element $element) {
             /** @var \rias\scout\behaviors\SearchableBehavior $element */
             if (empty($searchableData = $element->toSearchableArray($this->scoutIndex))) {
                 return;
