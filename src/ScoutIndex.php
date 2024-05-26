@@ -46,7 +46,6 @@ class ScoutIndex extends BaseObject
         parent::__construct($config);
 
         $this->indexName = $indexName;
-        $this->criteria = $this->elementType::find();
     }
 
     public static function create(string $indexName): self
@@ -125,7 +124,12 @@ class ScoutIndex extends BaseObject
      */
     public function getCriteria(): ElementQuery|array
     {
+        if (!isset($this->_criteria)) {
+            return $this->_criteria = $this->elementType::find();
+        }
+
         if (is_callable($this->criteria)) {
+
             $elementQuery = call_user_func(
                 $this->criteria,
                 $this->elementType::find()
