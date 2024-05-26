@@ -124,8 +124,8 @@ class ScoutIndex extends BaseObject
      */
     public function getCriteria(): ElementQuery|array
     {
-        if (!isset($this->_criteria)) {
-            return $this->_criteria = $this->elementType::find();
+        if (!isset($this->criteria)) {
+            return $this->criteria = $this->elementType::find();
         }
 
         if (is_callable($this->criteria)) {
