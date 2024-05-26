@@ -65,7 +65,7 @@ class ImportIndexTest extends Unit
             ],
         ]);
 
-        Craft::$app->getSections()->saveSection($section);
+        Craft::$app->getEntries()->saveSection($section);
 
         $element = new Entry();
         $element->siteId = 1;

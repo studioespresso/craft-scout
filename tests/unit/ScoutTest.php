@@ -43,7 +43,7 @@ class ScoutTest extends Unit
             ],
         ]);
 
-        Craft::$app->getSections()->saveSection($section);
+        Craft::$app->getEntries()->saveSection($section);
 
         $this->section = $section;
     }
@@ -51,8 +51,8 @@ class ScoutTest extends Unit
     public function _after()
     {
         parent::_after();
-        $section = Craft::$app->getSections()->getSectionByHandle('news');
-        Craft::$app->getSections()->deleteSection($section);
+        $section = Craft::$app->getEntries()->getSectionByHandle('news');
+        Craft::$app->getEntries()->deleteSection($section);
     }
 
     /** @test */
