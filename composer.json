@@ -46,7 +46,7 @@
         "codeception/module-asserts": "^3.0",
         "codeception/lib-asserts": "^2.1.0",
         "codeception/module-yii2": "^1.1.10",
-        "phpunit/phpunit": "^9.3.3",
+        "phpunit/phpunit": "^11.2.2",
         "craftcms/ecs": "dev-main",
         "craftcms/phpstan": "dev-main"
     },
