@@ -65,6 +65,10 @@ class SearchableBehavior extends Behavior
             ->getSettings()
             ->getIndices()
             ->filter(function (ScoutIndex $scoutIndex) {
+                if ($scoutIndex->replicaIndex) {
+                    return false;
+                }
+
                 if (is_array($scoutIndex->criteria)) {
                     $criteriaSiteIds = collect($scoutIndex->criteria)->map(function ($criteria) {
                         return Arr::wrap($criteria->siteId);
