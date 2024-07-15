@@ -47,7 +47,7 @@ class SearchableBehaviorTest extends Unit
         $type = new EntryType([
             'name' => 'Article',
             'handle' => 'article',
-            'hasTitleField' => false,
+            'hasTitleField' => true,
             'titleFormat' => null,
             'uid' => StringHelper::UUID(),
         ]);
