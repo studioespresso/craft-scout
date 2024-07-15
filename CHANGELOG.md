@@ -2,10 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## 4.1.1 - Unreleased
+## 4.1.1 - 2024-07-15
 ### Fixed
 - Removed debug log that tripped some Sentry loggers ([#312](https://github.com/studioespresso/craft-scout/issues/312))
 - Fixed an issue when using a replica index ([#303](https://github.com/studioespresso/craft-scout/issues/303) & [#304](https://github.com/studioespresso/craft-scout/pull/304))
+- Fix for elements not being de-indexed when indexRelations config is false and queue is enabled ([#307](https://github.com/studioespresso/craft-scout/pull/307))
 
 ## 4.1.0 - 2024-05-26
 ### Added
