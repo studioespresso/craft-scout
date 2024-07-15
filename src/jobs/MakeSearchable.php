@@ -63,7 +63,6 @@ class MakeSearchable extends BaseJob
         if(is_array($element)) {
             $element = end($element);
         }
-        \Craft::error(json_encode($element, JSON_PRETTY_PRINT));
 
         return sprintf(
             'Indexing “%s” in “%s”',

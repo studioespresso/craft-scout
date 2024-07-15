@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 4.1.1 - 2024-07-15
+### Fixed
+- Removed debug log that tripped some Sentry loggers ([#312](https://github.com/studioespresso/craft-scout/issues/312))
+- Fixed an issue when using a replica index ([#303](https://github.com/studioespresso/craft-scout/issues/303) & [#304](https://github.com/studioespresso/craft-scout/pull/304))
+- Fix for elements not being de-indexed when indexRelations config is false and queue is enabled ([#307](https://github.com/studioespresso/craft-scout/pull/307))
+
 ## 4.1.0 - 2024-05-26
 ### Added
 - This release adds support for combining multiple element types into 1 index. Thanks to @andrewmenich for the PR! ([#267](https://github.com/studioespresso/craft-scout/pull/267) && [#69](https://github.com/studioespresso/craft-scout/issues/69), [docs](https://github.com/studioespresso/craft-scout/tree/develop?tab=readme-ov-file#-getelementscallable-queries)) 
