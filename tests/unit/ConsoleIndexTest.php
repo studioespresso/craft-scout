@@ -5,6 +5,8 @@ namespace rias\scout\tests;
 use Craft;
 use craft\elements\db\EntryQuery;
 use craft\elements\Entry;
+use craft\helpers\StringHelper;
+use craft\models\EntryType;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
 use craft\test\console\ConsoleTest;
@@ -47,6 +49,18 @@ class ConsoleIndexTest extends ConsoleTest
             ],
         ]);
 
+        $type = new EntryType([
+            'name' => 'Article',
+            'handle' => 'article',
+            'hasTitleField' => false,
+            'titleFormat' => null,
+            'uid' => StringHelper::UUID(),
+        ]);
+
+        \Craft::$app->getEntries()->saveEntryType($type);
+        $entryType = \Craft::$app->getEntries()->getEntryTypeByHandle('article');
+
+
         $section = new Section([
             'name' => 'News',
             'handle' => 'news',
@@ -58,6 +72,9 @@ class ConsoleIndexTest extends ConsoleTest
                     'hasUrls' => false,
                 ]),
             ],
+            'entryTypes' => [
+                $entryType
+            ]
         ]);
 
         Craft::$app->getEntries()->saveSection($section);
@@ -65,7 +82,7 @@ class ConsoleIndexTest extends ConsoleTest
         $element = new Entry();
         $element->siteId = 1;
         $element->sectionId = $section->id;
-        $element->typeId = $section->getEntryTypes()[0]->id;
+        $element->typeId = $entryType->id;
         $element->title = 'NL';
         $element->slug = 'nl';
 
@@ -76,7 +93,7 @@ class ConsoleIndexTest extends ConsoleTest
         $element2 = new Entry();
         $element2->siteId = 1;
         $element2->sectionId = $section->id;
-        $element2->typeId = $section->getEntryTypes()[0]->id;
+        $element2->typeId = $entryType->id;
         $element2->title = 'FR';
         $element2->slug = 'fr';
 

@@ -5,6 +5,8 @@ namespace rias\scout\tests;
 use Codeception\Test\Unit;
 use Craft;
 use craft\elements\Entry;
+use craft\helpers\StringHelper;
+use craft\models\EntryType;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
 use craft\queue\Queue;
@@ -50,6 +52,18 @@ class ImportIndexTest extends Unit
         ]);
         $scout->init();
 
+
+        $type = new EntryType([
+            'name' => 'Article',
+            'handle' => 'article',
+            'hasTitleField' => false,
+            'titleFormat' => null,
+            'uid' => StringHelper::UUID(),
+        ]);
+
+        \Craft::$app->getEntries()->saveEntryType($type);
+        $entryType = \Craft::$app->getEntries()->getEntryTypeByHandle('article');
+
         $section = new Section([
             'name' => 'News',
             'handle' => 'news',
@@ -63,14 +77,18 @@ class ImportIndexTest extends Unit
                     'template' => 'foo/_entry',
                 ]),
             ],
+            'entryTypes' => [
+                $entryType
+            ]
         ]);
+
 
         Craft::$app->getEntries()->saveSection($section);
 
         $element = new Entry();
         $element->siteId = 1;
         $element->sectionId = $section->id;
-        $element->typeId = $section->getEntryTypes()[0]->id;
+        $element->typeId = $entryType->id;
         $element->title = 'A new beginning.';
         $element->slug = 'a-new-beginning';
 
