@@ -52,7 +52,9 @@ class ScoutTest extends Unit
     {
         parent::_after();
         $section = Craft::$app->getEntries()->getSectionByHandle('news');
-        Craft::$app->getEntries()->deleteSection($section);
+        if ($section) {
+            Craft::$app->getEntries()->deleteSection($section);
+        }
     }
 
     /** @test */
