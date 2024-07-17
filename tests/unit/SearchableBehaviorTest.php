@@ -133,6 +133,9 @@ class SearchableBehaviorTest extends Unit
         $section = Craft::$app->getEntries()->getSectionByHandle('news');
         Craft::$app->getEntries()->deleteSection($section);
 
+        $type = Craft::$app->getEntries()->getEntryTypeByHandle('article');
+        Craft::$app->getEntries()->deleteEntryType($type);
+
         $field = Craft::$app->getFields()->getFieldByHandle('entryField');
         if ($field) {
             Craft::$app->getFields()->deleteField($field);
