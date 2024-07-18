@@ -2,13 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.0 - 2024-07-18
+### Added
+- Finalized Craft 5 support
+- Added support for multiple element types in 1 index ([docs](https://studioespresso.github.io/craft-scout/multiple-element-types.html))
+
 ## 5.0.0-beta.1 - 2024-03-23
 - Updated Fractal to 0.20. ([#292](https://github.com/studioespresso/craft-scout/pull/292))
 
 ## 5.0.0-alpha.1 - 2023-12-20
 ### Added
 - Initial Craft 5 support
-
 
 ## 4.0.0 - 2024-03-18
 - Updated Fractal to 0.20. ([#292](https://github.com/studioespresso/craft-scout/pull/292))
