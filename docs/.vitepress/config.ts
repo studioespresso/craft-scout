@@ -34,6 +34,7 @@ module.exports = {
                     [
                         {text: 'Events', link: '/events'},
                         {text: 'Splitting elements', link: '/splitting-elements'},
+                        {text: 'Multiple element types', link: '/multiple-element-types'},
                         {text: 'Replicas', link: '/replicas'},
                     ]
             },
