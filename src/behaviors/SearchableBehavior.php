@@ -30,7 +30,7 @@ use yii\base\Event;
  * @mixin Element
  *
  * @property Element $owner
- * @property int     $id
+ * @property int $id
  */
 class SearchableBehavior extends Behavior
 {
@@ -38,6 +38,18 @@ class SearchableBehavior extends Behavior
 
     public function validatesCriteria(ScoutIndex $scoutIndex): bool
     {
+        if (is_array($scoutIndex->criteria)) {
+            foreach ($scoutIndex->criteria as $query) {
+                $criteria = clone $query;
+                if ($criteria->id($this->owner->id)->exists()) {
+                    return true;
+                }
+                continue;
+            }
+            return false;
+        }
+
+
         $criteria = clone $scoutIndex->criteria;
 
         return $criteria
@@ -51,13 +63,26 @@ class SearchableBehavior extends Behavior
             ->getSettings()
             ->getIndices()
             ->filter(function(ScoutIndex $scoutIndex) {
-                $siteIds = array_map(function($siteId) {
-                    return (int) $siteId;
-                }, Arr::wrap($scoutIndex->criteria->siteId));
+                if (is_array($scoutIndex->criteria)) {
+                    $criteriaSiteIds = collect($scoutIndex->criteria)->map(function($criteria) {
+                        return Arr::wrap($criteria->siteId);
+                    })->flatten()->unique()->values()->toArray();
+                } else {
+                    $criteriaSiteIds = Arr::wrap($scoutIndex->criteria->siteId);
+                }
 
-                return $scoutIndex->elementType === get_class($this->owner)
-                    && ($scoutIndex->criteria->siteId === '*'
-                        || in_array((int) $this->owner->siteId, $siteIds));
+
+                $siteIds = array_map(function($siteId) {
+                    return (int)$siteId;
+                }, $criteriaSiteIds);
+
+                if (is_array($scoutIndex->criteria)) {
+                    return in_array(get_class($this->owner), $scoutIndex->getElementType())
+                        && ($criteriaSiteIds[0] === '*' || in_array((int)$this->owner->siteId, $siteIds));
+                }
+
+                return $scoutIndex->getElementType() === get_class($this->owner)
+                    && ($criteriaSiteIds[0] === '*' || in_array((int)$this->owner->siteId, $siteIds));
             });
     }
 

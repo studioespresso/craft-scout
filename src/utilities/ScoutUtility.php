@@ -4,6 +4,7 @@ namespace rias\scout\utilities;
 
 use Craft;
 use craft\base\Utility;
+use Illuminate\Support\Arr;
 use rias\scout\engines\Engine;
 use rias\scout\Scout;
 
@@ -38,22 +39,31 @@ class ScoutUtility extends Utility
             ];
 
             if (!$engine->scoutIndex->replicaIndex) {
-                $sites = 'all';
-                if ($engine->scoutIndex->criteria->siteId != '*') {
-                    $sites = [];
-                    if (is_array($engine->scoutIndex->criteria->siteId)) {
-                        foreach ($engine->scoutIndex->criteria->siteId as $id) {
-                            $sites[] = Craft::$app->getSites()->getSiteById($id);
-                        }
-                    } else {
-                        $sites = $engine->scoutIndex->criteria->siteId;
-                    }
+                $engineCriteria = collect(Arr::wrap($engine->scoutIndex->criteria));
+
+                $criteriaSites = $engineCriteria->map(function($criteria) {
+                    return $criteria->siteId;
+                })->flatten()->unique()->values()->toArray();
+
+                if (count($criteriaSites) === 1 && $criteriaSites[0] === '*') {
+                    $sites = 'all';
+                } else {
+                    $sites = collect($criteriaSites)->map(function($siteId) {
+                        return Craft::$app->getSites()->getSiteById($siteId);
+                    })->implode('name', ', ');
                 }
+
+                $totalElements = $engineCriteria->reduce(function($carry, $criteria) {
+                    return $carry + $criteria->count();
+                }, 0);
+
+                $elementType = $engine->scoutIndex->enforceElementType ? $engine->scoutIndex->elementType : 'Mixed Element Types';
+
                 $stats = array_merge($stats, [
-                    'elementType' => $engine->scoutIndex->elementType,
+                    'elementType' => $elementType,
                     'sites' => $sites,
                     'indexed' => $engine->getTotalRecords(),
-                    'elements' => $engine->scoutIndex->criteria->count(),
+                    'elements' => $totalElements,
                 ]);
             }
             return $stats;
