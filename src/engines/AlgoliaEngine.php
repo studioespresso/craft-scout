@@ -121,7 +121,7 @@ class AlgoliaEngine extends Engine
         return (int) $response['nbHits'];
     }
 
-    private function transformElements(Collection $elements): array
+    public function transformElements(Collection $elements): array
     {
         $objects = $elements->map(function(Element $element) {
             /** @var \rias\scout\behaviors\SearchableBehavior $element */

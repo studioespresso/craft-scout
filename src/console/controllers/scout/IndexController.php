@@ -106,4 +106,40 @@ class IndexController extends BaseController
 
         return ExitCode::OK;
     }
+
+    public function actionDebug($index, $id)
+    {
+        $engine = Scout::$plugin->getSettings()->getEngines()->first();
+
+        $indexes = Scout::$plugin->getSettings()->getIndices()->where('indexName', $index)->where('replicaIndex', false);
+        if(!$indexes->all()) {
+            $this->stdout("Index not found\n", Console::FG_RED);
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
+        $index = $indexes->first();
+        if(!in_array($id, $index->criteria->ids())) {
+            $this->stdout("Element not found in index\n", Console::FG_PURPLE);
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
+        $element = $index->criteria->id($id)->one();
+        $data = $engine->transformElements(collect([$element]));
+
+
+
+        dd(json_encode($data));
+
+
+
+//        $engines->filter(function (Engine $engine) use ($index) {
+//            return !$engine->scoutIndex->replicaIndex && ($index === '' || $engine->scoutIndex->indexName === $index);
+//        })->each(function (Engine $engine) use ($id) {
+//            $element = $engine->scoutIndex->criteria->where(['id' => $id])->one();
+//            $engine->update([$element]);
+//            $this->stdout("Updated element {$id} in {$engine->scoutIndex->indexName}\n", Console::FG_GREEN);
+//        });
+
+        return ExitCode::OK;
+    }
 }

@@ -4,3 +4,21 @@
     <input type="hidden" name="index" value="{{ action.index }}">
     <input type="submit" class="{{ action.style ?? 'btn submit' }}" value="{{ action.name }}">
 </form>
+
+{% js %}
+    {% js at endBody %}
+        (function ($) {
+            this.$triggerElement = $('#debug');
+            var index = this.$triggerElement.data('index');
+            this.$triggerElement.on('click', $.proxy(function (ev) {
+                const slideout = new Craft.CpScreenSlideout('scout/index/debug-slide-out?index=' + index);
+            // Open the slideout
+                slideout.open();
+                // Listen for the submit event
+                slideout.on('submit', function (e) {
+                    console.log('hier?');
+                })
+            }, this));
+        })(jQuery);
+    {% endjs %}
+{% endjs %}

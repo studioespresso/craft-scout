@@ -47,7 +47,7 @@ class IndexController extends Controller
         // check if $engine->scoutIndex->criteria is iterable
         if (is_array($engine->scoutIndex->criteria)) {
             // use array_reduce to get the count of elements
-            $elementsCount = array_reduce($engine->scoutIndex->criteria, function($carry, $query) {
+            $elementsCount = array_reduce($engine->scoutIndex->criteria, function ($carry, $query) {
                 return $carry + $query->count();
             }, 0);
 
@@ -114,13 +114,32 @@ class IndexController extends Controller
         ]);
     }
 
+    public function actionDebugSlideOut($index = null)
+    {
+        if($this->request->isPost) {
+            
+        }
+
+        $index = Scout::$plugin->getSettings()->getIndices()->where('indexName', $index)->first();
+
+        return $this->asCpScreen()
+            ->action('scout/index/debug-slide-out')
+            ->submitButtonLabel('Debug')
+            ->contentTemplate('scout/_partials/_debug_slideout', [
+                'indexName' => $index->indexName,
+                'indexCriteria' => $index->criteria,
+                'indexElementType' => $index->elementType
+        ]);
+
+    }
+
     private function getEngine(): Engine
     {
         $index = Craft::$app->getRequest()->getRequiredBodyParam('index');
         $engines = Scout::$plugin->getSettings()->getEngines();
 
         /* @var \rias\scout\engines\Engine $engine */
-        return $engines->first(function(Engine $engine) use ($index) {
+        return $engines->first(function (Engine $engine) use ($index) {
             return $engine->scoutIndex->indexName === $index;
         });
     }

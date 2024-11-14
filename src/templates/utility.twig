@@ -79,6 +79,11 @@
                             } %}
                         {% endif %}
                     </div>
+                    {% if index.replicaIndex == false %}
+                    <div style="display: flex; justify-content: left; flex-wrap: wrap;">
+                        <span class="btn" id="debug" data-index="{{ index.name }}">{{ "Debug" }}</span>
+                    </div>
+                    {% endif %}
                 </td>
             </tr>
             </tbody>

@@ -1,0 +1,14 @@
+{% import "_includes/forms" as forms %}
+
+<h2>Debug</h2>
+{{ hiddenInput('index', indexName ) }}
+
+ {{ forms.elementSelectField({
+     label: "Select an element",
+     id: "element",
+     name: "element",
+     elementType: indexElementType,
+     criteria: indexCriteria,
+     limit: 1,
+     selectionLabel: "Select an element",
+ }) }}
