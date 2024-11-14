@@ -2,5 +2,5 @@
     {{ csrfInput() }}
     <input type="hidden" name="action" value="{{ 'scout/index/'~action.slug }}">
     <input type="hidden" name="index" value="{{ action.index }}">
-    <input type="submit" class="btn submit" value="{{ action.name }}">
+    <input type="submit" class="{{ action.style ?? 'btn submit' }}" value="{{ action.name }}">
 </form>
