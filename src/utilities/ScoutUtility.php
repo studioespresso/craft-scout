@@ -2,6 +2,7 @@
 
 namespace rias\scout\utilities;
 
+use Algolia\AlgoliaSearch\Exceptions\NotFoundException;
 use Craft;
 use craft\base\Utility;
 use Illuminate\Support\Arr;
@@ -59,10 +60,19 @@ class ScoutUtility extends Utility
 
                 $elementType = $engine->scoutIndex->enforceElementType ? $engine->scoutIndex->elementType : 'Mixed Element Types';
 
+                try {
+                    $totalRecords = $engine->getTotalRecords();
+                    $indexEmpty = false;
+                } catch (NotFoundException $e) {
+                    $totalRecords = 0;
+                    $indexEmpty = true;
+                }
+
                 $stats = array_merge($stats, [
                     'elementType' => $elementType,
                     'sites' => $sites,
-                    'indexed' => $engine->getTotalRecords(),
+                    'indexed' => $totalRecords,
+                    'indexEmpty' => $indexEmpty,
                     'elements' => $totalElements,
                 ]);
             }

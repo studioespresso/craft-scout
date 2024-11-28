@@ -22,7 +22,11 @@
                 </tr>
                 <tr>
                     <th class="light">{{ "Records in Index"|t("scout") }}</th>
-                    <td>{{ index.indexed }}</td>
+                    {% if not index.indexEmpty %}
+                        <td>{{ index.indexed }}</td>
+                    {% else %}
+                        <td>{{ "Index not synced yet"|t("scout") }}</td>
+                    {% endif %}
                 </tr>
             {% endif %}
             <tr>
