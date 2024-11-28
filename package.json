@@ -21,7 +21,7 @@
   "homepage": "https://github.com/janhenckens/craft3-seo-fields#readme",
   "devDependencies": {
     "codemirror": "^5.44.0",
-    "vitepress": "^1.0.0-rc.25",
+    "vitepress": "^1.5.0",
     "vue": "^3.2.40"
   }
 }
