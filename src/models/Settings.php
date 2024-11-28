@@ -4,6 +4,7 @@ namespace rias\scout\models;
 
 use Craft;
 use craft\base\Model;
+use craft\helpers\App;
 use Exception;
 use Illuminate\Support\Collection;
 use rias\scout\engines\AlgoliaEngine;
@@ -123,16 +124,16 @@ class Settings extends Model
 
     public function getApplicationId(): string
     {
-        return Craft::parseEnv($this->application_id);
+        return App::parseEnv($this->application_id);
     }
 
     public function getAdminApiKey(): string
     {
-        return Craft::parseEnv($this->admin_api_key);
+        return App::parseEnv($this->admin_api_key);
     }
 
     public function getSearchApiKey(): string
     {
-        return Craft::parseEnv($this->search_api_key);
+        return App::parseEnv($this->search_api_key);
     }
 }
