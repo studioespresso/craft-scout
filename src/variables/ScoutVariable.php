@@ -21,7 +21,7 @@ class ScoutVariable
         return Scout::$plugin->getSettings()->getSearchApiKey();
     }
 
-    public function getPluginName()
+    public function getPluginName(): string
     {
         return Scout::$plugin->getSettings()->pluginName;
     }
