@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.2 - 2024-12-02
+### Fixed
+- Don't through an error on the CP Utility when an index isn't created yet ([#343](https://github.com/studioespresso/craft-scout/issues/343))
+
 ## 5.0.1 - 2024-08-05
 ### Fixed
 - Ignore replica indeces with indexing ([#304](https://github.com/studioespresso/craft-scout/pull/304))
