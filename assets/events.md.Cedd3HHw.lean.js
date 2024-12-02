@@ -1,1 +1,0 @@
-import{_ as s,c as i,o as a,V as e}from"./chunks/framework.Dua4J4qz.js";const g=JSON.parse('{"title":"Events","description":"","frontmatter":{"title":"Events"},"headers":[],"relativePath":"events.md","filePath":"events.md"}'),n={name:"events.md"},t=e("",13),h=[t];function l(p,k,r,d,o,c){return a(),i("div",null,h)}const y=s(n,[["render",l]]);export{g as __pageData,y as default};
