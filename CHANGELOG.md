@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 4.1.2 - 2024-12-02
+### Fixed
+- Don't through an error on the CP Utility when an index isn't created yet ([#343](https://github.com/studioespresso/craft-scout/issues/343))
+
 ## 4.1.1 - 2024-07-15
 ### Fixed
 - Removed debug log that tripped some Sentry loggers ([#312](https://github.com/studioespresso/craft-scout/issues/312))
