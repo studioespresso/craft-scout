@@ -3,6 +3,7 @@
 namespace rias\scout\jobs;
 
 use craft\base\Element;
+use craft\elements\db\ElementQuery;
 use craft\queue\BaseJob;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
