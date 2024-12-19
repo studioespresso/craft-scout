@@ -28,7 +28,7 @@
     "require": {
         "php": "^8.2.0",
         "craftcms/cms": "^5.0.0-beta.1",
-        "algolia/algoliasearch-client-php": "^2.3|^3.0",
+        "algolia/algoliasearch-client-php": "^4.11.2",
         "league/fractal": "^0.20"
     },
     "conflict": {
