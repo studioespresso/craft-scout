@@ -17,6 +17,7 @@ use craft\web\twig\variables\CraftVariable;
 use Exception;
 use Illuminate\Support\Collection;
 use rias\scout\behaviors\SearchableBehavior;
+use rias\scout\events\ShouldBeSearchableEvent;
 use rias\scout\jobs\DeindexElement;
 use rias\scout\jobs\IndexElement;
 use rias\scout\models\Settings;
@@ -182,6 +183,18 @@ class Scout extends Plugin
                 }
             );
         }
+
+        Event::on(SearchableBehavior::class,
+            SearchableBehavior::EVENT_SHOULD_BE_SEARCHABLE, function(ShouldBeSearchableEvent $event) {
+                $element = $event->element;
+                $class = get_class($element);
+                if ($class === "craft\\commerce\\elements\\Order") {
+                    if (!$element->dateOrdered) {
+                        $event->shouldBeSearchable = false;
+                    }
+                }
+            }
+        );
 
         Event::on(
             Elements::class,
