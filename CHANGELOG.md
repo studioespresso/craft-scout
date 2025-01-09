@@ -2,9 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.4 - 2025-01-09
+### Fixed
+- Fixed an issue with Craft Commerce and the ``autoSetNewCartAddresses`` setting ([#352](https://github.com/studioespresso/craft-scout/issues/352))
+
 ## 5.0.3 - 2024-12-10
 ### Fixed
 - Fixed an error when using multiple element types in 1 index and indexing through the queue ([#347](https://github.com/studioespresso/craft-scout/issues/347))
+
 ## 5.0.2 - 2024-12-02
 ### Fixed
 - Don't throw an error on the CP Utility when an index isn't created yet ([#343](https://github.com/studioespresso/craft-scout/issues/343))
