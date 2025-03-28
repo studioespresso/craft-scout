@@ -4,6 +4,7 @@ namespace rias\scout\controllers;
 
 use Craft;
 use craft\helpers\Json;
+use craft\helpers\Queue;
 use craft\helpers\UrlHelper;
 use craft\web\Controller;
 use rias\scout\engines\Engine;
@@ -32,13 +33,14 @@ class IndexController extends Controller
         $engine = $this->getEngine();
 
         if (Scout::$plugin->getSettings()->queue) {
-            Craft::$app->getQueue()
-                ->ttr(Scout::$plugin->getSettings()->ttr)
-                ->priority(Scout::$plugin->getSettings()->priority)
-                ->push(new ImportIndex([
-                    'indexName' => $engine->scoutIndex->indexName,
-                ]));
+            Queue::push(new ImportIndex([
+                'indexName' => $engine->scoutIndex->indexName,
 
+            ]),
+                Scout::$plugin->getSettings()->priority,
+                null,
+                Scout::$plugin->getSettings()->ttr
+            );
             Craft::$app->getSession()->setNotice("Queued job to update element(s) in {$engine->scoutIndex->indexName}");
 
             return $this->redirect(UrlHelper::url('utilities/' . ScoutUtility::id()));
@@ -47,7 +49,7 @@ class IndexController extends Controller
         // check if $engine->scoutIndex->criteria is iterable
         if (is_array($engine->scoutIndex->criteria)) {
             // use array_reduce to get the count of elements
-            $elementsCount = array_reduce($engine->scoutIndex->criteria, function($carry, $query) {
+            $elementsCount = array_reduce($engine->scoutIndex->criteria, function ($carry, $query) {
                 return $carry + $query->count();
             }, 0);
 
@@ -120,7 +122,7 @@ class IndexController extends Controller
         $engines = Scout::$plugin->getSettings()->getEngines();
 
         /* @var \rias\scout\engines\Engine $engine */
-        return $engines->first(function(Engine $engine) use ($index) {
+        return $engines->first(function (Engine $engine) use ($index) {
             return $engine->scoutIndex->indexName === $index;
         });
     }

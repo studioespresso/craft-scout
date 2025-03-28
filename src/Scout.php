@@ -11,6 +11,7 @@ use craft\events\DefineBehaviorsEvent;
 use craft\events\ElementEvent;
 use craft\events\RegisterComponentTypesEvent;
 use craft\helpers\ElementHelper;
+use craft\helpers\Queue;
 use craft\services\Elements;
 use craft\services\Utilities;
 use craft\web\twig\variables\CraftVariable;
@@ -48,12 +49,12 @@ class Scout extends Plugin
 
     public function init()
     {
-        Craft::$app->onInit(function() {
+        Craft::$app->onInit(function () {
             parent::init();
 
             self::$plugin = $this;
 
-            Craft::$container->setSingleton(SearchClient::class, function() {
+            Craft::$container->setSingleton(SearchClient::class, function () {
                 $config = SearchConfig::create(
                     self::$plugin->getSettings()->getApplicationId(),
                     self::$plugin->getSettings()->getAdminApiKey()
@@ -103,7 +104,7 @@ class Scout extends Plugin
         Event::on(
             Utilities::class,
             Utilities::EVENT_REGISTER_UTILITIES,
-            function(RegisterComponentTypesEvent $event) {
+            function (RegisterComponentTypesEvent $event) {
                 $event->types[] = ScoutUtility::class;
             }
         );
@@ -115,7 +116,7 @@ class Scout extends Plugin
         Event::on(
             Element::class,
             Element::EVENT_DEFINE_BEHAVIORS,
-            function(DefineBehaviorsEvent $event) {
+            function (DefineBehaviorsEvent $event) {
                 $event->behaviors['searchable'] = SearchableBehavior::class;
             }
         );
@@ -127,7 +128,7 @@ class Scout extends Plugin
         Event::on(
             CraftVariable::class,
             CraftVariable::EVENT_INIT,
-            function(Event $event) {
+            function (Event $event) {
                 /** @var CraftVariable $variable */
                 $variable = $event->sender;
                 $variable->set('scout', ScoutVariable::class);
@@ -156,7 +157,7 @@ class Scout extends Plugin
             Event::on(
                 $event[0],
                 $event[1],
-                function(ElementEvent $event) {
+                function (ElementEvent $event) {
                     /** @var SearchableBehavior $element */
                     $element = $event->element;
                     $baseElement = ElementHelper::rootElementIfCanonical($element);
@@ -167,15 +168,15 @@ class Scout extends Plugin
                         }
 
                         if (Scout::$plugin->getSettings()->queue) {
-                            Craft::$app->getQueue()
-                                ->ttr(Scout::$plugin->getSettings()->ttr)
-                                ->priority(Scout::$plugin->getSettings()->priority)
-                                ->push(
-                                    new IndexElement([
-                                        'id' => $baseElement->id,
-                                        'siteId' => $baseElement->site ? $baseElement->site->id : null,
-                                    ])
-                                );
+                            Queue::push(
+                                new IndexElement([
+                                    'id' => $baseElement->id,
+                                    'siteId' => $baseElement->site ? $baseElement->site->id : null,
+                                ]),
+                                Scout::$plugin->getSettings()->priority,
+                                null,
+                                Scout::$plugin->getSettings()->ttr
+                            );
                         } else {
                             $baseElement->searchable();
                         }
@@ -185,7 +186,7 @@ class Scout extends Plugin
         }
 
         Event::on(SearchableBehavior::class,
-            SearchableBehavior::EVENT_SHOULD_BE_SEARCHABLE, function(ShouldBeSearchableEvent $event) {
+            SearchableBehavior::EVENT_SHOULD_BE_SEARCHABLE, function (ShouldBeSearchableEvent $event) {
                 $element = $event->element;
                 $class = get_class($element);
                 if ($class === "craft\\commerce\\elements\\Order") {
@@ -199,7 +200,7 @@ class Scout extends Plugin
         Event::on(
             Elements::class,
             Elements::EVENT_BEFORE_DELETE_ELEMENT,
-            function(ElementEvent $event) {
+            function (ElementEvent $event) {
                 if (!Scout::$plugin->getSettings()->indexRelations) {
                     $this->beforeDeleteRelated = new Collection();
                 }
@@ -213,15 +214,15 @@ class Scout extends Plugin
 
                 // Only run this through the queue if the user has that enabled
                 if (Scout::$plugin->getSettings()->queue) {
-                    Craft::$app->getQueue()
-                        ->ttr(Scout::$plugin->getSettings()->ttr)
-                        ->priority(Scout::$plugin->getSettings()->priority)
-                        ->push(
-                            new DeindexElement([
-                                'id' => $element->id,
-                                'siteId' => $element->site ? $element->site->id : null,
-                            ])
-                        );
+                    Queue::push(
+                        new DeindexElement([
+                            'id' => $element->id,
+                            'siteId' => $element->site ? $element->site->id : null,
+                        ]),
+                        Scout::$plugin->getSettings()->priority,
+                        null,
+                        Scout::$plugin->getSettings()->ttr
+                    );
                 }
             }
         );
@@ -229,7 +230,7 @@ class Scout extends Plugin
         Event::on(
             Elements::class,
             Elements::EVENT_AFTER_DELETE_ELEMENT,
-            function(ElementEvent $event) {
+            function (ElementEvent $event) {
                 // Skip this step if we already ran the DeIndex function earlier
                 if (Scout::$plugin->getSettings()->queue) {
                     return;
@@ -242,7 +243,7 @@ class Scout extends Plugin
                 }
 
                 if ($this->beforeDeleteRelated) {
-                    $this->beforeDeleteRelated->each(function(Element $relatedElement) {
+                    $this->beforeDeleteRelated->each(function (Element $relatedElement) {
                         /* @var SearchableBehavior $relatedElement */
                         if ($relatedElement->hasMethod('searchable')) {
                             $relatedElement->searchable(false);

@@ -13,6 +13,7 @@ use craft\elements\GlobalSet;
 use craft\elements\Tag;
 use craft\elements\User;
 use craft\helpers\ElementHelper;
+use craft\helpers\Queue;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use League\Fractal\Manager;
@@ -62,12 +63,12 @@ class SearchableBehavior extends Behavior
         return Scout::$plugin
             ->getSettings()
             ->getIndices()
-            ->filter(function(ScoutIndex $scoutIndex) {
+            ->filter(function (ScoutIndex $scoutIndex) {
                 if ($scoutIndex->replicaIndex) {
                     return false;
                 }
                 if (is_array($scoutIndex->criteria)) {
-                    $criteriaSiteIds = collect($scoutIndex->criteria)->map(function($criteria) {
+                    $criteriaSiteIds = collect($scoutIndex->criteria)->map(function ($criteria) {
                         return Arr::wrap($criteria->siteId);
                     })->flatten()->unique()->values()->toArray();
                 } else {
@@ -75,7 +76,7 @@ class SearchableBehavior extends Behavior
                 }
 
 
-                $siteIds = array_map(function($siteId) {
+                $siteIds = array_map(function ($siteId) {
                     return (int)$siteId;
                 }, $criteriaSiteIds);
 
@@ -91,7 +92,7 @@ class SearchableBehavior extends Behavior
 
     public function searchableUsing(): Collection
     {
-        return $this->getIndices()->map(function(ScoutIndex $scoutIndex) {
+        return $this->getIndices()->map(function (ScoutIndex $scoutIndex) {
             return Scout::$plugin->getSettings()->getEngine($scoutIndex);
         });
     }
@@ -102,24 +103,25 @@ class SearchableBehavior extends Behavior
             return;
         }
 
-        $this->searchableUsing()->each(function(Engine $engine) use ($propagate) {
+        $this->searchableUsing()->each(function (Engine $engine) use ($propagate) {
             if (!$this->validatesCriteria($engine->scoutIndex)) {
                 return $engine->delete($this->owner);
             }
 
             if (Scout::$plugin->getSettings()->getQueue()) {
-                return Craft::$app->getQueue()
-                    ->ttr(Scout::$plugin->getSettings()->ttr)
-                    ->priority(Scout::$plugin->getSettings()->priority)
-                    ->push(
-                        new MakeSearchable([
-                            'id' => $this->owner->id,
-                            'siteId' => $this->owner->siteId,
-                            'indexName' => $engine->scoutIndex->indexName,
-                            'propagate' => $propagate,
-                        ])
-                    );
-            } elseif ($propagate) {
+                return Queue::push(new MakeSearchable([
+                    'id' => $this->owner->id,
+                    'siteId' => $this->owner->siteId,
+                    'indexName' => $engine->scoutIndex->indexName,
+                    'propagate' => $propagate,
+                ]),
+                    Scout::$plugin->getSettings()->priority,
+                    null,
+                    Scout::$plugin->getSettings()->ttr
+                );
+            }
+
+            if ($propagate) {
                 $this->searchableRelations();
             }
 
@@ -150,7 +152,7 @@ class SearchableBehavior extends Behavior
             return;
         }
 
-        $this->getRelatedElements()->each(function(Element $relatedElement) {
+        $this->getRelatedElements()->each(function (Element $relatedElement) {
             /* @var SearchableBehavior $relatedElement */
             $relatedElement->searchable(false);
         });
@@ -166,7 +168,7 @@ class SearchableBehavior extends Behavior
 
         if (!empty($settings->relatedElementTypes)) {
             return Collection::make($settings->relatedElementTypes)
-                ->flatMap(function($className) {
+                ->flatMap(function ($className) {
                     return $className::find()->relatedTo($this->owner)->site('*')->all();
                 });
         }

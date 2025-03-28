@@ -4,6 +4,7 @@ namespace rias\scout\console\controllers\scout;
 
 use Craft;
 use craft\helpers\Console;
+use craft\helpers\Queue;
 use rias\scout\console\controllers\BaseController;
 use rias\scout\engines\Engine;
 use rias\scout\jobs\ImportIndex;
@@ -35,9 +36,9 @@ class IndexController extends BaseController
         }
 
         $engines = Scout::$plugin->getSettings()->getEngines();
-        $engines->filter(function(Engine $engine) use ($index) {
+        $engines->filter(function (Engine $engine) use ($index) {
             return !$engine->scoutIndex->replicaIndex && ($index === '' || $engine->scoutIndex->indexName === $index);
-        })->each(function(Engine $engine) {
+        })->each(function (Engine $engine) {
             $engine->flush();
             $this->stdout("Flushed index {$engine->scoutIndex->indexName}\n", Console::FG_GREEN);
         });
@@ -49,22 +50,24 @@ class IndexController extends BaseController
     {
         $engines = Scout::$plugin->getSettings()->getEngines();
 
-        $engines->filter(function(Engine $engine) use ($index) {
+        $engines->filter(function (Engine $engine) use ($index) {
             return !$engine->scoutIndex->replicaIndex && ($index === '' || $engine->scoutIndex->indexName === $index);
-        })->each(function(Engine $engine) {
+        })->each(function (Engine $engine) {
             if ($this->queue) {
-                Craft::$app->getQueue()
-                    ->ttr(Scout::$plugin->getSettings()->ttr)
-                    ->priority(Scout::$plugin->getSettings()->priority)
-                    ->push(new ImportIndex([
-                        'indexName' => $engine->scoutIndex->indexName,
-                    ]));
+                Queue::push(new ImportIndex([
+                    'indexName' => $engine->scoutIndex->indexName,
+                ]),
+                    Scout::$plugin->getSettings()->priority,
+                    null,
+                    Scout::$plugin->getSettings()->ttr
+                );
+
                 $this->stdout("Added ImportIndex job for '{$engine->scoutIndex->indexName}' to the queue" . PHP_EOL, Console::FG_GREEN);
             } else {
                 // check if $engine->scoutIndex->criteria is iterable
                 if (is_array($engine->scoutIndex->criteria)) {
                     // use array_reduce to get the count of elements
-                    $elementsCount = array_reduce($engine->scoutIndex->criteria, function($carry, $query) {
+                    $elementsCount = array_reduce($engine->scoutIndex->criteria, function ($carry, $query) {
                         return $carry + $query->count();
                     }, 0);
 
