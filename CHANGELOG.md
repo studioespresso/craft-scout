@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.5 - 2025-03-28
+### Fixed
+- Fix regression when indexRelations is false ([#364](https://github.com/studioespresso/craft-scout/pull/364))
+- Scout now uses Craft's Queue helper to push jobs, fixes issues with queue drivers which don't support all features ([#365](https://github.com/studioespresso/craft-scout/issues/365))
+
 ## 5.0.4 - 2025-01-09
 ### Fixed
 - Fixed an issue with Craft Commerce and the ``autoSetNewCartAddresses`` setting ([#352](https://github.com/studioespresso/craft-scout/issues/352))
