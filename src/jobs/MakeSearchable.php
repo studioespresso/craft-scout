@@ -78,7 +78,6 @@ class MakeSearchable extends BaseJob
     private function getElement()
     {
         if (is_array($this->getIndex()->criteria)) {
-            /** @phpstan-ignore-next-line */
             $element = collect($this->getIndex()->criteria)->first(function(ElementQuery $criteria) {
                 return $criteria->id($this->id)->siteId($this->siteId)->exists();
             });
@@ -95,7 +94,6 @@ class MakeSearchable extends BaseJob
     private function getAnyElement()
     {
         if (is_array($this->getIndex()->criteria)) {
-            /** @phpstan-ignore-next-line */
             $element = collect($this->getIndex()->criteria)->first(function(ElementQuery $criteria) {
                 return $criteria->id($this->id)->siteId($this->siteId)->status(null)->exists();
             });

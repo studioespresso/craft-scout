@@ -2,7 +2,6 @@
 
 namespace rias\scout\behaviors;
 
-use Craft;
 use craft\base\Element;
 use craft\commerce\elements\Product;
 use craft\commerce\elements\Variant;
@@ -63,12 +62,12 @@ class SearchableBehavior extends Behavior
         return Scout::$plugin
             ->getSettings()
             ->getIndices()
-            ->filter(function (ScoutIndex $scoutIndex) {
+            ->filter(function(ScoutIndex $scoutIndex) {
                 if ($scoutIndex->replicaIndex) {
                     return false;
                 }
                 if (is_array($scoutIndex->criteria)) {
-                    $criteriaSiteIds = collect($scoutIndex->criteria)->map(function ($criteria) {
+                    $criteriaSiteIds = collect($scoutIndex->criteria)->map(function($criteria) {
                         return Arr::wrap($criteria->siteId);
                     })->flatten()->unique()->values()->toArray();
                 } else {
@@ -76,7 +75,7 @@ class SearchableBehavior extends Behavior
                 }
 
 
-                $siteIds = array_map(function ($siteId) {
+                $siteIds = array_map(function($siteId) {
                     return (int)$siteId;
                 }, $criteriaSiteIds);
 
@@ -92,7 +91,7 @@ class SearchableBehavior extends Behavior
 
     public function searchableUsing(): Collection
     {
-        return $this->getIndices()->map(function (ScoutIndex $scoutIndex) {
+        return $this->getIndices()->map(function(ScoutIndex $scoutIndex) {
             return Scout::$plugin->getSettings()->getEngine($scoutIndex);
         });
     }
@@ -103,7 +102,7 @@ class SearchableBehavior extends Behavior
             return;
         }
 
-        $this->searchableUsing()->each(function (Engine $engine) use ($propagate) {
+        $this->searchableUsing()->each(function(Engine $engine) use ($propagate) {
             if (!$this->validatesCriteria($engine->scoutIndex)) {
                 return $engine->delete($this->owner);
             }
@@ -152,7 +151,7 @@ class SearchableBehavior extends Behavior
             return;
         }
 
-        $this->getRelatedElements()->each(function (Element $relatedElement) {
+        $this->getRelatedElements()->each(function(Element $relatedElement) {
             /* @var SearchableBehavior $relatedElement */
             $relatedElement->searchable(false);
         });
@@ -168,7 +167,7 @@ class SearchableBehavior extends Behavior
 
         if (!empty($settings->relatedElementTypes)) {
             return Collection::make($settings->relatedElementTypes)
-                ->flatMap(function ($className) {
+                ->flatMap(function($className) {
                     return $className::find()->relatedTo($this->owner)->site('*')->all();
                 });
         }
