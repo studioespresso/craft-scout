@@ -7,6 +7,7 @@ use Algolia\AlgoliaSearch\SearchClient;
 use Craft;
 use craft\base\Element;
 use craft\base\Plugin;
+use craft\events\BulkOpEvent;
 use craft\events\DefineBehaviorsEvent;
 use craft\events\ElementEvent;
 use craft\events\RegisterComponentTypesEvent;
@@ -19,6 +20,7 @@ use Exception;
 use Illuminate\Support\Collection;
 use rias\scout\behaviors\SearchableBehavior;
 use rias\scout\events\ShouldBeSearchableEvent;
+use rias\scout\jobs\BatchIndexElement;
 use rias\scout\jobs\DeindexElement;
 use rias\scout\jobs\IndexElement;
 use rias\scout\models\Settings;
@@ -147,43 +149,54 @@ class Scout extends Plugin
 
     private function registerEventHandlers(): void
     {
+        foreach (Craft::$app->elements->allElementTypes as $elementType) {
+            BulkOpEvent::defer($elementType, Element::EVENT_AFTER_SAVE, function (BulkOpEvent $event) use ($elementType) {
+                $elementIds = $elementType::find()->inBulkOp($event->key)->ids();
+                if ($elementIds) {
+                    Queue::push(new BatchIndexElement([
+                        'elements' => $elementIds,
+                    ]));
+                }
+            });
+        }
+
         $events = [
-            [Elements::class, Elements::EVENT_AFTER_SAVE_ELEMENT],
-            [Elements::class, Elements::EVENT_AFTER_RESTORE_ELEMENT],
-            [Elements::class, Elements::EVENT_AFTER_UPDATE_SLUG_AND_URI],
+//            [Elements::class, Elements::EVENT_AFTER_SAVE_ELEMENT],
+//            [Elements::class, Elements::EVENT_AFTER_RESTORE_ELEMENT],
+//            [Elements::class, Elements::EVENT_AFTER_UPDATE_SLUG_AND_URI],
         ];
 
-        foreach ($events as $event) {
-            Event::on(
-                $event[0],
-                $event[1],
-                function (ElementEvent $event) {
-                    /** @var SearchableBehavior $element */
-                    $element = $event->element;
-                    $baseElement = ElementHelper::rootElementIfCanonical($element);
-                    if ($baseElement) {
-                        /** @phpstan-var UrlManager $urlManager */
-                        if (!$baseElement->hasMethod('searchable') || !$baseElement->shouldBeSearchable()) {
-                            return;
-                        }
-
-                        if (Scout::$plugin->getSettings()->queue) {
-                            Queue::push(
-                                new IndexElement([
-                                    'id' => $baseElement->id,
-                                    'siteId' => $baseElement->site ? $baseElement->site->id : null,
-                                ]),
-                                Scout::$plugin->getSettings()->priority,
-                                null,
-                                Scout::$plugin->getSettings()->ttr
-                            );
-                        } else {
-                            $baseElement->searchable();
-                        }
-                    }
-                }
-            );
-        }
+//        foreach ($events as $event) {
+//            Event::on(
+//                $event[0],
+//                $event[1],
+//                function (ElementEvent $event) {
+//                    /** @var SearchableBehavior $element */
+//                    $element = $event->element;
+//                    $baseElement = ElementHelper::rootElementIfCanonical($element);
+//                    if ($baseElement) {
+//                        /** @phpstan-var UrlManager $urlManager */
+//                        if (!$baseElement->hasMethod('searchable') || !$baseElement->shouldBeSearchable()) {
+//                            return;
+//                        }
+//
+//                        if (Scout::$plugin->getSettings()->queue) {
+//                            Queue::push(
+//                                new IndexElement([
+//                                    'id' => $baseElement->id,
+//                                    'siteId' => $baseElement->site ? $baseElement->site->id : null,
+//                                ]),
+//                                Scout::$plugin->getSettings()->priority,
+//                                null,
+//                                Scout::$plugin->getSettings()->ttr
+//                            );
+//                        } else {
+//                            $baseElement->searchable();
+//                        }
+//                    }
+//                }
+//            );
+//        }
 
         Event::on(SearchableBehavior::class,
             SearchableBehavior::EVENT_SHOULD_BE_SEARCHABLE, function (ShouldBeSearchableEvent $event) {
