@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.6 - 2025-06-02
+### Fixed
+- Fixed an issue when Craft Commerce was installed but not enabled ([#368](https://github.com/studioespresso/craft-scout/issues/368))
+
+### Added
+- Importing indexes with multiple element types now echo the element count for each type ([#366](https://github.com/studioespresso/craft-scout/issues/366))
+
 ## 5.0.5 - 2025-03-28
 ### Fixed
 - Fix regression when indexRelations is false ([#364](https://github.com/studioespresso/craft-scout/pull/364))
