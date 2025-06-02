@@ -182,11 +182,13 @@ class SearchableBehavior extends Behavior
         $products = [];
         $variants = [];
         // @codeCoverageIgnoreStart
-        if (class_exists(Product::class)) {
-            $products = Product::find()->relatedTo($this->owner)->site('*')->all();
-        }
-        if (class_exists(Variant::class)) {
-            $variants = Variant::find()->relatedTo($this->owner)->site('*')->all();
+        if (\Craft::$app->getPLugins()->isPluginEnabled('commerce')) {
+            if (class_exists(Product::class)) {
+                $products = Product::find()->relatedTo($this->owner)->site('*')->all();
+            }
+            if (class_exists(Variant::class)) {
+                $variants = Variant::find()->relatedTo($this->owner)->site('*')->all();
+            }
         }
         // @codeCoverageIgnoreEnd
 
@@ -208,9 +210,9 @@ class SearchableBehavior extends Behavior
             return false;
         }
 
-        if ($this->owner->propagating) {
-            return false;
-        }
+//        if ($this->owner->propagating) {
+//            return false;
+//        }
 
         if (ElementHelper::isDraftOrRevision($this->owner)) {
             return false;
