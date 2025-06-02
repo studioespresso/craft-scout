@@ -74,12 +74,17 @@ class IndexController extends BaseController
                     $elementsUpdated = 0;
 
                     foreach ($engine->scoutIndex->criteria as $query) {
+                        $totalElements = $query->count();
+                        $elementsUpdated = 0;
                         $batch = $query->batch(
                             Scout::$plugin->getSettings()->batch_size
                         );
 
+
                         foreach ($batch as $elements) {
                             $engine->update($elements);
+                            $elementsUpdated += count($elements);
+                            $this->stdout("Updated {$elementsUpdated}/{$totalElements} element(s) ({$query->elementType}) in {$engine->scoutIndex->indexName}\n", Console::FG_GREEN);
                         }
                     }
                 } else {
