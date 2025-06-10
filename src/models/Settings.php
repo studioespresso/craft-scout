@@ -58,6 +58,8 @@ class Settings extends Model
     /** @var string[] An array of ::class strings */
     public array $relatedElementTypes = [];
 
+    public bool $allowPropagation = false;
+
     public function fields(): array
     {
         $fields = parent::fields();
