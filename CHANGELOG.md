@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.7 - 2025-06-10
+### Added
+- Propagating elements are now also indexed when they are match in an index - currently behind a feature flag ([#367](https://github.com/studioespresso/craft-scout/issues/367))
+
+
 ## 5.0.6 - 2025-06-02
 ### Fixed
 - Fixed an issue when Craft Commerce was installed but not enabled ([#368](https://github.com/studioespresso/craft-scout/issues/368))
