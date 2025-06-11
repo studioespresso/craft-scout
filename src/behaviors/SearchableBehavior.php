@@ -213,7 +213,9 @@ class SearchableBehavior extends Behavior
         }
 
         if ($this->owner->propagating) {
-            return false;
+            if (!Scout::$plugin->getSettings()->allowPropagation) {
+                return false;
+            }
         }
 
         if (ElementHelper::isDraftOrRevision($this->owner)) {
