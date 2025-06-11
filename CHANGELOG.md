@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 4.1.3 - 2025-06-11
+### Added
+- Propagating elements are now also indexed when they are matched in an index - currently behind a feature flag ([#367](https://github.com/studioespresso/craft-scout/issues/367))
+
 ## 4.1.2 - 2024-12-02
 ### Fixed
 - Don't through an error on the CP Utility when an index isn't created yet ([#343](https://github.com/studioespresso/craft-scout/issues/343))
