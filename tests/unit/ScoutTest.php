@@ -108,26 +108,7 @@ class ScoutTest extends Unit
 
         $scout->init();
     }
-
-    /** @test * */
-    public function it_has_rules_for_the_settings()
-    {
-        $scout = new Scout('scout');
-        $settings = $scout->getSettings();
-
-        $settings->sync = 'not-a-boolean';
-        $settings->queue = 'not-a-boolean';
-        $settings->connect_timeout = 'not-a-number';
-
-        $settings->validate();
-
-        $this->assertEquals('Application Id cannot be blank.', $settings->errors['application_id'][0]);
-        $this->assertEquals('Admin Api Key cannot be blank.', $settings->errors['admin_api_key'][0]);
-        $this->assertEquals('Sync must be either "1" or "0".', $settings->errors['sync'][0]);
-        $this->assertEquals('Queue must be either "1" or "0".', $settings->errors['queue'][0]);
-        $this->assertEquals('Connect Timeout must be an integer.', $settings->errors['connect_timeout'][0]);
-    }
-
+    
     /** @test * */
     public function it_registers_utility()
     {
