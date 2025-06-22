@@ -81,24 +81,61 @@ class MultiElementEventHandlersTest extends Unit
         ]);
         Craft::$app->getEntries()->saveSection($section);
 
+        $primarySite = Craft::$app->getSites()->getPrimarySite();
         $catgroup = new CategoryGroup([
             'name' => 'News Categories',
             'handle' => 'newsCategories',
             'maxLevels' => 1,
             'defaultPlacement' => 'end',
             'siteSettings' => [
-                Craft::$app->getSites()->getPrimarySite()->id =>
-                    new CategoryGroup_SiteSettings([
-                        'hasUrls' => true,
-                        'uriFormat' => 'categories/{slug}',
-                    ])
+                new CategoryGroup_SiteSettings([
+                    'siteId' => $primarySite->id,
+                    'hasUrls' => true,
+                    'uriFormat' => 'categories/{slug}',
+                    'template' => null,
+                ])
             ],
         ]);
 
-        Craft::$app->getCategories()->saveGroup($catgroup);
+        // Set up a proper field layout for the category group
+        $fieldLayout = new \craft\models\FieldLayout([
+            'type' => \craft\elements\Category::class,
+        ]);
+        
+        // Create field layout tabs to properly handle the title field
+        $fieldLayoutTab = new \craft\models\FieldLayoutTab([
+            'name' => 'Content',
+            'sortOrder' => 1,
+        ]);
+        $fieldLayout->setTabs([$fieldLayoutTab]);
+        
+        \Craft::$app->getFields()->saveLayout($fieldLayout);
+        $catgroup->fieldLayoutId = $fieldLayout->id;
 
+        $success = Craft::$app->getCategories()->saveGroup($catgroup);
+        
+        if (!$success) {
+            $errors = [];
+            foreach ($catgroup->getErrors() as $attribute => $attributeErrors) {
+                foreach ($attributeErrors as $error) {
+                    $errors[] = "$attribute: $error";
+                }
+            }
+            throw new \Exception('Failed to save CategoryGroup: ' . implode(', ', $errors));
+        }
+
+        // Force database to commit and clear query cache to ensure CategoryGroup is available
+        Craft::$app->getDb()->getTransaction()?->commit();
+        Craft::$app->getElements()->invalidateAllCaches();
+        
+        // Reload the category group from database to ensure proper field loading
+        $this->catgroup = Craft::$app->getCategories()->getGroupById($catgroup->id);
+        
+        if (!$this->catgroup) {
+            throw new \Exception('Failed to reload CategoryGroup with ID: ' . $catgroup->id);
+        }
+        
         $this->section = $section;
-        $this->catgroup = $catgroup;
 
         $scoutIndex = new ScoutIndex('Items');
         $scoutIndex->elementType(Entry::class);
@@ -146,7 +183,19 @@ class MultiElementEventHandlersTest extends Unit
         $category->groupId = $this->catgroup->id;
         $category->title = "A new category";
         $category->slug = "a-new-category";
-        Craft::$app->getElements()->saveElement($category);
+        
+        $success = Craft::$app->getElements()->saveElement($category, false);
+        
+        if (!$success) {
+            $errors = [];
+            foreach ($category->getErrors() as $attribute => $attributeErrors) {
+                foreach ($attributeErrors as $error) {
+                    $errors[] = "$attribute: $error";
+                }
+            }
+            throw new \Exception('Failed to save first Category: ' . implode(', ', $errors) . ' (GroupId: ' . $this->catgroup->id . ')');
+        }
+        
         $this->category = $category;
 
         $category2 = new Category();
@@ -154,7 +203,19 @@ class MultiElementEventHandlersTest extends Unit
         $category2->groupId = $this->catgroup->id;
         $category2->title = "Second category";
         $category2->slug = "second-category";
-        Craft::$app->getElements()->saveElement($category2);
+        
+        $success = Craft::$app->getElements()->saveElement($category2, false);
+        
+        if (!$success) {
+            $errors = [];
+            foreach ($category2->getErrors() as $attribute => $attributeErrors) {
+                foreach ($attributeErrors as $error) {
+                    $errors[] = "$attribute: $error";
+                }
+            }
+            throw new \Exception('Failed to save second Category: ' . implode(', ', $errors) . ' (GroupId: ' . $this->catgroup->id . ')');
+        }
+        
         $this->category2 = $category2;
 
     }
@@ -163,17 +224,35 @@ class MultiElementEventHandlersTest extends Unit
 
     public function _after()
     {
+        parent::_after();
+        
         $section = Craft::$app->getEntries()->getSectionByHandle('news');
-        Craft::$app->getEntries()->deleteSection($section);
+        if ($section) {
+            Craft::$app->getEntries()->deleteSection($section);
+        }
 
         $catgroup = Craft::$app->getCategories()->getGroupByHandle('newsCategories');
-        Craft::$app->getCategories()->deleteGroup($catgroup);
+        if ($catgroup) {
+            // Clean up field layout before deleting category group
+            if ($catgroup->fieldLayoutId) {
+                $fieldLayout = Craft::$app->getFields()->getLayoutById($catgroup->fieldLayoutId);
+                if ($fieldLayout) {
+                    Craft::$app->getFields()->deleteLayout($fieldLayout);
+                }
+            }
+            Craft::$app->getCategories()->deleteGroup($catgroup);
+        }
 
         $field = Craft::$app->getFields()->getFieldByHandle('entryField');
         if ($field) {
             Craft::$app->getFields()->deleteField($field);
         }
-        parent::_after();
+        
+        // Clean up entry type
+        $entryType = Craft::$app->getEntries()->getEntryTypeByHandle('article');
+        if ($entryType) {
+            Craft::$app->getEntries()->deleteEntryType($entryType);
+        }
     }
 
     /** @test * */
