@@ -2,8 +2,6 @@
 
 namespace rias\scout;
 
-use Algolia\AlgoliaSearch\Config\SearchConfig;
-use Algolia\AlgoliaSearch\SearchClient;
 use Craft;
 use craft\base\Element;
 use craft\base\Plugin;
@@ -53,17 +51,6 @@ class Scout extends Plugin
             parent::init();
 
             self::$plugin = $this;
-
-            Craft::$container->setSingleton(SearchClient::class, function() {
-                $config = SearchConfig::create(
-                    self::$plugin->getSettings()->getApplicationId(),
-                    self::$plugin->getSettings()->getAdminApiKey()
-                );
-
-                $config->setConnectTimeout($this->getSettings()->connect_timeout);
-
-                return SearchClient::createWithConfig($config);
-            });
 
             $request = Craft::$app->getRequest();
             if ($request->getIsConsoleRequest()) {

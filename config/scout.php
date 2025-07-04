@@ -52,12 +52,26 @@ return [
     /*
      * The Algolia Application ID, this id can be found in your Algolia Account
      * https://www.algolia.com/api-keys. This id is used to update records.
+     * 
+     * For multi-site setups, you can specify different application IDs per site:
+     * 'application_id' => [
+     *     'default' => '$ALGOLIA_APPLICATION_ID_DEFAULT',
+     *     'siteHandle1' => '$ALGOLIA_APPLICATION_ID_SITE1',
+     *     'siteHandle2' => '$ALGOLIA_APPLICATION_ID_SITE2',
+     * ],
      */
     'application_id' => '$ALGOLIA_APPLICATION_ID',
 
     /*
      * The Algolia Admin API key, this key can be found in your Algolia Account
      * https://www.algolia.com/api-keys. This key is used to update records.
+     * 
+     * For multi-site setups, you can specify different admin API keys per site:
+     * 'admin_api_key' => [
+     *     'default' => '$ALGOLIA_ADMIN_API_KEY_DEFAULT',
+     *     'siteHandle1' => '$ALGOLIA_ADMIN_API_KEY_SITE1',
+     *     'siteHandle2' => '$ALGOLIA_ADMIN_API_KEY_SITE2',
+     * ],
      */
     'admin_api_key' => '$ALGOLIA_ADMIN_API_KEY',
 
@@ -65,6 +79,13 @@ return [
      * The Algolia search API key, this key can be found in your Algolia Account
      * https://www.algolia.com/api-keys. This search key is not used in Scout
      * but can be used through the Scout variable in your template files.
+     * 
+     * For multi-site setups, you can specify different search API keys per site:
+     * 'search_api_key' => [
+     *     'default' => '$ALGOLIA_SEARCH_API_KEY_DEFAULT',
+     *     'siteHandle1' => '$ALGOLIA_SEARCH_API_KEY_SITE1',
+     *     'siteHandle2' => '$ALGOLIA_SEARCH_API_KEY_SITE2',
+     * ],
      */
     'search_api_key' => '$ALGOLIA_SEARCH_API_KEY', //optional
 

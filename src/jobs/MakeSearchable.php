@@ -110,7 +110,7 @@ class MakeSearchable extends BaseJob
 
     protected function getEngine()
     {
-        return Scout::$plugin->getSettings()->getEngine($this->getIndex());
+        return Scout::$plugin->getSettings()->getEngine($this->getIndex(), $this->siteId);
     }
 
     protected function getIndex()

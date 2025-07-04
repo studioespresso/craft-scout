@@ -92,7 +92,7 @@ class SearchableBehavior extends Behavior
     public function searchableUsing(): Collection
     {
         return $this->getIndices()->map(function(ScoutIndex $scoutIndex) {
-            return Scout::$plugin->getSettings()->getEngine($scoutIndex);
+            return Scout::$plugin->getSettings()->getEngine($scoutIndex, $this->owner->siteId);
         });
     }
 

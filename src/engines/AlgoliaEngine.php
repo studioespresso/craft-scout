@@ -2,11 +2,13 @@
 
 namespace rias\scout\engines;
 
+use Algolia\AlgoliaSearch\Config\SearchConfig;
 use Algolia\AlgoliaSearch\SearchClient as Algolia;
 use craft\base\Element;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use rias\scout\IndexSettings;
+use rias\scout\Scout;
 use rias\scout\ScoutIndex;
 
 class AlgoliaEngine extends Engine
@@ -17,10 +19,27 @@ class AlgoliaEngine extends Engine
     /** @var \rias\scout\ScoutIndex */
     public $scoutIndex;
 
-    public function __construct(ScoutIndex $scoutIndex, Algolia $algolia)
+    /** @var int|null */
+    protected $siteId;
+
+    public function __construct(ScoutIndex $scoutIndex, ?int $siteId = null)
     {
         $this->scoutIndex = $scoutIndex;
-        $this->algolia = $algolia;
+        $this->siteId = $siteId;
+        $this->algolia = $this->createSearchClient();
+    }
+
+    protected function createSearchClient(): Algolia
+    {
+        $settings = Scout::$plugin->getSettings();
+        $config = SearchConfig::create(
+            $settings->getApplicationId($this->siteId),
+            $settings->getAdminApiKey($this->siteId)
+        );
+
+        $config->setConnectTimeout($settings->connect_timeout);
+
+        return Algolia::createWithConfig($config);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace rias\scout\models;
 use Craft;
 use craft\base\Model;
 use craft\helpers\App;
+use craft\helpers\ConfigHelper;
 use Exception;
 use Illuminate\Support\Collection;
 use rias\scout\engines\AlgoliaEngine;
@@ -37,14 +38,14 @@ class Settings extends Model
     /** @var ScoutIndex[] */
     public array $indices = [];
 
-    /* @var string */
-    public string $application_id = '';
+    /* @var string|array */
+    public string|array $application_id = '';
 
-    /* @var string */
-    public string $admin_api_key = '';
+    /* @var string|array */
+    public string|array $admin_api_key = '';
 
-    /* @var string */
-    public string $search_api_key = '';
+    /* @var string|array */
+    public string|array $search_api_key = '';
 
     /* @var int */
     public int $connect_timeout = 1;
@@ -83,7 +84,7 @@ class Settings extends Model
         return [
             [['connect_timeout', 'batch_size', 'ttr', 'priority'], 'integer'],
             [['sync', 'queue', 'useOriginalRecordIfSplitValueIsArrayOfOne'], 'boolean'],
-            [['application_id', 'admin_api_key', 'search_api_key'], 'string'],
+            [['application_id', 'admin_api_key', 'search_api_key'], 'safe'],
             [['application_id', 'admin_api_key', 'connect_timeout'], 'required'],
         ];
     }
@@ -109,9 +110,9 @@ class Settings extends Model
         });
     }
 
-    public function getEngine(ScoutIndex $scoutIndex): Engine
+    public function getEngine(ScoutIndex $scoutIndex, ?int $siteId = null): Engine
     {
-        $engine = Craft::$container->get($this->engine, [$scoutIndex]);
+        $engine = Craft::$container->get($this->engine, [$scoutIndex, $siteId]);
 
         if (!$engine instanceof Engine) {
             throw new Exception("Invalid engine {$this->engine}, must implement " . Engine::class);
@@ -120,18 +121,24 @@ class Settings extends Model
         return $engine;
     }
 
-    public function getApplicationId(): string
+    public function getApplicationId(?int $siteId = null): string
     {
-        return App::parseEnv($this->application_id);
+        $siteHandle = $siteId ? Craft::$app->getSites()->getSiteById($siteId)->handle : null;
+        $value = ConfigHelper::localizedValue($this->application_id, $siteHandle);
+        return App::parseEnv($value);
     }
 
-    public function getAdminApiKey(): string
+    public function getAdminApiKey(?int $siteId = null): string
     {
-        return App::parseEnv($this->admin_api_key);
+        $siteHandle = $siteId ? Craft::$app->getSites()->getSiteById($siteId)->handle : null;
+        $value = ConfigHelper::localizedValue($this->admin_api_key, $siteHandle);
+        return App::parseEnv($value);
     }
 
-    public function getSearchApiKey(): string
+    public function getSearchApiKey(?int $siteId = null): string
     {
-        return App::parseEnv($this->search_api_key);
+        $siteHandle = $siteId ? Craft::$app->getSites()->getSiteById($siteId)->handle : null;
+        $value = ConfigHelper::localizedValue($this->search_api_key, $siteHandle);
+        return App::parseEnv($value);
     }
 }

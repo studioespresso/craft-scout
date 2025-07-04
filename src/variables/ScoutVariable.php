@@ -2,23 +2,27 @@
 
 namespace rias\scout\variables;
 
+use Craft;
 use rias\scout\Scout;
 
 class ScoutVariable
 {
-    public function algoliaApplicationId(): string
+    public function algoliaApplicationId(?int $siteId = null): string
     {
-        return Scout::$plugin->getSettings()->getApplicationId();
+        $siteId = $siteId ?: Craft::$app->getSites()->getCurrentSite()->id;
+        return Scout::$plugin->getSettings()->getApplicationId($siteId);
     }
 
-    public function algoliaAdminApiKey(): string
+    public function algoliaAdminApiKey(?int $siteId = null): string
     {
-        return Scout::$plugin->getSettings()->getAdminApiKey();
+        $siteId = $siteId ?: Craft::$app->getSites()->getCurrentSite()->id;
+        return Scout::$plugin->getSettings()->getAdminApiKey($siteId);
     }
 
-    public function algoliaSearchApiKey(): string
+    public function algoliaSearchApiKey(?int $siteId = null): string
     {
-        return Scout::$plugin->getSettings()->getSearchApiKey();
+        $siteId = $siteId ?: Craft::$app->getSites()->getCurrentSite()->id;
+        return Scout::$plugin->getSettings()->getSearchApiKey($siteId);
     }
 
     public function getPluginName(): string
