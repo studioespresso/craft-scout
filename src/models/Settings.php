@@ -125,14 +125,26 @@ class Settings extends Model
     {
         $siteHandle = $siteId ? Craft::$app->getSites()->getSiteById($siteId)->handle : null;
         $value = ConfigHelper::localizedValue($this->application_id, $siteHandle);
-        return App::parseEnv($value);
+        $parsedValue = App::parseEnv($value);
+        
+        if (empty($parsedValue)) {
+            throw new Exception("Scout application_id is empty for site " . ($siteHandle ?: 'default') . " (siteId: $siteId). Check your Scout plugin settings.");
+        }
+        
+        return $parsedValue;
     }
 
     public function getAdminApiKey(?int $siteId = null): string
     {
         $siteHandle = $siteId ? Craft::$app->getSites()->getSiteById($siteId)->handle : null;
         $value = ConfigHelper::localizedValue($this->admin_api_key, $siteHandle);
-        return App::parseEnv($value);
+        $parsedValue = App::parseEnv($value);
+        
+        if (empty($parsedValue)) {
+            throw new Exception("Scout admin_api_key is empty for site " . ($siteHandle ?: 'default') . " (siteId: $siteId). Check your Scout plugin settings.");
+        }
+        
+        return $parsedValue;
     }
 
     public function getSearchApiKey(?int $siteId = null): string

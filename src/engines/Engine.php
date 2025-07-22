@@ -12,7 +12,7 @@ abstract class Engine
     /** @var ScoutIndex */
     public $scoutIndex;
 
-    abstract public function __construct(ScoutIndex $scoutIndex, SearchClient $algolia);
+    abstract public function __construct(ScoutIndex $scoutIndex, ?int $siteId = null);
 
     abstract public function update($models);
 
