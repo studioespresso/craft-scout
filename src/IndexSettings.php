@@ -15,6 +15,9 @@ namespace rias\scout;
  * @method self customRanking(string[] $customRanking)
  * @method self replicas(string[] $replicas)
  *
+ * Relevant sort (virtual replicas)
+ * @method self relevancyStrictness(int $relevancyStrictness)
+ *
  * Faceting
  * @method self maxValuesPerFacet(int $maxValuesPerFacet)
  * @method self renderingContent(array $renderingContent)
@@ -103,6 +106,22 @@ class IndexSettings
     public function forwardToReplicas(bool $forwardToReplicas): self
     {
         $this->forwardToReplicas = $forwardToReplicas;
+
+        return $this;
+    }
+
+    /**
+     * Set multiple raw index settings at once.
+     *
+     * Useful for any Algolia setting, including those without a dedicated
+     * fluent method (e.g. `relevancyStrictness`). Existing settings with the
+     * same key are overwritten.
+     *
+     * @param array<string, mixed> $settings
+     */
+    public function setSettings(array $settings): self
+    {
+        $this->settings = array_merge($this->settings, $settings);
 
         return $this;
     }
