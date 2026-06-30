@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## 5.0.9 - Unreleased
+## 5.0.10 - Unreleased
+### Fixed
+- `Scout::$plugin` is now typed as nullable (`?Scout`), since it's only assigned once the plugin is fully initialized. This avoids PHPStan false positives on null checks against it ([#379](https://github.com/studioespresso/craft-scout/issues/379))
+
+## 5.0.9 - 2026-06-30
 ### Added
 - `IndexSettings` now has a `setSettings()` method to set multiple raw Algolia settings at once, and documents `relevancyStrictness` as an available setting (both already worked through the fluent magic methods) ([#380](https://github.com/studioespresso/craft-scout/issues/380))
 

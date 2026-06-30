@@ -39,8 +39,8 @@ class Scout extends Plugin
         ];
     }
 
-    /** @var \rias\scout\Scout */
-    public static $plugin;
+    /** @var \rias\scout\Scout|null */
+    public static ?Scout $plugin = null;
 
     public bool $hasCpSettings = true;
 
