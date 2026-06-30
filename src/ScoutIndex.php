@@ -40,6 +40,9 @@ class ScoutIndex extends BaseObject
     /** @var callable|ElementQuery|ElementQuery[] */
     private $criteria;
 
+    /** @var callable|null Deferred element-query callback set via getElements() */
+    private $elements;
+
     public function __construct(string $indexName, $config = [])
     {
         parent::__construct($config);
@@ -64,11 +67,30 @@ class ScoutIndex extends BaseObject
     }
 
     /**
-     * @throws Exception
+     * Store the callable that returns the element queries to index.
+     *
+     * The callable is invoked lazily (see {@see resolveElements()}) rather than
+     * immediately, so that the element queries - and any site() handle lookups
+     * they trigger - are not executed while Craft is still bootstrapping and the
+     * config file is being read. Mirrors the deferred behaviour of criteria().
      */
     public function getElements(callable $getElements): self
     {
-        $elementQueries = $getElements();
+        $this->enforceElementType = false;
+        $this->elements = $getElements;
+
+        return $this;
+    }
+
+    /**
+     * Resolve the deferred getElements() callable into an array of element queries.
+     *
+     * @throws Exception
+     * @return ElementQuery[]
+     */
+    private function resolveElements(): array
+    {
+        $elementQueries = call_user_func($this->elements);
 
         if ($elementQueries instanceof ElementQuery) {
             $elementQueries = [$elementQueries];
@@ -85,10 +107,9 @@ class ScoutIndex extends BaseObject
             }
         }
 
-        $this->enforceElementType = false;
-        $this->criteria = $elementQueries;
+        $this->elements = null;
 
-        return $this;
+        return $this->criteria = $elementQueries;
     }
 
 
@@ -106,8 +127,10 @@ class ScoutIndex extends BaseObject
             return $this->elementType;
         }
 
-        if (is_array($this->criteria)) {
-            $types = collect($this->criteria)->map(function($criteria) {
+        $criteria = $this->getCriteria();
+
+        if (is_array($criteria)) {
+            $types = collect($criteria)->map(function($criteria) {
                 return Arr::wrap($criteria->elementType);
             })->flatten()->unique()->values()->toArray();
             return $types;
@@ -124,6 +147,10 @@ class ScoutIndex extends BaseObject
      */
     public function getCriteria(): ElementQuery|array
     {
+        if (isset($this->elements)) {
+            return $this->resolveElements();
+        }
+
         if (!isset($this->criteria)) {
             return $this->criteria = $this->elementType::find();
         }
