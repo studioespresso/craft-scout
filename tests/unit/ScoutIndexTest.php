@@ -122,4 +122,33 @@ class ScoutIndexTest extends Unit
 
         $this->assertEquals('*', $index->criteria->siteId);
     }
+
+    /**
+     * @test
+     *
+     * Regression test for #375: getElements() must not invoke its callback
+     * immediately. Doing so executes element queries (and site() handle
+     * lookups) while Craft is still bootstrapping and the config file is being
+     * read, triggering "Element query executed before Craft is fully
+     * initialized" warnings on every request.
+     */
+    public function it_defers_the_get_elements_callback_until_the_criteria_is_accessed()
+    {
+        $index = new ScoutIndex('Blog');
+
+        $invoked = false;
+        $index->getElements(function() use (&$invoked) {
+            $invoked = true;
+
+            return [Entry::find()->siteId(1)];
+        });
+
+        $this->assertFalse($invoked, 'getElements() callback should not run before the criteria is accessed.');
+
+        $criteria = $index->criteria;
+
+        $this->assertTrue($invoked, 'getElements() callback should run when the criteria is accessed.');
+        $this->assertIsArray($criteria);
+        $this->assertEquals([Entry::class], $index->getElementType());
+    }
 }
