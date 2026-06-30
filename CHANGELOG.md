@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## 5.0.8 - Unreleased
+## 5.0.8 - 2026-06-30
 ### Added
 - The `scout/index/import`, `scout/index/refresh` and `scout/index/flush` console commands now print an error and exit with a non-zero status code when given an index name that doesn't exist ([#376](https://github.com/studioespresso/craft-scout/issues/376))
 
