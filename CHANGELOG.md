@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.9 - Unreleased
+### Added
+- `IndexSettings` now has a `setSettings()` method to set multiple raw Algolia settings at once, and documents `relevancyStrictness` as an available setting (both already worked through the fluent magic methods) ([#380](https://github.com/studioespresso/craft-scout/issues/380))
+
 ## 5.0.8 - 2026-06-30
 ### Added
 - The `scout/index/import`, `scout/index/refresh` and `scout/index/flush` console commands now print an error and exit with a non-zero status code when given an index name that doesn't exist ([#376](https://github.com/studioespresso/craft-scout/issues/376))
