@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 
 ## 5.0.8 - Unreleased
+### Added
+- The `scout/index/import`, `scout/index/refresh` and `scout/index/flush` console commands now print an error and exit with a non-zero status code when given an index name that doesn't exist ([#376](https://github.com/studioespresso/craft-scout/issues/376))
+
 ### Fixed
 - `getElements()` now defers its callback instead of running it immediately, so element queries are no longer executed during bootstrap (before Craft is fully initialized) when an index uses a `site()` criteria ([#375](https://github.com/studioespresso/craft-scout/issues/375))
 
