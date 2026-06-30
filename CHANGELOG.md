@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.8 - Unreleased
+### Fixed
+- `getElements()` now defers its callback instead of running it immediately, so element queries are no longer executed during bootstrap (before Craft is fully initialized) when an index uses a `site()` criteria ([#375](https://github.com/studioespresso/craft-scout/issues/375))
+
 ## 5.0.7 - 2025-06-10
 ### Added
 - Propagating elements are now also indexed when they are match in an index - currently behind a feature flag ([#367](https://github.com/studioespresso/craft-scout/issues/367))
