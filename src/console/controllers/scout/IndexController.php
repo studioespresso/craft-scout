@@ -28,6 +28,10 @@ class IndexController extends BaseController
 
     public function actionFlush($index = '')
     {
+        if (!$this->validateIndex($index)) {
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
         if (
             $this->force === false
             && $this->confirm(Craft::t('scout', 'Are you sure you want to flush Scout?')) === false
@@ -48,6 +52,10 @@ class IndexController extends BaseController
 
     public function actionImport($index = '')
     {
+        if (!$this->validateIndex($index)) {
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
         $engines = Scout::$plugin->getSettings()->getEngines();
 
         $engines->filter(function(Engine $engine) use ($index) {
@@ -109,9 +117,33 @@ class IndexController extends BaseController
 
     public function actionRefresh($index = '')
     {
+        if (!$this->validateIndex($index)) {
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
+
         $this->actionFlush($index);
         $this->actionImport($index);
 
         return ExitCode::OK;
+    }
+
+    private function validateIndex($index): bool
+    {
+        // An empty index name targets every index, so there's nothing to validate.
+        if ($index === '') {
+            return true;
+        }
+
+        $engines = Scout::$plugin->getSettings()->getEngines();
+        $filteredEngines = $engines->filter(function(Engine $engine) use ($index) {
+            return $engine->scoutIndex->indexName === $index;
+        });
+
+        if ($filteredEngines->isEmpty()) {
+            $this->stderr("No index found with name '{$index}'\n", Console::FG_RED);
+            return false;
+        }
+
+        return true;
     }
 }
