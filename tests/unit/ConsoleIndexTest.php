@@ -273,4 +273,40 @@ class ConsoleIndexTest extends ConsoleTest
         $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
         $this->assertEquals(1, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
     }
+
+    /** @test * */
+    public function it_errors_when_importing_an_unknown_index()
+    {
+        $this->consoleCommand('scout/index/import', ['does_not_exist'])
+            ->stderr("No index found with name 'does_not_exist'\n")
+            ->exitCode(ExitCode::UNSPECIFIED_ERROR)
+            ->run();
+
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
+    }
+
+    /** @test * */
+    public function it_errors_when_flushing_an_unknown_index()
+    {
+        $this->consoleCommand('scout/index/flush', ['does_not_exist'])
+            ->stderr("No index found with name 'does_not_exist'\n")
+            ->exitCode(ExitCode::UNSPECIFIED_ERROR)
+            ->run();
+
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
+    }
+
+    /** @test * */
+    public function it_errors_when_refreshing_an_unknown_index()
+    {
+        $this->consoleCommand('scout/index/refresh', ['does_not_exist'])
+            ->stderr("No index found with name 'does_not_exist'\n")
+            ->exitCode(ExitCode::UNSPECIFIED_ERROR)
+            ->run();
+
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-flushCalled'));
+        $this->assertEquals(0, Craft::$app->getCache()->get('scout-blog_nl-updateCalled'));
+    }
 }
