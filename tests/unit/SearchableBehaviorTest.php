@@ -9,8 +9,6 @@ use craft\elements\db\CategoryQuery;
 use craft\elements\db\EntryQuery;
 use craft\elements\Entry;
 use craft\fields\Entries;
-use craft\helpers\StringHelper;
-use craft\models\EntryType;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
 use FakeEngine;
@@ -18,6 +16,7 @@ use Illuminate\Support\Collection;
 use rias\scout\engines\Engine;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
+use ScoutTestEntryType;
 use UnitTester;
 
 class SearchableBehaviorTest extends Unit
@@ -44,32 +43,7 @@ class SearchableBehaviorTest extends Unit
             Craft::$app->getEntries()->deleteSection($section);
         }
 
-        $type = new EntryType([
-            'name' => 'Article',
-            'handle' => 'article',
-            'hasTitleField' => true,
-            'titleFormat' => null,
-            'uid' => StringHelper::UUID(),
-        ]);
-
-        \Craft::$app->getEntries()->saveEntryType($type);
-        $entryType = \Craft::$app->getEntries()->getEntryTypeByHandle('article');
-        
-        // Set up a proper field layout for the entry type with title field support
-        $fieldLayout = new \craft\models\FieldLayout([
-            'type' => \craft\elements\Entry::class,
-        ]);
-        
-        // Create field layout tabs to properly handle the title field
-        $fieldLayoutTab = new \craft\models\FieldLayoutTab([
-            'name' => 'Content',
-            'sortOrder' => 1,
-        ]);
-        $fieldLayout->setTabs([$fieldLayoutTab]);
-        
-        \Craft::$app->getFields()->saveLayout($fieldLayout);
-        $entryType->fieldLayoutId = $fieldLayout->id;
-        \Craft::$app->getEntries()->saveEntryType($entryType);
+        $entryType = ScoutTestEntryType::create();
 
         $section = new Section([
             'name' => 'News',

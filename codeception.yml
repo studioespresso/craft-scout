@@ -15,7 +15,7 @@ modules:
             migrations: []
             plugins:
                 scout:
-                    class: '\studioespresso\scout\Scout'
+                    class: '\rias\scout\Scout'
                     handle: scout
             cleanup: true
             transaction: true

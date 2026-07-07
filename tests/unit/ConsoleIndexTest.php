@@ -5,13 +5,12 @@ namespace rias\scout\tests;
 use Craft;
 use craft\elements\db\EntryQuery;
 use craft\elements\Entry;
-use craft\helpers\StringHelper;
-use craft\models\EntryType;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
 use craft\test\console\ConsoleTest;
 use FakeEngine;
 use rias\scout\ScoutIndex;
+use ScoutTestEntryType;
 use UnitTester;
 use yii\console\ExitCode;
 
@@ -49,17 +48,7 @@ class ConsoleIndexTest extends ConsoleTest
             ],
         ]);
 
-        $type = new EntryType([
-            'name' => 'Article',
-            'handle' => 'article',
-            'hasTitleField' => true,
-            'titleFormat' => null,
-            'uid' => StringHelper::UUID(),
-        ]);
-
-        \Craft::$app->getEntries()->saveEntryType($type);
-        $entryType = \Craft::$app->getEntries()->getEntryTypeByHandle('article');
-
+        $entryType = ScoutTestEntryType::create();
 
         $section = new Section([
             'name' => 'News',

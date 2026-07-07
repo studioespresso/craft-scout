@@ -1,14 +1,15 @@
-version: "2"
 services:
   mysql:
+    image: mysql:8.0
     restart: always
-    image: mysql/mysql-server:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: "root_password"
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_ROOT_HOST: "%"
       MYSQL_DATABASE: "scout_testing"
-      MYSQL_USER: "root"
-      MYSQL_PASSWORD: "root"
-      MYSQL_ROOT_HOST: "0.0.0.0"
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
       - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 3s
+      timeout: 5s
+      retries: 20

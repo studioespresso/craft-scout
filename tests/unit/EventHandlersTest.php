@@ -7,13 +7,12 @@ use Craft;
 use craft\elements\Entry;
 use craft\fieldlayoutelements\CustomField;
 use craft\fields\Entries;
-use craft\helpers\StringHelper;
-use craft\models\EntryType;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
 use FakeEngine;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;
+use ScoutTestEntryType;
 use UnitTester;
 
 class EventHandlersTest extends Unit
@@ -39,16 +38,7 @@ class EventHandlersTest extends Unit
     {
         parent::_before();
 
-        $type = new EntryType([
-            'name' => 'Article',
-            'handle' => 'article',
-            'hasTitleField' => false,
-            'titleFormat' => null,
-            'uid' => StringHelper::UUID(),
-        ]);
-
-        \Craft::$app->getEntries()->saveEntryType($type);
-        $entryType = \Craft::$app->getEntries()->getEntryTypeByHandle('article');
+        $entryType = ScoutTestEntryType::create();
 
         $section = new Section([
             'name' => 'News',
