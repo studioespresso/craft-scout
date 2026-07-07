@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## 5.0.10 - Unreleased
+## 5.0.10 - 2026-07-07
 ### Fixed
 - Updating index settings no longer throws a `TypeError` when an index has no `indexSettings` configured, both via the `scout/settings/update` console command and the "Update Settings" action in the Scout Indices utility; those indices are now skipped with a notice instead ([#381](https://github.com/studioespresso/craft-scout/issues/381))
 - `Scout::$plugin` is now typed as nullable (`?Scout`), since it's only assigned once the plugin is fully initialized. This avoids PHPStan false positives on null checks against it ([#379](https://github.com/studioespresso/craft-scout/issues/379))
