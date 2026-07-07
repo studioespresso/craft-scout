@@ -97,6 +97,13 @@ class IndexController extends Controller
         $this->requirePostRequest();
 
         $engine = $this->getEngine();
+
+        if ($engine->scoutIndex->indexSettings === null) {
+            Craft::$app->getSession()->setError("Skipped {$engine->scoutIndex->indexName}, no index settings configured");
+
+            return $this->redirect(UrlHelper::url('utilities/' . ScoutUtility::id()));
+        }
+
         $engine->updateSettings($engine->scoutIndex->indexSettings);
 
         Craft::$app->getSession()->setNotice("Updated settings for index {$engine->scoutIndex->indexName}");

@@ -176,4 +176,20 @@ class IndexControllerTest extends Unit
         $this->assertEquals(false, Craft::$app->getCache()->get('scout-blog_fr-flushCalled'));
         $this->assertEquals(false, Craft::$app->getCache()->get('scout-blog_fr-updateCalled'));
     }
+
+    /** @test * */
+    public function it_skips_updating_settings_when_the_index_has_none()
+    {
+        $this->tester->mockCraftMethods('request', [
+            'getIsPost' => true,
+            'getRequiredBodyParam' => 'blog_nl',
+        ]);
+
+        $controller = new IndexController('scout', $this->scout);
+
+        // blog_nl has no indexSettings configured; previously this threw a TypeError (#381)
+        $controller->actionUpdateSettings();
+
+        $this->assertEquals(false, Craft::$app->getCache()->get('indexSettings-blog_nl'));
+    }
 }

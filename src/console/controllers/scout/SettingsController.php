@@ -19,6 +19,12 @@ class SettingsController extends BaseController
         $engines->filter(function(Engine $engine) use ($index) {
             return $index === '' || $engine->scoutIndex->indexName === $index;
         })->each(function(Engine $engine) {
+            if ($engine->scoutIndex->indexSettings === null) {
+                $this->stdout("Skipped {$engine->scoutIndex->indexName}, no index settings configured\n", Console::FG_YELLOW);
+
+                return;
+            }
+
             $engine->updateSettings($engine->scoutIndex->indexSettings);
             $this->stdout("Updated index settings for {$engine->scoutIndex->indexName}\n", Console::FG_GREEN);
         });

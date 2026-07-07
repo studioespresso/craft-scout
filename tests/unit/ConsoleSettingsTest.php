@@ -92,6 +92,38 @@ class ConsoleSettingsTest extends ConsoleTest
     }
 
     /** @test * */
+    public function it_skips_indices_without_index_settings()
+    {
+        $scout = Craft::$app->getPlugins()->getPlugin('scout');
+        $scout->setSettings([
+            'engine' => FakeEngine::class,
+            'indices' => [
+                ScoutIndex::create('blog_nl')->indexSettings(
+                    IndexSettings::create()
+                        ->minWordSizefor1Typo(10)
+                        ->minWordSizefor2Typos(20)
+                ),
+                // No indexSettings configured, previously caused a TypeError (#381)
+                ScoutIndex::create('blog_fr'),
+            ],
+        ]);
+
+        Craft::$app->getCache()->flush();
+
+        $this->consoleCommand('scout/settings/update')
+            ->stdOut("Updated index settings for blog_nl\n")
+            ->stdOut("Skipped blog_fr, no index settings configured\n")
+            ->exitCode(ExitCode::OK)
+            ->run();
+
+        $this->assertEquals([
+            'minWordSizefor1Typo' => 10,
+            'minWordSizefor2Typos' => 20,
+        ], Craft::$app->getCache()->get('indexSettings-blog_nl'));
+        $this->assertEquals(false, Craft::$app->getCache()->get('indexSettings-blog_fr'));
+    }
+
+    /** @test * */
     public function it_can_dump_settings()
     {
         $this->consoleCommand('scout/settings/update')
