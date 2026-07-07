@@ -245,6 +245,27 @@ class EventHandlersTest extends Unit
     }
 
     /** @test * */
+    public function it_attaches_to_the_element_resave_event()
+    {
+        Craft::$app->getCache()->set("scout-Blog-{$this->element->id}-updateCalled", 0);
+        Craft::$app->getCache()->set("scout-Blog-{$this->element2->id}-updateCalled", 0);
+
+        $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
+        $this->assertEquals(0, Craft::$app->getCache()->get("scout-Blog-{$this->element2->id}-updateCalled"));
+
+        // Bulk resaving keeps the search index in sync, exactly like saving each
+        // element individually does (#373): resaveElements() saves every matched
+        // element through Elements::_saveElementInternal(), which fires
+        // EVENT_AFTER_SAVE_ELEMENT - the same event Scout already listens to.
+        Craft::$app->getElements()->resaveElements(
+            Entry::find()->section('news')->site('*')
+        );
+
+        $this->assertEquals(1, Craft::$app->getCache()->get("scout-Blog-{$this->element->id}-updateCalled"));
+        $this->assertEquals(1, Craft::$app->getCache()->get("scout-Blog-{$this->element2->id}-updateCalled"));
+    }
+
+    /** @test * */
     public function it_attaches_to_the_element_after_delete_event()
     {
         Craft::$app->getCache()->set("scout-Blog-{$this->element->id}-deleteCalled", 0);
