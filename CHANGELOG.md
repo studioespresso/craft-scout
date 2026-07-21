@@ -10,6 +10,10 @@ All notable changes to this project will be documented in this file.
 - For most sites the upgrade is transparent — Scout abstracts the Algolia client away, so index configuration, settings and front-end templates keep working unchanged. There are no project config or database migrations to run.
 - If you set a custom `engine` or resolve the Algolia client yourself, see the [upgrade guide](https://studioespresso.github.io/craft-scout/upgrading.html) for the two required changes (the `SearchClient` namespace moved to `Algolia\AlgoliaSearch\Api\SearchClient`, and `initIndex()` was replaced by index-name-scoped calls on the client).
 
+## 5.0.11 - 2026-07-21
+### Fixed
+- Deleting an element now re-indexes the elements that related to it when running synchronously (queue disabled), so they no longer keep a stale reference to the deleted element in the index. Previously this only worked when indexing through the queue.
+
 ## 5.0.10 - 2026-07-07
 ### Fixed
 - Updating index settings no longer throws a `TypeError` when an index has no `indexSettings` configured, both via the `scout/settings/update` console command and the "Update Settings" action in the Scout Indices utility; those indices are now skipped with a notice instead ([#381](https://github.com/studioespresso/craft-scout/issues/381))
