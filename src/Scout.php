@@ -201,9 +201,8 @@ class Scout extends Plugin
             Elements::class,
             Elements::EVENT_BEFORE_DELETE_ELEMENT,
             function(ElementEvent $event) {
-                if (!Scout::$plugin->getSettings()->indexRelations) {
-                    $this->beforeDeleteRelated = new Collection();
-                }
+                // Reset any related elements captured from a previous deletion.
+                $this->beforeDeleteRelated = new Collection();
 
                 /** @var SearchableBehavior $element */
                 $element = $event->element;
@@ -223,6 +222,15 @@ class Scout extends Plugin
                         null,
                         Scout::$plugin->getSettings()->ttr
                     );
+
+                    return;
+                }
+
+                // Sync path: capture the related elements now, while the relations
+                // still exist. Once the element is deleted its relations are gone,
+                // so EVENT_AFTER_DELETE_ELEMENT could no longer find them to re-index.
+                if (Scout::$plugin->getSettings()->indexRelations) {
+                    $this->beforeDeleteRelated = $element->getRelatedElements();
                 }
             }
         );
