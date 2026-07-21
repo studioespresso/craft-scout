@@ -25,6 +25,7 @@ module.exports = {
                         {text: 'Templating', link: '/templating'},
                         {text: 'Configuration', link: '/configuration'},
                         {text: 'Console commands', link: '/console'},
+                        {text: 'Upgrade guide', link: '/upgrading'},
 
                     ]
             },

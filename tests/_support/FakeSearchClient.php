@@ -1,6 +1,6 @@
 <?php
 
-use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 
 class FakeSearchClient extends SearchClient
 {
@@ -8,28 +8,23 @@ class FakeSearchClient extends SearchClient
 
     public $settings = [];
 
-    public function initIndex($indexName)
-    {
-        return $this;
-    }
-
-    public function saveObjects(array $objects)
+    public function saveObjects($indexName, $objects, $waitForTasks = false, $batchSize = 1000, $requestOptions = [], $chunkedOptions = null)
     {
         foreach ($objects as $object) {
             $this->indexedModels[$object['objectID']] = $object;
         }
     }
 
-    public function deleteObjects(array $objects)
+    public function deleteObjects($indexName, $objectIDs, $waitForTasks = false, $batchSize = 1000, $requestOptions = [], $chunkedOptions = null)
     {
-        foreach ($objects as $object) {
-            unset($this->indexedModels[$object]);
+        foreach ($objectIDs as $objectID) {
+            unset($this->indexedModels[$objectID]);
         }
     }
 
-    public function deleteBy(array $filters)
+    public function deleteBy($indexName, $deleteByParams, $requestOptions = [])
     {
-        $filters = $filters['filters'];
+        $filters = $deleteByParams['filters'];
 
         foreach (explode(' OR ', $filters) as $orfilter) {
             $filter = explode(':', $orfilter);
@@ -41,22 +36,22 @@ class FakeSearchClient extends SearchClient
         }
     }
 
-    public function clearObjects()
+    public function clearObjects($indexName, $requestOptions = [])
     {
         $this->indexedModels = [];
     }
 
-    public function setSettings(array $settings)
+    public function setSettings($indexName, $indexSettings, $forwardToReplicas = null, $requestOptions = [])
     {
-        $this->settings = $settings;
+        $this->settings = $indexSettings;
     }
 
-    public function getSettings()
+    public function getSettings($indexName, $getVersion = null, $requestOptions = [])
     {
         return $this->settings;
     }
 
-    public function search($queries, $requestOptions = [])
+    public function searchSingleIndex($indexName, $searchParams = null, $requestOptions = [])
     {
         return [
             'nbHits' => 0,

@@ -2,7 +2,7 @@
 
 namespace rias\scout\engines;
 
-use Algolia\AlgoliaSearch\SearchClient as Algolia;
+use Algolia\AlgoliaSearch\Api\SearchClient as Algolia;
 use craft\base\Element;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -11,7 +11,7 @@ use rias\scout\ScoutIndex;
 
 class AlgoliaEngine extends Engine
 {
-    /** @var \Algolia\AlgoliaSearch\SearchClient */
+    /** @var \Algolia\AlgoliaSearch\Api\SearchClient */
     protected $algolia;
 
     /** @var \rias\scout\ScoutIndex */
@@ -50,8 +50,7 @@ class AlgoliaEngine extends Engine
         $objects = $this->transformElements($elements);
 
         if (!empty($objects)) {
-            $index = $this->algolia->initIndex($this->scoutIndex->indexName);
-            $index->saveObjects($objects);
+            $this->algolia->saveObjects($this->scoutIndex->indexName, $objects);
         }
     }
 
@@ -62,8 +61,6 @@ class AlgoliaEngine extends Engine
         }
 
         $elements = new Collection(Arr::wrap($elements));
-
-        $index = $this->algolia->initIndex($this->scoutIndex->indexName);
 
         $objectIds = $elements->map(function($object) {
             if ($object instanceof Element) {
@@ -78,10 +75,10 @@ class AlgoliaEngine extends Engine
         }
 
         if (empty($this->scoutIndex->splitElementsOn)) {
-            return $index->deleteObjects($objectIds);
+            return $this->algolia->deleteObjects($this->scoutIndex->indexName, $objectIds);
         }
 
-        return $index->deleteBy([
+        return $this->algolia->deleteBy($this->scoutIndex->indexName, [
             'filters' => 'distinctID:' . implode(' OR distinctID:', $objectIds),
         ]);
     }
@@ -92,30 +89,28 @@ class AlgoliaEngine extends Engine
             return;
         }
 
-        $index = $this->algolia->initIndex($this->scoutIndex->indexName);
-        $index->clearObjects();
+        $this->algolia->clearObjects($this->scoutIndex->indexName);
     }
 
     public function updateSettings(IndexSettings $indexSettings)
     {
-        $index = $this->algolia->initIndex($this->scoutIndex->indexName);
-        $index->setSettings($indexSettings->settings, [
-            'forwardToReplicas' => $indexSettings->forwardToReplicas,
-        ]);
+        $this->algolia->setSettings(
+            $this->scoutIndex->indexName,
+            $indexSettings->settings,
+            $indexSettings->forwardToReplicas
+        );
     }
 
     public function getSettings(): array
     {
-        $index = $this->algolia->initIndex($this->scoutIndex->indexName);
-
-        return $index->getSettings();
+        return $this->algolia->getSettings($this->scoutIndex->indexName);
     }
 
     public function getTotalRecords(): int
     {
-        $index = $this->algolia->initIndex($this->scoutIndex->indexName);
-        $response = $index->search('', [
-            'attributesToRetrieve' => null,
+        $response = $this->algolia->searchSingleIndex($this->scoutIndex->indexName, [
+            'query' => '',
+            'attributesToRetrieve' => [],
         ]);
 
         return (int) $response['nbHits'];

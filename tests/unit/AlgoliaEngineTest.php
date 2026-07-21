@@ -2,8 +2,8 @@
 
 namespace rias\scout\tests;
 
-use Algolia\AlgoliaSearch\Config\SearchConfig;
-use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\Api\SearchClient;
+use Algolia\AlgoliaSearch\Configuration\SearchConfig;
 use Codeception\Test\Unit;
 use Craft;
 use craft\elements\Entry;

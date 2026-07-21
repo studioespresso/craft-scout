@@ -2,8 +2,8 @@
 
 namespace rias\scout;
 
-use Algolia\AlgoliaSearch\Config\SearchConfig;
-use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\Api\SearchClient;
+use Algolia\AlgoliaSearch\Configuration\SearchConfig;
 use Craft;
 use craft\base\Element;
 use craft\base\Plugin;
@@ -55,12 +55,22 @@ class Scout extends Plugin
             self::$plugin = $this;
 
             Craft::$container->setSingleton(SearchClient::class, function() {
+                $settings = self::$plugin->getSettings();
+
+                // The v4 client validates the credentials when the config is
+                // created and throws if either is empty. The client is injected
+                // into every engine's constructor, so resolving an engine on a
+                // site that hasn't configured Algolia yet (or that uses a custom,
+                // non-Algolia engine) would throw before any request is made.
+                // Fall back to placeholders so the client can be constructed; an
+                // actual API call still fails, matching the v2/v3 behaviour of
+                // only surfacing missing credentials when Algolia is contacted.
                 $config = SearchConfig::create(
-                    self::$plugin->getSettings()->getApplicationId(),
-                    self::$plugin->getSettings()->getAdminApiKey()
+                    $settings->getApplicationId() ?: 'scout-application-id-not-configured',
+                    $settings->getAdminApiKey() ?: 'scout-admin-api-key-not-configured'
                 );
 
-                $config->setConnectTimeout($this->getSettings()->connect_timeout);
+                $config->setConnectTimeout($settings->connect_timeout);
 
                 return SearchClient::createWithConfig($config);
             });
