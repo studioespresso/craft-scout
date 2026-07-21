@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.11 - 2026-07-21
+### Fixed
+- Deleting an element now re-indexes the elements that related to it when running synchronously (queue disabled), so they no longer keep a stale reference to the deleted element in the index. Previously this only worked when indexing through the queue.
+
 ## 5.0.10 - 2026-07-07
 ### Fixed
 - Updating index settings no longer throws a `TypeError` when an index has no `indexSettings` configured, both via the `scout/settings/update` console command and the "Update Settings" action in the Scout Indices utility; those indices are now skipped with a notice instead ([#381](https://github.com/studioespresso/craft-scout/issues/381))
