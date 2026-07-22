@@ -22,5 +22,9 @@
     "codemirror": "^5.44.0",
     "vitepress": "^1.5.0",
     "vue": "^3.2.40"
+  },
+  "resolutions": {
+    "vite": "^6.4.3",
+    "esbuild": "^0.25.0"
   }
 }
