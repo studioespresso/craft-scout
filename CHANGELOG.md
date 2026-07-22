@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 6.0.0 - 2026-07-21
+### Changed
+- Upgraded the [Algolia PHP API client](https://github.com/algolia/algoliasearch-client-php) from v2/v3 to **v4**. Algolia is retiring the API endpoints used by the older clients on August 14, 2026, so this upgrade is required to keep search working ([Algolia SDK versions notice](https://www.algolia.com/doc/libraries/sdk/v1/versions#php)).
+
+### Upgrading
+- For most sites the upgrade is transparent — Scout abstracts the Algolia client away, so index configuration, settings and front-end templates keep working unchanged. There are no project config or database migrations to run.
+- If you set a custom `engine` or resolve the Algolia client yourself, see the [upgrade guide](https://studioespresso.github.io/craft-scout/upgrading.html) for the two required changes (the `SearchClient` namespace moved to `Algolia\AlgoliaSearch\Api\SearchClient`, and `initIndex()` was replaced by index-name-scoped calls on the client).
+
 ## 5.0.11 - 2026-07-21
 ### Fixed
 - Deleting an element now re-indexes the elements that related to it when running synchronously (queue disabled), so they no longer keep a stale reference to the deleted element in the index. Previously this only worked when indexing through the queue.

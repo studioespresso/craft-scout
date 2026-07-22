@@ -2,7 +2,7 @@
 
 namespace rias\scout\engines;
 
-use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 use rias\scout\IndexSettings;
 use rias\scout\Scout;
 use rias\scout\ScoutIndex;

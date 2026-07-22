@@ -1,6 +1,6 @@
 <?php
 
-use Algolia\AlgoliaSearch\SearchClient;
+use Algolia\AlgoliaSearch\Api\SearchClient;
 use Illuminate\Support\Arr;
 use rias\scout\engines\Engine;
 use rias\scout\IndexSettings;
