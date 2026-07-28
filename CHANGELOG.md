@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 6.0.0 - 2026-07-28
+### Changed
+- Upgraded the [Algolia PHP API client](https://github.com/algolia/algoliasearch-client-php) from v2/v3 to **v4**. Algolia is retiring the API endpoints used by the older clients on August 14, 2026, so this upgrade is required to keep search working ([Algolia SDK versions notice](https://www.algolia.com/doc/libraries/sdk/v1/versions#php)).
+
 ## 6.0.0-beta.01 - 2026-07-21
 ### Changed
 - Upgraded the [Algolia PHP API client](https://github.com/algolia/algoliasearch-client-php) from v2/v3 to **v4**. Algolia is retiring the API endpoints used by the older clients on August 14, 2026, so this upgrade is required to keep search working ([Algolia SDK versions notice](https://www.algolia.com/doc/libraries/sdk/v1/versions#php)).
